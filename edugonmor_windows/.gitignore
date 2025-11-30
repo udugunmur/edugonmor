@@ -1,0 +1,22 @@
+# edugonmor_windows
+
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# PowerShell
+*.psm1.bak
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

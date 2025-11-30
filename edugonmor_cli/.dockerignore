@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.eggs
+dist
+build
+
+# Virtual environments
+.venv
+venv
+env
+
+# IDE
+.vscode
+.idea
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+
+# Documentation
+docs
+
+# Development
+.devcontainer
+tests

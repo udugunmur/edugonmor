@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "username": "edugonmor_mongodb_user",
+      "password": "edugonmor_mongodb_password",
+      "role": "readWrite",
+      "databases": [
+        "edugonmor_mongodb_db"
+      ]
+    }
+  ]
+}

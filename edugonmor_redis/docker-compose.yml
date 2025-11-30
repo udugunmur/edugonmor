@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  edugonmor_redis_services:
+    image: nexus.edugonmor.com/repository/docker-hosted/edugonmor_redis_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: edugonmor_redis_services
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - edugonmor_redis_network
+    volumes:
+      - edugonmor_redis_volumen:/data
+
+  edugonmor_redis_backup:
+    image: redis:latest
+    container_name: edugonmor_redis_backup
+    restart: always
+    command: >
+      bash -c "apt-get update && apt-get install -y cron && echo '0 3 * * * redis-cli -h edugonmor_redis_services save && cp /data/dump.rdb /backup/dump-\$$(date +\%Y\%m\%d-\%H\%M\%S).rdb && find /backup -name \"dump-*\" -mtime +10 -delete' | crontab - && cron -f"
+    volumes:
+      - edugonmor_redis_volumen:/data:ro
+      - edugonmor_redis_backups:/backup
+    networks:
+      - edugonmor_redis_network
+    depends_on:
+      - edugonmor_redis_services
+
+volumes:
+  edugonmor_redis_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/edugonmor_redis_volumen
+  edugonmor_redis_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/edugonmor_rclone/docker/volumes/rclone_local_backup_volumen/redis
+
+networks:
+  edugonmor_redis_network:
+    driver: bridge

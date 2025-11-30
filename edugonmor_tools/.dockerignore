@@ -1,0 +1,6 @@
+# edugonmor_tools
+docker/volumes/
+.git/
+*.md
+tests/
+docs/

@@ -1,0 +1,4 @@
+services:
+  edugonmor_postgresql_services:
+    # Production specific overrides
+    restart: always

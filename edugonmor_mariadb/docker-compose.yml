@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  edugonmor_mariadb_services:
+    image: nexus.edugonmor.com/repository/docker-hosted/edugonmor_mariadb_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: edugonmor_mariadb_services
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - edugonmor_mariadb_volumen:/var/lib/mysql
+      - ./config/init-data.json:/etc/mysql/custom/init-data.json:ro
+    networks:
+      - edugonmor_mariadb_network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  edugonmor_mariadb_backup:
+    image: fradelg/mysql-cron-backup
+    container_name: edugonmor_mariadb_backup
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MYSQL_HOST=edugonmor_mariadb_services
+      - MYSQL_USER=root
+      - MYSQL_PASS=${MARIADB_ROOT_PASSWORD}
+      - MAX_BACKUPS=10
+      - INIT_BACKUP=1
+      - CRON_TIME=0 3 * * *
+    volumes:
+      - edugonmor_mariadb_backups:/backup
+    networks:
+      - edugonmor_mariadb_network
+    depends_on:
+      - edugonmor_mariadb_services
+
+networks:
+  edugonmor_mariadb_network:
+    driver: bridge
+
+volumes:
+  edugonmor_mariadb_volumen:
+  edugonmor_mariadb_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/edugonmor_rclone/docker/volumes/rclone_local_backup_volumen/mariadb

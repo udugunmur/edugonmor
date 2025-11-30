@@ -1,0 +1,7 @@
+# edugonmor_tools
+
+docker/volumes/
+.env
+*.log
+*.tmp
+*.bak

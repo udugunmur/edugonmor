@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "username": "edugonmor_mariadb_user",
+      "password": "edugonmor_mariadb_password",
+      "databases": [
+        "edugonmor_mariadb_db"
+      ],
+      "privileges": ["ALL PRIVILEGES"]
+    }
+  ]
+}

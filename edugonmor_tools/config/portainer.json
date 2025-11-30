@@ -1,0 +1,5 @@
+{
+  "LogLevel": "INFO",
+  "SnapshotInterval": "5m",
+  "EnableTelemetry": false
+}

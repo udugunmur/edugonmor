@@ -1,0 +1,61 @@
+# ESTE ES UN ARCHIVO DE EJEMPLO
+# Debes generar tu propia configuración usando 'rclone config' en tu máquina local
+# y luego copiar el contenido aquí (renombrando a rclone.conf).
+
+# Ejemplo de estructura para Google Drive encriptado:
+
+# 1. El remoto base (Google Drive)
+[gdrive]
+type = drive
+scope = drive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+root_folder_id = 
+
+# 2. El remoto encriptado (Crypt) que usa el anterior
+# Este es el que usaremos en el docker-compose (BACKUP_DEST=secure-remote:...)
+[secure-remote]
+type = crypt
+remote = gdrive:backups
+password = ... (password encriptada) ...
+filename_encryption = standard
+directory_name_encryption = true
+
+# 3. Ejemplo para OneDrive (edugonmor@outlook.com)
+# Nombre del remoto: onedrive-edugonmor
+[onedrive-edugonmor]
+type = onedrive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+drive_id = ...
+drive_type = personal
+
+# 4. Ejemplos para otras cuentas OneDrive
+[onedrive-edugonmor_backup]
+type = onedrive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+drive_id = 777FA5F3399750C6
+drive_type = personal
+
+[onedrive-edugonmor_data]
+type = onedrive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+drive_id = 62FE524218D66677
+drive_type = personal
+
+[onedrive-edugonmor_media]
+type = onedrive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+drive_id = DFE5A7599903029B
+drive_type = personal
+
+[onedrive-edugonmor_business]
+type = onedrive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+drive_id = D798EC19A8D8C92C
+drive_type = personal
+
+[gdrive-udugunmur]
+type = drive
+scope = drive
+token = {"access_token":"...","token_type":"Bearer","refresh_token":"...","expiry":"..."}
+team_drive =
+root_folder_id =

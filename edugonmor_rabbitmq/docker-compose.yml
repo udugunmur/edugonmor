@@ -1,0 +1,19 @@
+version: 3.8
+
+services:
+  edugonmor_rabbitmq_services:
+    image: nexus.edugonmor.com/repository/docker-hosted/edugonmor_rabbitmq_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: edugonmor_rabbitmq_services
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - edugonmor_rabbitmq_network
+
+networks:
+  edugonmor_rabbitmq_network:
+    driver: bridge

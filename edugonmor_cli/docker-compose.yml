@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  edugonmor_cli_services:
+    image: nexus.edugonmor.com/repository/docker-hosted/edugonmor_cli_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edugonmor_cli_services
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - edugonmor_cli_volumen:/workspace
+      - ./src:/usr/local/lib/python3.12/site-packages/src
+    networks:
+      - edugonmor_cli_network
+    # Keep the container running
+    command: ["tail", "-f", "/dev/null"]
+
+networks:
+  edugonmor_cli_network:
+    driver: bridge
+
+volumes:
+  edugonmor_cli_volumen:

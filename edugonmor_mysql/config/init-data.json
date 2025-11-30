@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "username": "edugonmor_mysql_user",
+      "password": "edugonmor_mysql_password",
+      "databases": [
+        "edugonmor_mysql_db"
+      ],
+      "privileges": ["ALL PRIVILEGES"]
+    }
+  ]
+}

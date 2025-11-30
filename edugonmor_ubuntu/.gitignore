@@ -1,0 +1,6 @@
+# edugonmor_ubuntu
+*.log
+*.tmp
+*.bak
+*~
+.DS_Store

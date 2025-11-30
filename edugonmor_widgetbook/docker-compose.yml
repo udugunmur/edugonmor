@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  edugonmor_widgetbook_service:
+    image: hello-world
+    container_name: edugonmor_widgetbook_service
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - edugonmor_widgetbook_network
+
+networks:
+  edugonmor_widgetbook_network:
+    driver: bridge

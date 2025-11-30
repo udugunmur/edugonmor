@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  edugonmor_penpot_frontend:
+    image: penpotapp/frontend:latest
+    container_name: edugonmor_penpot_frontend
+    restart: always
+    ports:
+      - "9001:8080"
+    volumes:
+      - edugonmor_penpot_volumen:/opt/data
+    depends_on:
+      - edugonmor_penpot_backend
+      - edugonmor_penpot_exporter
+    networks:
+      - edugonmor_penpot_network
+    env_file:
+      - .env
+
+  edugonmor_penpot_backend:
+    image: penpotapp/backend:latest
+    container_name: edugonmor_penpot_backend
+    restart: always
+    volumes:
+      - edugonmor_penpot_volumen:/opt/data
+    networks:
+      - edugonmor_penpot_network
+      - edugonmor_postgresql_network
+      - edugonmor_redis_network
+    env_file:
+      - .env
+
+  edugonmor_penpot_exporter:
+    image: penpotapp/exporter:latest
+    container_name: edugonmor_penpot_exporter
+    restart: always
+    networks:
+      - edugonmor_penpot_network
+      - edugonmor_redis_network
+    env_file:
+      - .env
+
+  edugonmor_penpot_backup:
+    image: alpine:3.19
+    container_name: edugonmor_penpot_backup
+    restart: unless-stopped
+    # Daily backup at 03:00 AM - Backing up /opt/data/assets
+    command: >
+      sh -c "echo '0 3 * * * tar -czf /backup/penpot-assets-backup-$20251129-165204.tar.gz -C /source/data assets && find /backup -name \"penpot-assets-backup-*\" -mtime +10 -delete' | crontab - && crond -f"
+    volumes:
+      # Source data (Read-Only)
+      - edugonmor_penpot_volumen:/source/data:ro
+      # Target (Rclone Volume)
+      - edugonmor_penpot_backups:/backup
+    networks:
+      - edugonmor_penpot_network
+    depends_on:
+      - edugonmor_penpot_backend
+
+networks:
+  edugonmor_penpot_network:
+    driver: bridge
+  edugonmor_postgresql_network:
+    external: true
+    name: edugonmor_postgresql_edugonmor_postgresql_network
+  edugonmor_redis_network:
+    external: true
+    name: edugonmor_redis_edugonmor_redis_network
+
+volumes:
+  edugonmor_penpot_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/edugonmor_penpot_volumen
+  edugonmor_penpot_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/edugonmor_rclone/docker/volumes/rclone_local_backup_volumen/penpot

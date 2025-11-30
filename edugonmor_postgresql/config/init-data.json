@@ -1,0 +1,32 @@
+{
+  "roles": [
+    {
+      "name": "app_reader",
+      "privileges": [
+        "CONNECT",
+        "SELECT"
+      ]
+    },
+    {
+      "name": "app_writer",
+      "privileges": [
+        "CONNECT",
+        "SELECT",
+        "INSERT",
+        "UPDATE",
+        "DELETE"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "edugonmor_penpot_user",
+      "password": "edugonmor_penpot_password",
+      "role": "app_writer",
+      "databases": [
+        "edugonmor_penpot_db"
+      ]
+    }
+  ],
+  "additional_databases": []
+}

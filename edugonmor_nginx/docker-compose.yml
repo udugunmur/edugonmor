@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  edugonmor_nginx_service:
+    image: nginx:alpine
+    container_name: edugonmor_nginx_service
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - edugonmor_nginx_conf_d:/etc/nginx/conf.d
+      - edugonmor_nginx_html:/usr/share/nginx/html:ro
+      - edugonmor_nginx_certs:/etc/letsencrypt
+      - edugonmor_nginx_webroot:/var/www/certbot
+    networks:
+      - edugonmor_nginx_network
+      - edugonmor_nexus_network
+      - edugonmor_penpot_network
+      - edugonmor_ubuntu_network
+    env_file:
+      - .env
+
+  edugonmor_nginx_certbot:
+    image: certbot/certbot
+    container_name: edugonmor_nginx_certbot
+    volumes:
+      - edugonmor_nginx_certs:/etc/letsencrypt
+      - edugonmor_nginx_webroot:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - edugonmor_nginx_network
+    env_file:
+      - .env
+
+  edugonmor_nginx_ovh_updater:
+    image: nexus.edugonmor.com/repository/docker-hosted/edugonmor_ovh_updater:latest
+    container_name: edugonmor_nginx_ovh_updater
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - edugonmor_nginx_network
+
+networks:
+  edugonmor_nginx_network:
+    driver: bridge
+  edugonmor_nexus_network:
+    external: true
+    name: edugonmor_nexus_network
+  edugonmor_penpot_network:
+    external: true
+    name: edugonmor_penpot_edugonmor_penpot_network
+  edugonmor_ubuntu_network:
+    external: true
+    name: edugonmor_ubuntu_network
+
+volumes:
+  edugonmor_nginx_conf_d:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./config/conf.d
+  edugonmor_nginx_html:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./src/html
+  edugonmor_nginx_certs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/certs
+  edugonmor_nginx_webroot:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/webroot

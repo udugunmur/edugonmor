@@ -1,0 +1,98 @@
+# ============================================================================
+# Docker Ignore - Rclone Backup
+# ============================================================================
+
+# Documentación
+README.md
+*.md
+docs/
+LICENSE
+CHANGELOG.md
+
+# Git
+.git
+.gitignore
+.gitattributes
+.github/
+
+# Docker files (no necesarios en la imagen)
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
+Dockerfile.*
+
+# Volúmenes y datos locales
+volumes/
+data/volumes/
+backups/
+*.log
+*.log.*
+
+# IDE y editores
+.settings/
+.project
+.classpath
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.vscode/
+.vs/
+
+# Sistema Operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Configuración local (usar secrets en build)
+config/*.env
+.env
+.env.*
+*.secret
+*.key
+
+# Temporal
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Tests y CI/CD
+tests/
+.pytest_cache/
+.tox/
+coverage/
+.coverage
+*.cover
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# Node modules (si se usan para desarrollo)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Build artifacts que no se copian
+target/
+build/
+dist/
+out/
+

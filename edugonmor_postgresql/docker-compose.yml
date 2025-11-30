@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  edugonmor_postgresql_services:
+    image: nexus.edugonmor.com/repository/docker-hosted/edugonmor_postgresql_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host # Fix for VPN connection
+    container_name: edugonmor_postgresql_services
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - edugonmor_postgresql_volumen:/var/lib/postgresql/data
+      - ./config/init-data.json:/etc/postgresql-custom/init-data.json:ro
+    networks:
+      - edugonmor_postgresql_network
+    command: [
+      "postgres",
+      "-c",
+      "config_file=/etc/postgresql/postgresql.conf"
+    ]
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "pg_isready -U ${POSTGRES_USER:-postgres}"
+      ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  edugonmor_postgresql_backup:
+    image: prodrigestivill/postgres-backup-local
+    container_name: edugonmor_postgresql_backup
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=edugonmor_postgresql_services
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_CLUSTER=TRUE
+      - POSTGRES_EXTRA_OPTS=
+      - SCHEDULE=@daily
+      - BACKUP_KEEP_DAYS=7
+    volumes:
+      - edugonmor_postgresql_backups:/backups
+    networks:
+      - edugonmor_postgresql_network
+    depends_on:
+      edugonmor_postgresql_services:
+        condition: service_healthy
+
+volumes:
+  edugonmor_postgresql_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/edugonmor_postgresql_volumen
+  edugonmor_postgresql_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/edugonmor_rclone/docker/volumes/rclone_local_backup_volumen/postgresql
+
+networks:
+  edugonmor_postgresql_network:
+    driver: bridge

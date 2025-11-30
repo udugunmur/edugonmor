@@ -1,0 +1,8 @@
+# Archivos de configuración del sistema Windows
+# Este directorio contiene archivos de configuración exportados
+
+# Ejemplos de archivos que pueden almacenarse aquí:
+# - Políticas de grupo exportadas (.pol)
+# - Configuraciones de registro (.reg)
+# - Perfiles de terminal (.json)
+# - Configuraciones de PowerShell (profile.ps1)
