@@ -13,6 +13,11 @@ optimize: ## Optimiza rendimiento del sistema (requiere sudo)
 	@sudo ./scripts/optimize.sh
 	@echo "✅ Optimización completada."
 
+vnc: ## Habilita servidor VNC (requiere sudo)
+	@echo "🖥️ Configurando VNC..."
+	@sudo ./scripts/enable-vnc.sh
+	@echo "✅ VNC configurado."
+
 verify: ## Verifica estado de la configuración
 	@echo "🔍 Verificando configuración..."
 	@./scripts/verify.sh

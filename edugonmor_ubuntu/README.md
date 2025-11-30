@@ -32,6 +32,7 @@ sudo ./scripts/setup.sh
 |---------|-------------|
 | `make setup` | Ejecuta configuración inicial del sistema |
 | `make optimize` | Optimiza rendimiento del sistema |
+| `make vnc` | Habilita servidor VNC (x11vnc) |
 | `make verify` | Verifica estado de la configuración |
 | `make status` | Muestra estado actual del sistema |
 | `make stable` | Push a repositorio remoto |
@@ -99,6 +100,15 @@ systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 | Servicio systemd | `/etc/systemd/system/cpu-performance.service` |
 | Estado | `enabled` (inicio automático) |
 | Governor | `performance` |
+
+### 4. Acceso Remoto (VNC)
+
+Se utiliza `x11vnc` para permitir acceso remoto a la sesión de escritorio.
+
+- **Servicio:** `x11vnc.service`
+- **Puerto:** 5900
+- **Wayland:** Deshabilitado (requerido para x11vnc)
+- **Comando:** `make vnc`
 
 ## 📊 Resumen de Estado
 
