@@ -35,8 +35,15 @@ SUDO_USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
 sudo -u "$SUDO_USER" bash "$SCRIPT_DIR/../config/gnome-settings.sh"
 
 echo ""
+echo "[PASO 4] Instalando Rclone..."
+"$SCRIPT_DIR/install-rclone.sh"
+
+echo ""
 echo "=========================================="
 echo "  Configuración completada"
 echo "=========================================="
 echo ""
-echo "Ejecuta './scripts/verify.sh' para verificar la configuración."
+echo "Próximos pasos:"
+echo "  1. Ejecuta './scripts/verify.sh' para verificar la configuración"
+echo "  2. Ejecuta './scripts/configure-rclone.sh' para configurar remotos cloud"
+echo "  3. Ejecuta 'sudo ./scripts/enable-rclone-mount.sh' para habilitar montajes"

@@ -37,6 +37,15 @@ sudo ./scripts/setup.sh
 | `make status` | Muestra estado actual del sistema |
 | `make stable` | Push a repositorio remoto |
 
+### Comandos Rclone
+
+| Comando | Descripción |
+|---------|-------------|
+| `make rclone` | Instala rclone y dependencias |
+| `make rclone-config` | Configura remotos (GDrive, OneDrive) |
+| `make rclone-mount` | Habilita montajes automáticos al arranque |
+| `make rclone-sync` | Sincroniza config con proyecto Docker |
+
 ---
 
 # 🏗️ GUÍA DE ARQUITECTO Y MANTENEDOR
@@ -48,6 +57,7 @@ Este repositorio centraliza la configuración del sistema Ubuntu para:
 - Optimizar rendimiento de CPU
 - Configurar servicios systemd
 - Aplicar configuraciones de GNOME
+- **Sincronización con la nube (Rclone)** - GDrive y OneDrive
 
 ## 🗺️ Estructura del Proyecto
 
@@ -58,14 +68,21 @@ ubuntu/
 │   ├── optimize.sh           # Optimización de rendimiento
 │   ├── disable-suspend.sh    # Deshabilitar suspensión
 │   ├── cpu-performance.sh    # Modo performance de CPU
-│   └── verify.sh             # Verificación de configuración
+│   ├── verify.sh             # Verificación de configuración
+│   ├── install-rclone.sh     # Instalación de rclone
+│   ├── configure-rclone.sh   # Configuración de remotos cloud
+│   ├── enable-rclone-mount.sh # Habilitar montajes automáticos
+│   └── sync-rclone-config.sh # Sincronizar config con Docker
 │
 ├── config/                    # ⚙️ Archivos de configuración
 │   ├── cpu-performance.service  # Servicio systemd para CPU
-│   └── gnome-settings.sh     # Configuraciones de GNOME
+│   ├── gnome-settings.sh     # Configuraciones de GNOME
+│   ├── rclone-gdrive.service # Servicio montaje Google Drive
+│   └── rclone-onedrive.service # Servicio montaje OneDrive
 │
 ├── docs/                      # 📖 Documentación
-│   └── CONFIGURATION.md      # Guía detallada de configuración
+│   ├── CONFIGURATION.md      # Guía detallada de configuración
+│   └── RCLONE.md             # Guía de Rclone
 │
 ├── .gitignore
 ├── agent.md                   # 🤖 Protocolo para IA
@@ -110,6 +127,20 @@ Se utiliza `x11vnc` para permitir acceso remoto a la sesión de escritorio.
 - **Wayland:** Deshabilitado (requerido para x11vnc)
 - **Comando:** `make vnc`
 
+### 5. Sincronización con la Nube (Rclone)
+
+Montaje automático de Google Drive y OneDrive como sistema de archivos.
+
+| Remoto | Cuenta | Punto de Montaje |
+|--------|--------|------------------|
+| `gdrive-udugunmur` | udugunmur@gmail.com | `/mnt/disk2/rclone/gdrive` |
+| `onedrive-edugonmor` | edugonmor@outlook.com | `/mnt/disk2/rclone/onedrive` |
+
+- **Servicios:** `rclone-gdrive.service`, `rclone-onedrive.service`
+- **Inicio automático:** `enabled`
+- **Logs:** `/var/log/rclone-gdrive.log`, `/var/log/rclone-onedrive.log`
+- **Documentación:** [docs/RCLONE.md](docs/RCLONE.md)
+
 ## 📊 Resumen de Estado
 
 | Parámetro | Valor | Descripción |
@@ -120,14 +151,17 @@ Se utiliza `x11vnc` para permitir acceso remoto a la sesión de escritorio.
 | **Suspensión** | `masked` | Completamente bloqueada |
 | **CPU Governor** | `performance` | Máximo rendimiento |
 | **Inicio automático** | `enabled` | Servicio cpu-performance.service |
+| **Rclone GDrive** | `/mnt/disk2/rclone/gdrive` | Montaje automático |
+| **Rclone OneDrive** | `/mnt/disk2/rclone/onedrive` | Montaje automático |
 
 ## 📚 Documentación de Referencia
 
 - **Ubuntu Server**: https://ubuntu.com/server/docs
 - **systemd**: https://www.freedesktop.org/software/systemd/man/
 - **GNOME gsettings**: https://help.gnome.org/admin/system-admin-guide/stable/gsettings.html
+- **Rclone**: https://rclone.org/docs/
 
 ---
 
-**Repositorio:** `/home/edugonmor/repos/ubuntu`  
-**Última actualización:** 29 de noviembre de 2025
+**Repositorio:** `/home/edugonmor/repos/edugonmor/ubuntu`  
+**Última actualización:** 1 de diciembre de 2025
