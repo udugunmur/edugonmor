@@ -1,37 +1,21 @@
-.PHONY: help setup optimize verify status stable
+.PHONY: help setup setup-minimal verify status stable chrome vnc rclone backup-onedrive
 
 help: ## Muestra esta ayuda
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-setup: ## Ejecuta configuración inicial del sistema (requiere sudo)
+# ------------------------------------------------------------------------------
+# CONFIGURACIÓN DEL SISTEMA
+# ------------------------------------------------------------------------------
+
+setup: ## Ejecuta configuración inicial completa del sistema (requiere sudo)
 	@echo "🔧 Ejecutando configuración inicial..."
-	@sudo ./scripts/setup.sh
+	@sudo ./scripts/setup.sh --full
 	@echo "✅ Configuración completada."
 
-optimize: ## Optimiza rendimiento del sistema (requiere sudo)
-	@echo "⚡ Optimizando sistema..."
-	@sudo ./scripts/optimize.sh
-	@echo "✅ Optimización completada."
-
-vnc: ## Habilita servidor VNC (requiere sudo)
-	@echo "🖥️ Configurando VNC..."
-	@sudo ./scripts/enable-vnc.sh
-	@echo "✅ VNC configurado."
-
-rclone: ## Instala rclone para sincronización cloud (requiere sudo)
-	@echo "☁️ Instalando rclone..."
-	@sudo ./scripts/install-rclone.sh
-	@echo "✅ rclone instalado."
-
-backup-onedrive: ## Ejecuta backup de OneDrive a disco local
-	@echo "💾 Ejecutando backup de OneDrive..."
-	@./scripts/backup-onedrive.sh
-	@echo "✅ Backup completado."
-
-chrome: ## Instala Google Chrome desde repositorio oficial (requiere sudo)
-	@echo "🌐 Instalando Google Chrome..."
-	@sudo ./scripts/install-chrome.sh
-	@echo "✅ Chrome instalado."
+setup-minimal: ## Ejecuta solo configuración de energía (requiere sudo)
+	@echo "⚡ Aplicando configuración mínima..."
+	@sudo ./scripts/setup.sh --minimal
+	@echo "✅ Configuración mínima completada."
 
 verify: ## Verifica estado de la configuración
 	@echo "🔍 Verificando configuración..."
@@ -48,6 +32,34 @@ status: ## Muestra estado actual del sistema
 	@echo ""
 	@echo "=== GNOME Lock Screen ==="
 	@gsettings get org.gnome.desktop.screensaver lock-enabled 2>/dev/null || echo "No disponible"
+
+# ------------------------------------------------------------------------------
+# INSTALACIÓN DE SOFTWARE
+# ------------------------------------------------------------------------------
+
+chrome: ## Instala Google Chrome desde repositorio oficial (requiere sudo)
+	@echo "🌐 Instalando Google Chrome..."
+	@sudo ./scripts/install/install-chrome.sh
+	@echo "✅ Chrome instalado."
+
+vnc: ## Habilita servidor VNC para acceso remoto (requiere sudo)
+	@echo "🖥️ Configurando VNC..."
+	@sudo ./scripts/install/configure-vnc-server.sh
+	@echo "✅ VNC configurado."
+
+rclone: ## Instala rclone para sincronización cloud (requiere sudo)
+	@echo "☁️ Instalando rclone..."
+	@sudo ./scripts/install/install-rclone.sh
+	@echo "✅ rclone instalado."
+
+# ------------------------------------------------------------------------------
+# BACKUP Y UTILIDADES
+# ------------------------------------------------------------------------------
+
+backup-onedrive: ## Ejecuta backup de OneDrive a disco local
+	@echo "💾 Ejecutando backup de OneDrive..."
+	@./scripts/backup/backup-onedrive.sh
+	@echo "✅ Backup completado."
 
 # ------------------------------------------------------------------------------
 # SINCRONIZACIÓN CON REPOSITORIO REMOTO

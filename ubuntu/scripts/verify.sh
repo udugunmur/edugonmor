@@ -1,135 +1,205 @@
 #!/bin/bash
 #
-# verify.sh - Verifica configuración del sistema Ubuntu
+# verify.sh - Verify Ubuntu system configuration
 #
-# Uso: ./verify.sh
+# This script checks that all configurations have been applied correctly.
+#
+# Usage: ./verify.sh
 #
 
-echo "=========================================="
-echo "  Verificación de Configuración Ubuntu"
-echo "=========================================="
-echo ""
+# Note: Not using set -e because ((WARNINGS++)) returns 1 when WARNINGS=0
 
+# =============================================================================
+# COLORS
+# =============================================================================
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# =============================================================================
+# COUNTERS
+# =============================================================================
 ERRORS=0
 WARNINGS=0
 
-# Función para verificar
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
 check_ok() {
-    echo "[OK] $1"
+    echo -e "${GREEN}[OK]${NC} $1"
 }
 
 check_fail() {
-    echo "[FAIL] $1"
-    ((ERRORS++))
+    echo -e "${RED}[FAIL]${NC} $1"
+    ERRORS=$((ERRORS + 1))
 }
 
 check_warn() {
-    echo "[WARN] $1"
-    ((WARNINGS++))
+    echo -e "${YELLOW}[WARN]${NC} $1"
+    WARNINGS=$((WARNINGS + 1))
 }
 
-# 1. Verificar CPU Governor
-echo "=== CPU Governor ==="
-GOVERNOR=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo "unknown")
-if [ "$GOVERNOR" = "performance" ]; then
-    check_ok "CPU Governor: performance"
-else
-    check_warn "CPU Governor: $GOVERNOR (esperado: performance)"
-fi
+print_section() {
+    echo ""
+    echo "=== $1 ==="
+}
 
-# Verificar servicio
-if systemctl is-enabled cpu-performance.service > /dev/null 2>&1; then
-    check_ok "Servicio cpu-performance.service habilitado"
-else
-    check_warn "Servicio cpu-performance.service no habilitado"
-fi
-echo ""
-
-# 2. Verificar Suspensión
-echo "=== Suspensión/Hibernación ==="
-SLEEP_MASKED=$(systemctl is-enabled sleep.target 2>/dev/null || echo "masked")
-SUSPEND_MASKED=$(systemctl is-enabled suspend.target 2>/dev/null || echo "masked")
-HIBERNATE_MASKED=$(systemctl is-enabled hibernate.target 2>/dev/null || echo "masked")
-
-if [ "$SLEEP_MASKED" = "masked" ]; then
-    check_ok "sleep.target deshabilitado"
-else
-    check_warn "sleep.target activo"
-fi
-
-if [ "$SUSPEND_MASKED" = "masked" ]; then
-    check_ok "suspend.target deshabilitado"
-else
-    check_warn "suspend.target activo"
-fi
-
-if [ "$HIBERNATE_MASKED" = "masked" ]; then
-    check_ok "hibernate.target deshabilitado"
-else
-    check_warn "hibernate.target activo"
-fi
-echo ""
-
-# 3. Verificar Sysctl
-echo "=== Configuración Sysctl ==="
-SWAPPINESS=$(cat /proc/sys/vm/swappiness 2>/dev/null || echo "unknown")
-if [ "$SWAPPINESS" -le 20 ] 2>/dev/null; then
-    check_ok "vm.swappiness: $SWAPPINESS"
-else
-    check_warn "vm.swappiness: $SWAPPINESS (recomendado: 10)"
-fi
-
-FILE_MAX=$(cat /proc/sys/fs/file-max 2>/dev/null || echo "0")
-if [ "$FILE_MAX" -ge 1000000 ] 2>/dev/null; then
-    check_ok "fs.file-max: $FILE_MAX"
-else
-    check_warn "fs.file-max: $FILE_MAX (recomendado: >1000000)"
-fi
-echo ""
-
-# 4. Verificar Google Chrome
-echo "=== Google Chrome ==="
-if command -v google-chrome &> /dev/null; then
-    CHROME_VERSION=$(google-chrome --version 2>/dev/null | awk '{print $3}')
-    check_ok "Google Chrome instalado: $CHROME_VERSION"
+verify_cpu_governor() {
+    print_section "CPU Governor"
     
-    # Check repository
-    if [ -f /etc/apt/sources.list.d/google-chrome.list ]; then
-        check_ok "Repositorio Google configurado"
+    GOVERNOR=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo "unknown")
+    if [[ "$GOVERNOR" == "performance" ]]; then
+        check_ok "CPU Governor: performance"
     else
-        check_warn "Repositorio Google no encontrado"
+        check_warn "CPU Governor: $GOVERNOR (esperado: performance)"
     fi
     
-    # Check GPG key
-    if [ -f /etc/apt/keyrings/google-chrome.gpg ]; then
-        check_ok "Clave GPG de Google presente"
+    # Verify service
+    if systemctl is-enabled cpu-performance.service > /dev/null 2>&1; then
+        check_ok "Servicio cpu-performance.service habilitado"
     else
-        check_warn "Clave GPG de Google no encontrada"
+        check_warn "Servicio cpu-performance.service no habilitado"
     fi
-else
-    check_warn "Google Chrome no instalado (ejecuta: make chrome)"
-fi
-echo ""
+}
 
-# 5. Información del Sistema
-echo "=== Información del Sistema ==="
-echo "  Sistema: $(lsb_release -d 2>/dev/null | cut -f2 || echo "Ubuntu")"
-echo "  Kernel: $(uname -r)"
-echo "  Uptime: $(uptime -p)"
-echo "  CPU: $(nproc) cores"
-echo "  RAM: $(free -h | awk '/^Mem:/ {print $2}')"
-echo ""
+verify_suspend() {
+    print_section "Suspensión/Hibernación"
+    
+    local targets=("sleep.target" "suspend.target" "hibernate.target")
+    
+    for target in "${targets[@]}"; do
+        local status=$(systemctl is-enabled "$target" 2>/dev/null || echo "masked")
+        if [[ "$status" == "masked" ]]; then
+            check_ok "$target deshabilitado"
+        else
+            check_warn "$target activo"
+        fi
+    done
+}
 
-# 6. Resumen
-echo "=========================================="
-if [ $ERRORS -gt 0 ]; then
-    echo "  RESULTADO: FALLIDO ($ERRORS errores, $WARNINGS advertencias)"
-    exit 1
-elif [ $WARNINGS -gt 0 ]; then
-    echo "  RESULTADO: PARCIAL ($WARNINGS advertencias)"
-    exit 0
-else
-    echo "  RESULTADO: TODO CORRECTO"
-    exit 0
-fi
-echo "=========================================="
+verify_sysctl() {
+    print_section "Configuración Sysctl"
+    
+    SWAPPINESS=$(cat /proc/sys/vm/swappiness 2>/dev/null || echo "unknown")
+    if [[ "$SWAPPINESS" =~ ^[0-9]+$ ]] && [[ "$SWAPPINESS" -le 20 ]]; then
+        check_ok "vm.swappiness: $SWAPPINESS"
+    else
+        check_warn "vm.swappiness: $SWAPPINESS (recomendado: 10)"
+    fi
+    
+    FILE_MAX=$(cat /proc/sys/fs/file-max 2>/dev/null || echo "0")
+    if [[ "$FILE_MAX" =~ ^[0-9]+$ ]] && [[ "$FILE_MAX" -ge 1000000 ]]; then
+        check_ok "fs.file-max: $FILE_MAX"
+    else
+        check_warn "fs.file-max: $FILE_MAX (recomendado: >1000000)"
+    fi
+}
+
+verify_chrome() {
+    print_section "Google Chrome"
+    
+    if command -v google-chrome &> /dev/null; then
+        CHROME_VERSION=$(google-chrome --version 2>/dev/null | awk '{print $3}')
+        check_ok "Google Chrome instalado: $CHROME_VERSION"
+        
+        # Check repository
+        if [[ -f /etc/apt/sources.list.d/google-chrome.list ]]; then
+            check_ok "Repositorio Google configurado"
+        else
+            check_warn "Repositorio Google no encontrado"
+        fi
+        
+        # Check GPG key
+        if [[ -f /etc/apt/keyrings/google-chrome.gpg ]]; then
+            check_ok "Clave GPG de Google presente"
+        else
+            check_warn "Clave GPG de Google no encontrada"
+        fi
+    else
+        check_warn "Google Chrome no instalado (ejecuta: make chrome)"
+    fi
+}
+
+verify_vnc() {
+    print_section "Servidor VNC"
+    
+    if systemctl is-enabled x11vnc.service > /dev/null 2>&1; then
+        check_ok "Servicio x11vnc.service habilitado"
+        
+        if systemctl is-active x11vnc.service > /dev/null 2>&1; then
+            check_ok "Servicio x11vnc.service activo"
+        else
+            check_warn "Servicio x11vnc.service no activo"
+        fi
+    else
+        check_warn "VNC no configurado (ejecuta: make vnc)"
+    fi
+}
+
+verify_rclone() {
+    print_section "rclone"
+    
+    if command -v rclone &> /dev/null; then
+        RCLONE_VERSION=$(rclone version | head -n 1)
+        check_ok "rclone instalado: $RCLONE_VERSION"
+        
+        # Check remotes configured
+        REMOTES=$(rclone listremotes 2>/dev/null | wc -l)
+        if [[ "$REMOTES" -gt 0 ]]; then
+            check_ok "Remotes configurados: $REMOTES"
+        else
+            check_warn "No hay remotes configurados (ejecuta: rclone config)"
+        fi
+    else
+        check_warn "rclone no instalado (ejecuta: make rclone)"
+    fi
+}
+
+print_system_info() {
+    print_section "Información del Sistema"
+    
+    echo "  Sistema: $(lsb_release -d 2>/dev/null | cut -f2 || echo "Ubuntu")"
+    echo "  Kernel: $(uname -r)"
+    echo "  Uptime: $(uptime -p)"
+    echo "  CPU: $(nproc) cores"
+    echo "  RAM: $(free -h | awk '/^Mem:/ {print $2}')"
+}
+
+print_summary() {
+    echo ""
+    echo "=========================================="
+    if [[ $ERRORS -gt 0 ]]; then
+        echo -e "  RESULTADO: ${RED}FALLIDO${NC} ($ERRORS errores, $WARNINGS advertencias)"
+        exit 1
+    elif [[ $WARNINGS -gt 0 ]]; then
+        echo -e "  RESULTADO: ${YELLOW}PARCIAL${NC} ($WARNINGS advertencias)"
+        exit 0
+    else
+        echo -e "  RESULTADO: ${GREEN}TODO CORRECTO${NC}"
+        exit 0
+    fi
+    echo "=========================================="
+}
+
+# =============================================================================
+# MAIN
+# =============================================================================
+
+main() {
+    echo "=========================================="
+    echo "  Verificación de Configuración Ubuntu"
+    echo "=========================================="
+    
+    verify_cpu_governor
+    verify_suspend
+    verify_sysctl
+    verify_chrome
+    verify_vnc
+    verify_rclone
+    print_system_info
+    print_summary
+}
+
+main "$@"

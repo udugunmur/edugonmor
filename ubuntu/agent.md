@@ -101,16 +101,27 @@ main "$@"
 
 ```text
 ubuntu/
-├── scripts/                   # Scripts de configuración
-│   ├── setup.sh              # Configuración inicial
-│   ├── optimize.sh           # Optimización
-│   ├── disable-suspend.sh    # Suspensión
-│   ├── cpu-performance.sh    # CPU
-│   └── verify.sh             # Verificación
-├── config/                    # Archivos de configuración
-│   ├── cpu-performance.service
-│   └── gnome-settings.sh
-├── docs/                      # Documentación
+├── scripts/                      # Scripts de configuración
+│   ├── setup.sh                  # Orquestador: configuración inicial
+│   ├── verify.sh                 # Verificación completa del sistema
+│   │
+│   ├── system/                   # Configuración del sistema
+│   │   └── configure-power-management.sh  # CPU, suspensión y sysctl
+│   │
+│   ├── install/                  # Instalación de software
+│   │   ├── install-chrome.sh     # Google Chrome
+│   │   ├── install-rclone.sh     # rclone para cloud sync
+│   │   └── configure-vnc-server.sh  # Servidor VNC (x11vnc)
+│   │
+│   ├── backup/                   # Scripts de backup
+│   │   └── backup-onedrive.sh    # Backup de OneDrive
+│   │
+│   └── desktop/                  # Configuración de escritorio
+│       └── configure-gnome-desktop.sh  # Ajustes GNOME
+│
+├── config/                       # Archivos de configuración
+│   └── cpu-performance.service   # Servicio systemd para CPU
+├── docs/                         # Documentación
 ├── agent.md
 ├── Makefile
 └── README.md

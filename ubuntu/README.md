@@ -30,8 +30,8 @@ sudo ./scripts/setup.sh
 
 | Comando | Descripción |
 |---------|-------------|
-| `make setup` | Ejecuta configuración inicial del sistema |
-| `make optimize` | Optimiza rendimiento del sistema |
+| `make setup` | Ejecuta configuración inicial completa del sistema |
+| `make setup-minimal` | Ejecuta solo configuración de energía |
 | `make vnc` | Habilita servidor VNC (x11vnc) |
 | `make rclone` | Instala rclone para sincronización cloud |
 | `make backup-onedrive` | Ejecuta backup de OneDrive a disco local |
@@ -56,27 +56,34 @@ Este repositorio centraliza la configuración del sistema Ubuntu para:
 
 ```text
 ubuntu/
-├── scripts/                   # 🔧 Scripts de configuración
-│   ├── setup.sh              # Configuración inicial completa
-│   ├── optimize.sh           # Optimización de rendimiento
-│   ├── disable-suspend.sh    # Deshabilitar suspensión
-│   ├── cpu-performance.sh    # Modo performance de CPU
-│   ├── verify.sh             # Verificación de configuración
-│   ├── enable-vnc.sh         # Habilitar servidor VNC
-│   ├── install-rclone.sh     # Instalación de rclone
-│   └── backup-onedrive.sh    # Backup de OneDrive
+├── scripts/                      # 🔧 Scripts de configuración
+│   ├── setup.sh                  # Orquestador: configuración inicial
+│   ├── verify.sh                 # Verificación completa del sistema
+│   │
+│   ├── system/                   # 📦 Configuración del sistema
+│   │   └── configure-power-management.sh  # CPU, suspensión y sysctl
+│   │
+│   ├── install/                  # 📥 Instalación de software
+│   │   ├── install-chrome.sh     # Google Chrome
+│   │   ├── install-rclone.sh     # rclone para cloud sync
+│   │   └── configure-vnc-server.sh  # Servidor VNC (x11vnc)
+│   │
+│   ├── backup/                   # 💾 Scripts de backup
+│   │   └── backup-onedrive.sh    # Backup de OneDrive
+│   │
+│   └── desktop/                  # 🖥️ Configuración de escritorio
+│       └── configure-gnome-desktop.sh  # Ajustes GNOME
 │
-├── config/                    # ⚙️ Archivos de configuración
-│   ├── cpu-performance.service  # Servicio systemd para CPU
-│   └── gnome-settings.sh     # Configuraciones de GNOME
+├── config/                       # ⚙️ Archivos de configuración
+│   └── cpu-performance.service   # Servicio systemd para CPU
 │
-├── docs/                      # 📖 Documentación
-│   └── CONFIGURATION.md      # Guía detallada de configuración
+├── docs/                         # 📖 Documentación
+│   └── CONFIGURATION.md          # Guía detallada de configuración
 │
 ├── .gitignore
-├── agent.md                   # 🤖 Protocolo para IA
-├── Makefile                   # 🕹️ Comandos de automatización
-└── README.md                  # 📚 Este archivo
+├── agent.md                      # 🤖 Protocolo para IA
+├── Makefile                      # 🕹️ Comandos de automatización
+└── README.md                     # 📚 Este archivo
 ```
 
 ## ⚙️ Configuraciones Aplicadas
