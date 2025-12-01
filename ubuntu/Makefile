@@ -59,5 +59,5 @@ stable: ## Push a repositorio remoto
 	@echo "📦 Repositorio: $(REPO_NAME)"
 	git add .
 	git commit -m "chore: sync $(REPO_NAME)" || true
-	git push origin main
+	git push origin master
 	@echo "✅ Despliegue estable completado."
