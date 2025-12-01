@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "username": "{{cookiecutter.db_user}}",
+      "password": "{{cookiecutter.db_password}}",
+      "databases": [
+        "{{cookiecutter.project_slug}}_db"
+      ],
+      "privileges": ["ALL PRIVILEGES"]
+    }
+  ]
+}

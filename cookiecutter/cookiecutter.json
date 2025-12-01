@@ -3,5 +3,8 @@
   "email": "info@edugonmor.com",
   "project_name": "My Project",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "project_short_description": "A short description of the project."
+  "project_short_description": "A short description of the project.",
+  "db_user": "{{ cookiecutter.project_slug }}_user",
+  "db_password": "{{ cookiecutter.project_slug }}_password",
+  "backup_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
 }
