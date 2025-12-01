@@ -1,0 +1,10 @@
+{
+  "name": "Cookiecutter Dev",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker"
+  ]
+}

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  cookiecutter_services:
+    image: cookiecutter_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cookiecutter_services
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - .:/workspace
+    networks:
+      - shared_network
+    command: ["tail", "-f", "/dev/null"]
+
+networks:
+  shared_network:
+    external: true
+    name: shared_network

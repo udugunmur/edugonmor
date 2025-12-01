@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  penpot_frontend:
+    image: penpotapp/frontend:latest
+    container_name: penpot_frontend
+    restart: always
+    ports:
+      - "9001:8080"
+    volumes:
+      - penpot_volumen:/opt/data
+    depends_on:
+      - penpot_backend
+      - penpot_exporter
+    networks:
+      - shared_network
+    env_file:
+      - .env
+
+  penpot_backend:
+    image: penpotapp/backend:latest
+    container_name: penpot_backend
+    restart: always
+    volumes:
+      - penpot_volumen:/opt/data
+    networks:
+      - shared_network
+    env_file:
+      - .env
+
+  penpot_exporter:
+    image: penpotapp/exporter:latest
+    container_name: penpot_exporter
+    restart: always
+    networks:
+      - shared_network
+    env_file:
+      - .env
+
+  penpot_backup:
+    image: alpine:3.19
+    container_name: penpot_backup
+    restart: unless-stopped
+    # Daily backup at 03:00 AM - Backing up /opt/data/assets
+    command: >
+      sh -c "echo '0 3 * * * tar -czf /backup/penpot-assets-backup-$20251129-165204.tar.gz -C /source/data assets && find /backup -name \"penpot-assets-backup-*\" -mtime +10 -delete' | crontab - && crond -f"
+    volumes:
+      # Source data (Read-Only)
+      - penpot_volumen:/source/data:ro
+      # Target (Rclone Volume)
+      - penpot_backups:/backup
+    networks:
+      - shared_network
+    depends_on:
+      - penpot_backend
+
+networks:
+  shared_network:
+    external: true
+    name: shared_network
+
+volumes:
+  penpot_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/penpot_volumen
+  penpot_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen/penpot

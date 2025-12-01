@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  storybook_service:
+    image: hello-world
+    container_name: storybook_service
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true
+    name: shared_network

@@ -1,4 +1,0 @@
-services:
-  edugonmor_postgresql_services:
-    ports:
-      - "5432:5432"

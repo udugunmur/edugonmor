@@ -1,0 +1,50 @@
+services:
+  tools_services:
+    image: portainer/portainer-ce:latest
+    container_name: tools_services
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command: --admin-password "${PORTAINER_ADMIN_PASSWORD}"
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - tools_volumen:/data
+    env_file:
+      - .env
+    networks:
+      - shared_network
+
+  tools_backup:
+    image: alpine:3.19
+    container_name: tools_backup
+    restart: unless-stopped
+    # Daily backup at 03:00 AM - Backing up Portainer data
+    command: >
+      sh -c "echo '0 3 * * * tar -czf /backup/portainer-data-backup-\$$(date +\%Y\%m\%d-\%H\%M\%S).tar.gz -C /source . && find /backup -name \"portainer-data-backup-*\" -mtime +10 -delete' | crontab - && crond -f"
+    volumes:
+      # Source data (Read-Only)
+      - tools_volumen:/source:ro
+      # Target (Rclone Volume)
+      - tools_backups:/backup
+    networks:
+      - shared_network
+    depends_on:
+      - tools_services
+
+networks:
+  shared_network:
+    name: shared_network
+    driver: bridge
+
+volumes:
+  tools_volumen:
+  # Backup integration via bind mount to rclone centralized volume
+  tools_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen/tools

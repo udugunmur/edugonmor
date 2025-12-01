@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  redis_services:
+    image: redis_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: redis_services
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - shared_network
+    volumes:
+      - redis_volumen:/data
+
+  redis_backup:
+    image: redis:latest
+    container_name: redis_backup
+    restart: always
+    command: >
+      bash -c "apt-get update && apt-get install -y cron && echo '0 3 * * * redis-cli -h redis_services save && cp /data/dump.rdb /backup/dump-\$$(date +\%Y\%m\%d-\%H\%M\%S).rdb && find /backup -name \"dump-*\" -mtime +10 -delete' | crontab - && cron -f"
+    volumes:
+      - redis_volumen:/data:ro
+      - redis_backups:/backup
+    networks:
+      - shared_network
+    depends_on:
+      - redis_services
+
+volumes:
+  redis_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/redis_volumen
+  redis_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen/redis
+
+networks:
+  shared_network:
+    external: true
+    name: shared_network

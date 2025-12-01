@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "username": "mongodb_user",
+      "password": "mongodb_password",
+      "role": "readWrite",
+      "databases": [
+        "mongodb_db"
+      ]
+    }
+  ]
+}
