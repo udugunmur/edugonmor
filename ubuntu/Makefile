@@ -28,6 +28,11 @@ backup-onedrive: ## Ejecuta backup de OneDrive a disco local
 	@./scripts/backup-onedrive.sh
 	@echo "✅ Backup completado."
 
+chrome: ## Instala Google Chrome desde repositorio oficial (requiere sudo)
+	@echo "🌐 Instalando Google Chrome..."
+	@sudo ./scripts/install-chrome.sh
+	@echo "✅ Chrome instalado."
+
 verify: ## Verifica estado de la configuración
 	@echo "🔍 Verificando configuración..."
 	@./scripts/verify.sh

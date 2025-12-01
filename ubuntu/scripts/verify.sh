@@ -87,7 +87,31 @@ else
 fi
 echo ""
 
-# 4. Información del Sistema
+# 4. Verificar Google Chrome
+echo "=== Google Chrome ==="
+if command -v google-chrome &> /dev/null; then
+    CHROME_VERSION=$(google-chrome --version 2>/dev/null | awk '{print $3}')
+    check_ok "Google Chrome instalado: $CHROME_VERSION"
+    
+    # Check repository
+    if [ -f /etc/apt/sources.list.d/google-chrome.list ]; then
+        check_ok "Repositorio Google configurado"
+    else
+        check_warn "Repositorio Google no encontrado"
+    fi
+    
+    # Check GPG key
+    if [ -f /etc/apt/keyrings/google-chrome.gpg ]; then
+        check_ok "Clave GPG de Google presente"
+    else
+        check_warn "Clave GPG de Google no encontrada"
+    fi
+else
+    check_warn "Google Chrome no instalado (ejecuta: make chrome)"
+fi
+echo ""
+
+# 5. Información del Sistema
 echo "=== Información del Sistema ==="
 echo "  Sistema: $(lsb_release -d 2>/dev/null | cut -f2 || echo "Ubuntu")"
 echo "  Kernel: $(uname -r)"
@@ -96,7 +120,7 @@ echo "  CPU: $(nproc) cores"
 echo "  RAM: $(free -h | awk '/^Mem:/ {print $2}')"
 echo ""
 
-# 5. Resumen
+# 6. Resumen
 echo "=========================================="
 if [ $ERRORS -gt 0 ]; then
     echo "  RESULTADO: FALLIDO ($ERRORS errores, $WARNINGS advertencias)"

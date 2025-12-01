@@ -35,6 +35,7 @@ sudo ./scripts/setup.sh
 | `make vnc` | Habilita servidor VNC (x11vnc) |
 | `make rclone` | Instala rclone para sincronización cloud |
 | `make backup-onedrive` | Ejecuta backup de OneDrive a disco local |
+| `make chrome` | Instala Google Chrome desde repositorio oficial |
 | `make verify` | Verifica estado de la configuración |
 | `make status` | Muestra estado actual del sistema |
 | `make stable` | Push a repositorio remoto |
@@ -144,6 +145,35 @@ Script para realizar backup manual de OneDrive a disco local.
 - **Comando:** `make backup-onedrive`
 - **Documentación:** https://rclone.org/commands/rclone_copy/
 
+### 7. Google Chrome
+
+Navegador web instalado desde el repositorio oficial de Google.
+
+| Aspecto | Valor |
+|---------|-------|
+| Versión | Stable (última estable) |
+| Método de instalación | Repositorio APT oficial de Google |
+| Ubicación binario | `/usr/bin/google-chrome` |
+| Repositorio | `https://dl.google.com/linux/chrome/deb/` |
+| Clave GPG | `/etc/apt/keyrings/google-chrome.gpg` |
+| Lista sources | `/etc/apt/sources.list.d/google-chrome.list` |
+| Auto-actualización | Sí (vía `apt upgrade`) |
+
+- **Comando:** `make chrome`
+- **Documentación:** https://www.google.com/linuxrepositories/
+
+**Comandos útiles:**
+```bash
+# Abrir Chrome
+google-chrome
+
+# Ver versión instalada
+google-chrome --version
+
+# Actualizar Chrome
+sudo apt update && sudo apt upgrade google-chrome-stable
+```
+
 ## 📊 Resumen de Estado
 
 | Parámetro | Valor | Descripción |
@@ -154,6 +184,7 @@ Script para realizar backup manual de OneDrive a disco local.
 | **Suspensión** | `masked` | Completamente bloqueada |
 | **CPU Governor** | `performance` | Máximo rendimiento |
 | **Inicio automático** | `enabled` | Servicio cpu-performance.service |
+| **Google Chrome** | `stable` | Repositorio oficial de Google |
 
 ## 📚 Documentación de Referencia
 
@@ -161,6 +192,7 @@ Script para realizar backup manual de OneDrive a disco local.
 - **systemd**: https://www.freedesktop.org/software/systemd/man/
 - **GNOME gsettings**: https://help.gnome.org/admin/system-admin-guide/stable/gsettings.html
 - **rclone**: https://rclone.org/docs/
+- **Google Chrome Linux**: https://www.google.com/linuxrepositories/
 
 ---
 
