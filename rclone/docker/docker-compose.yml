@@ -1,34 +1,6 @@
 version: '3.8'
 
 services:
-  rclone_local_backup:
-    image: rclone_local_backup_service:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-      network: host
-    container_name: rclone_local_backup
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - CRON_SCHEDULE=${RCLONE_LOCAL_BACKUP_CRON}
-      - TZ=${RCLONE_TZ}
-      - BACKUP_DEST=${RCLONE_LOCAL_BACKUP_DEST}
-      - BACKUP_SOURCE=${RCLONE_LOCAL_BACKUP_SOURCE}
-      - CHECK_URL=
-      - RCLONE_CMD=${RCLONE_CMD_SYNC}
-    volumes:
-      - rclone_local_backup_volumen:/data/volumes:ro
-      - ./config/rclone.conf:/config/rclone.conf:ro
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 256M
-    networks:
-      - shared_network
-
   rclone_onedrive_edugonmor:
     build:
       context: .
@@ -47,87 +19,6 @@ services:
       - CHECK_URL=
     volumes:
       - rclone_onedrive_volumen:/data
-      - ./config/rclone.conf:/config/rclone.conf:ro
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M
-    networks:
-      - shared_network
-
-  rclone_onedrive_data:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      network: host
-    container_name: rclone_onedrive_data
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - CRON_SCHEDULE=${RCLONE_ONEDRIVE_EDUGONMOR_DATA_CRON}
-      - TZ=${RCLONE_TZ}
-      - BACKUP_SOURCE=${RCLONE_ONEDRIVE_EDUGONMOR_DATA_SOURCE}
-      - BACKUP_DEST=${RCLONE_ONEDRIVE_EDUGONMOR_DATA_DEST}
-      - RCLONE_CMD=${RCLONE_CMD_SYNC}
-      - CHECK_URL=
-    volumes:
-      - rclone_onedrive_data_volumen:/data
-      - ./config/rclone.conf:/config/rclone.conf:ro
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M
-    networks:
-      - shared_network
-
-  rclone_onedrive_media:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      network: host
-    container_name: rclone_onedrive_media
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - CRON_SCHEDULE=${RCLONE_ONEDRIVE_EDUGONMOR_MEDIA_CRON}
-      - TZ=${RCLONE_TZ}
-      - BACKUP_SOURCE=${RCLONE_ONEDRIVE_EDUGONMOR_MEDIA_SOURCE}
-      - BACKUP_DEST=${RCLONE_ONEDRIVE_EDUGONMOR_MEDIA_DEST}
-      - RCLONE_CMD=${RCLONE_CMD_SYNC}
-      - CHECK_URL=
-    volumes:
-      - rclone_onedrive_media_volumen:/data
-      - ./config/rclone.conf:/config/rclone.conf:ro
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M
-    networks:
-      - shared_network
-
-  rclone_onedrive_business:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      network: host
-    container_name: rclone_onedrive_business
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - CRON_SCHEDULE=${RCLONE_ONEDRIVE_EDUGONMOR_BUSINESS_CRON}
-      - TZ=${RCLONE_TZ}
-      - BACKUP_SOURCE=${RCLONE_ONEDRIVE_EDUGONMOR_BUSINESS_SOURCE}
-      - BACKUP_DEST=${RCLONE_ONEDRIVE_EDUGONMOR_BUSINESS_DEST}
-      - RCLONE_CMD=${RCLONE_CMD_SYNC}
-      - CHECK_URL=
-    volumes:
-      - rclone_onedrive_business_volumen:/data
       - ./config/rclone.conf:/config/rclone.conf:ro
     deploy:
       resources:
@@ -170,40 +61,12 @@ networks:
     name: shared_network
 
 volumes:
-  rclone_local_backup_volumen:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./volumes/rclone_local_backup_volumen
-
   rclone_onedrive_volumen:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /mnt/disk2/rclone/onedrive/edugonmor
-
-  rclone_onedrive_data_volumen:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/disk2/rclone/onedrive/edugonmor_data
-
-  rclone_onedrive_media_volumen:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/disk2/rclone/onedrive/edugonmor_media
-
-  rclone_onedrive_business_volumen:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/disk2/rclone/onedrive/edugonmor_business
+      device: /mnt/disk2/rclone/onedrive/edugonmor/sync_edugonmor_backups
 
   rclone_gdrive_udugunmur_volumen:
     driver: local

@@ -37,8 +37,8 @@ if [ ! -e "$SOURCE_PATH" ]; then
 fi
 
 # Determinar qué contenedor usar (usamos uno genérico que tenga acceso a rclone.conf)
-# Usaremos 'rclone_local_backup_service' porque monta el config y tiene acceso a red host
-CONTAINER_NAME="rclone_local_backup_service"
+# Usaremos 'rclone_onedrive_service' porque monta el config y tiene acceso a red host
+CONTAINER_NAME="rclone_onedrive_service"
 
 echo -e "${BLUE}Subiendo:${NC} $SOURCE_PATH"
 echo -e "${BLUE}Destino:${NC} $REMOTE_DEST"

@@ -32,14 +32,13 @@ Para mantener la coherencia en el despliegue de múltiples cuentas y servicios, 
 
 ### Servicios
 El formato es: `rclone_<proveedor>_<usuario>_[tipo]_service`
-*   Ejemplo Local: `rclone_local_backup_service`
 *   Ejemplo OneDrive: `rclone_onedrive_service`
 *   Ejemplo GDrive: `rclone_gdrive_udugunmur_service`
 
 ### Volúmenes
 El formato es: `rclone_<proveedor>_<usuario>_[tipo]_volumen`
-*   Ejemplo Local: `rclone_local_backup_volumen`
 *   Ejemplo OneDrive: `rclone_onedrive_volumen`
+*   Ejemplo GDrive: `rclone_gdrive_udugunmur_volumen`
 
 Esta convención facilita la identificación rápida de qué contenedor gestiona qué cuenta y qué volumen de datos está asociado.
 

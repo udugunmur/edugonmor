@@ -28,8 +28,7 @@ drive_id = PEGA_AQUI_EL_DRIVE_ID
 drive_type = personal
 ```
 
-> **Nota:** Asegúrate de que el nombre entre corchetes sea exactamente `[onedrive-edugonmor]`, ya que es el que usa el `docker-compose.yml`.  
-> Si usas varias cuentas, repite el bloque cambiando el nombre del remoto: `[onedrive_backup]`, `[onedrive_data]`, `[onedrive_media]`, `[onedrive_business]`.
+> **Nota:** Asegúrate de que el nombre entre corchetes sea exactamente `[onedrive-edugonmor]`, ya que es el que usa el `docker-compose.yml`.
 
 ## Paso 3: Desplegar
 
@@ -40,4 +39,4 @@ cd docker
 docker-compose up -d rclone_onedrive_service
 ```
 
-El contenedor comenzará a descargar tu OneDrive en `/mnt/disk2/rclone/onedrive/edugonmor`.
+El contenedor comenzará a descargar tu OneDrive en `/mnt/disk2/rclone/onedrive/edugonmor/sync_edugonmor_backups`.

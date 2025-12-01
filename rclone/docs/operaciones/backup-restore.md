@@ -14,11 +14,11 @@ Se ha optado por utilizar un **contenedor dedicado con Cron interno** (basado en
 Si necesitas forzar un backup fuera del horario programado:
 
 ```bash
-# Para el backup local
-docker exec rclone_local_backup_service /scripts/backup.sh
-
-# Para una sincronización de OneDrive
+# Para el backup de OneDrive
 docker exec rclone_onedrive_service /scripts/backup.sh
+
+# Para una sincronización de GDrive
+docker exec rclone_gdrive_udugunmur_service /scripts/backup.sh
 ```
 
 ## Restauración de Datos (Disaster Recovery)
@@ -31,9 +31,9 @@ En caso de pérdida de datos, sigue estos pasos para restaurar desde la nube.
 2.  Crea un contenedor temporal para restaurar (ya que el de backup suele ser de solo lectura o para evitar conflictos):
 
 ```bash
-# Ejemplo restaurando el volumen local
+# Ejemplo restaurando el volumen de OneDrive
 docker run --rm -it \
-    -v rclone_local_backup_volumen:/data \
+    -v rclone_onedrive_volumen:/data \
     -v $(pwd)/config/rclone.conf:/config/rclone.conf:ro \
     alpine:latest sh
 ```

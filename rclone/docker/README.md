@@ -45,11 +45,11 @@ docker-compose up -d
 ### Verificar logs
 
 ```bash
-# Ejemplo para el servicio local
-docker logs -f rclone_local_backup_service
-
-# Ejemplo para un servicio de OneDrive
+# Ejemplo para el servicio de OneDrive
 docker logs -f rclone_onedrive_service
+
+# Ejemplo para el servicio de GDrive
+docker logs -f rclone_gdrive_udugunmur_service
 ```
 
 ## 🔐 Seguridad

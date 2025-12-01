@@ -21,13 +21,9 @@ else
     docker volume create datos_sensibles
 fi
 
-# 3. Verificar Directorios de Destino OneDrive (todas las cuentas)
+# 3. Verificar Directorios de Destino Cloud
 ONEDRIVE_DIRS=(
-  "/mnt/disk2/rclone/onedrive/edugonmor"
-  "/mnt/disk2/rclone/onedrive/edugonmor_backup"
-  "/mnt/disk2/rclone/onedrive/edugonmor_data"
-  "/mnt/disk2/rclone/onedrive/edugonmor_media"
-  "/mnt/disk2/rclone/onedrive/edugonmor_business"
+  "/mnt/disk2/rclone/onedrive/edugonmor/sync_edugonmor_backups"
   "/mnt/disk2/rclone/gdrive/udugunmur"
 )
 for DIR in "${ONEDRIVE_DIRS[@]}"; do
@@ -46,10 +42,6 @@ if [ -f "$RCLONE_CONF" ]; then
     echo "✅ Archivo de configuración rclone.conf encontrado."
     REMOTES=(
       "[onedrive-edugonmor]"
-      "[onedrive_backup]"
-      "[onedrive_data]"
-      "[onedrive_media]"
-      "[onedrive_business]"
       "[gdrive-udugunmur]"
     )
     for REMOTE in "${REMOTES[@]}"; do

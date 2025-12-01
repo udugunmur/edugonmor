@@ -3,7 +3,7 @@
 ## 1. Prerrequisitos
 
 *   Docker y Docker Compose instalados.
-*   Un volumen de Docker o directorio local para respaldar (ej. `rclone_local_backup_volumen`).
+*   Un volumen de Docker o directorio local para respaldar (ej. `rclone_onedrive_volumen`).
 *   Acceso a un proveedor de almacenamiento en la nube (Google Drive, AWS S3, Dropbox, etc.).
 
 ## 2. Generar Configuración de Rclone (Encriptada)
