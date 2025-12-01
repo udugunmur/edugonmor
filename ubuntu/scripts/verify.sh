@@ -96,65 +96,7 @@ echo "  CPU: $(nproc) cores"
 echo "  RAM: $(free -h | awk '/^Mem:/ {print $2}')"
 echo ""
 
-# 5. Rclone
-echo "=== Rclone ==="
-if command -v rclone &> /dev/null; then
-    RCLONE_VERSION=$(rclone version | head -1)
-    check_ok "Rclone instalado: $RCLONE_VERSION"
-    
-    # Verificar remotos
-    REMOTES=$(rclone listremotes 2>/dev/null || echo "")
-    if echo "$REMOTES" | grep -q "gdrive-udugunmur:"; then
-        check_ok "Remoto gdrive-udugunmur configurado"
-    else
-        check_warn "Remoto gdrive-udugunmur NO configurado"
-    fi
-    
-    if echo "$REMOTES" | grep -q "onedrive-edugonmor:"; then
-        check_ok "Remoto onedrive-edugonmor configurado"
-    else
-        check_warn "Remoto onedrive-edugonmor NO configurado"
-    fi
-    
-    # Verificar servicios de montaje
-    if systemctl is-enabled rclone-gdrive.service > /dev/null 2>&1; then
-        if systemctl is-active rclone-gdrive.service > /dev/null 2>&1; then
-            check_ok "Servicio rclone-gdrive.service activo"
-        else
-            check_warn "Servicio rclone-gdrive.service habilitado pero NO activo"
-        fi
-    else
-        check_warn "Servicio rclone-gdrive.service NO habilitado"
-    fi
-    
-    if systemctl is-enabled rclone-onedrive.service > /dev/null 2>&1; then
-        if systemctl is-active rclone-onedrive.service > /dev/null 2>&1; then
-            check_ok "Servicio rclone-onedrive.service activo"
-        else
-            check_warn "Servicio rclone-onedrive.service habilitado pero NO activo"
-        fi
-    else
-        check_warn "Servicio rclone-onedrive.service NO habilitado"
-    fi
-    
-    # Verificar puntos de montaje
-    if mountpoint -q /mnt/disk2/rclone/gdrive 2>/dev/null; then
-        check_ok "Montaje /mnt/disk2/rclone/gdrive activo"
-    else
-        check_warn "Montaje /mnt/disk2/rclone/gdrive NO activo"
-    fi
-    
-    if mountpoint -q /mnt/disk2/rclone/onedrive 2>/dev/null; then
-        check_ok "Montaje /mnt/disk2/rclone/onedrive activo"
-    else
-        check_warn "Montaje /mnt/disk2/rclone/onedrive NO activo"
-    fi
-else
-    check_warn "Rclone NO instalado"
-fi
-echo ""
-
-# 6. Resumen
+# 5. Resumen
 echo "=========================================="
 if [ $ERRORS -gt 0 ]; then
     echo "  RESULTADO: FALLIDO ($ERRORS errores, $WARNINGS advertencias)"

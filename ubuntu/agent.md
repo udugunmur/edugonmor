@@ -27,6 +27,10 @@ Actúa como un **Administrador de Sistemas Senior especializado en Ubuntu/Linux*
 ### 🐚 Bash
 - **Bash Manual**: https://www.gnu.org/software/bash/manual/
 
+### ☁️ rclone
+- **rclone Docs**: https://rclone.org/docs/
+- **rclone Install**: https://rclone.org/install/
+
 ---
 
 ## 3. FLUJO DE TRABAJO OBLIGATORIO (3 FASES)

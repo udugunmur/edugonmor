@@ -1,98 +1,66 @@
 #!/bin/bash
 #
-# install-rclone.sh - Instalación de Rclone en Ubuntu
+# install-rclone.sh - Instala rclone usando el script oficial
+#
+# Este script instala rclone para sincronización de archivos con servicios cloud.
+# Método: Script oficial de instalación (https://rclone.org/install/)
 #
 # Uso: sudo ./install-rclone.sh
-#
-# Descripción:
-#   - Instala rclone desde el script oficial
-#   - Instala fuse3 para montaje de sistemas de archivos
-#   - Crea directorios de configuración y montaje
 #
 
 set -e
 
-echo "=========================================="
-echo "  Instalación de Rclone"
-echo "=========================================="
-echo ""
-
 # Verificar root
-if [[ $EUID -ne 0 ]]; then
-    echo "[ERROR] Este script requiere permisos de root"
-    echo "Uso: sudo ./install-rclone.sh"
+if [ "$EUID" -ne 0 ]; then
+    echo "[ERROR] Este script debe ejecutarse como root (sudo)."
     exit 1
 fi
 
-# Usuario real (no root)
-REAL_USER="${SUDO_USER:-$USER}"
-REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
-
-echo "[INFO] Usuario: $REAL_USER"
-echo "[INFO] Home: $REAL_HOME"
+echo "=== Instalación de rclone ==="
 echo ""
 
-# Paso 1: Instalar dependencias
-echo "[PASO 1] Instalando dependencias (fuse3, unzip, curl)..."
-apt-get update -qq
-apt-get install -y fuse3 unzip curl
-echo "[OK] Dependencias instaladas"
-echo ""
-
-# Paso 2: Instalar rclone
-echo "[PASO 2] Instalando rclone desde script oficial..."
+# 1. Verificar si rclone ya está instalado
 if command -v rclone &> /dev/null; then
-    CURRENT_VERSION=$(rclone version --check | head -1 || rclone version | head -1)
-    echo "[INFO] Rclone ya instalado: $CURRENT_VERSION"
-    echo "[INFO] Actualizando a última versión..."
-fi
-
-curl -s https://rclone.org/install.sh | bash
-echo "[OK] Rclone instalado"
-echo ""
-
-# Paso 3: Crear directorios de configuración
-echo "[PASO 3] Creando directorios de configuración..."
-RCLONE_CONFIG_DIR="$REAL_HOME/.config/rclone"
-mkdir -p "$RCLONE_CONFIG_DIR"
-chown -R "$REAL_USER:$REAL_USER" "$RCLONE_CONFIG_DIR"
-chmod 700 "$RCLONE_CONFIG_DIR"
-echo "[OK] Directorio de configuración: $RCLONE_CONFIG_DIR"
-echo ""
-
-# Paso 4: Crear directorios de montaje
-echo "[PASO 4] Creando directorios de montaje..."
-MOUNT_BASE="/mnt/disk2/rclone"
-mkdir -p "$MOUNT_BASE/gdrive"
-mkdir -p "$MOUNT_BASE/onedrive"
-chown -R "$REAL_USER:$REAL_USER" "$MOUNT_BASE"
-echo "[OK] Directorios de montaje creados:"
-echo "     - $MOUNT_BASE/gdrive"
-echo "     - $MOUNT_BASE/onedrive"
-echo ""
-
-# Paso 5: Configurar fuse para permitir montajes por usuario
-echo "[PASO 5] Configurando FUSE..."
-if grep -q "^user_allow_other" /etc/fuse.conf 2>/dev/null; then
-    echo "[INFO] FUSE ya configurado para user_allow_other"
+    CURRENT_VERSION=$(rclone version | head -n 1)
+    echo "[INFO] rclone ya está instalado: $CURRENT_VERSION"
+    echo "[INFO] Procediendo a actualizar a la última versión..."
 else
-    echo "user_allow_other" >> /etc/fuse.conf
-    echo "[OK] FUSE configurado para permitir montajes de usuario"
+    echo "[INFO] rclone no está instalado. Procediendo con la instalación..."
 fi
-echo ""
 
-# Paso 6: Verificar instalación
-echo "[PASO 6] Verificando instalación..."
-RCLONE_VERSION=$(rclone version | head -1)
-echo "[OK] $RCLONE_VERSION"
-echo ""
+# 2. Instalar dependencias necesarias
+echo "[PASO 1] Verificando dependencias..."
+apt-get update -qq
+apt-get install -y curl unzip -qq
+echo "[OK] Dependencias instaladas."
 
-echo "=========================================="
-echo "  Instalación completada"
-echo "=========================================="
+# 3. Descargar y ejecutar script oficial de instalación
+# Fuente: https://rclone.org/install/#script-installation
+echo "[PASO 2] Descargando e instalando rclone desde el repositorio oficial..."
+curl -s https://rclone.org/install.sh | bash
+
+# 4. Verificar instalación
 echo ""
-echo "Próximos pasos:"
-echo "  1. Ejecuta './scripts/configure-rclone.sh' para configurar remotos"
-echo "  2. O configura manualmente con 'rclone config'"
+echo "[PASO 3] Verificando instalación..."
+if command -v rclone &> /dev/null; then
+    INSTALLED_VERSION=$(rclone version | head -n 1)
+    echo "[OK] rclone instalado correctamente: $INSTALLED_VERSION"
+else
+    echo "[ERROR] La instalación de rclone falló."
+    exit 1
+fi
+
+# 5. Mostrar ubicación de configuración
 echo ""
-echo "Documentación: docs/RCLONE.md"
+echo "=== Instalación Completada ==="
+echo ""
+echo "📦 Versión instalada: $(rclone version | head -n 1)"
+echo "📍 Ubicación del binario: $(which rclone)"
+echo "⚙️  Archivo de configuración: ~/.config/rclone/rclone.conf"
+echo ""
+echo "🚀 Próximos pasos:"
+echo "   1. Configura un remote: rclone config"
+echo "   2. Lista remotes: rclone listremotes"
+echo "   3. Documentación: https://rclone.org/docs/"
+echo ""
+echo "💡 Para actualizar rclone en el futuro: sudo rclone selfupdate"

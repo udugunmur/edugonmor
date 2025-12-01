@@ -33,18 +33,11 @@ sudo ./scripts/setup.sh
 | `make setup` | Ejecuta configuración inicial del sistema |
 | `make optimize` | Optimiza rendimiento del sistema |
 | `make vnc` | Habilita servidor VNC (x11vnc) |
+| `make rclone` | Instala rclone para sincronización cloud |
+| `make backup-onedrive` | Ejecuta backup de OneDrive a disco local |
 | `make verify` | Verifica estado de la configuración |
 | `make status` | Muestra estado actual del sistema |
 | `make stable` | Push a repositorio remoto |
-
-### Comandos Rclone
-
-| Comando | Descripción |
-|---------|-------------|
-| `make rclone` | Instala rclone y dependencias |
-| `make rclone-config` | Configura remotos (GDrive, OneDrive) |
-| `make rclone-mount` | Habilita montajes automáticos al arranque |
-| `make rclone-sync` | Sincroniza config con proyecto Docker |
 
 ---
 
@@ -57,7 +50,6 @@ Este repositorio centraliza la configuración del sistema Ubuntu para:
 - Optimizar rendimiento de CPU
 - Configurar servicios systemd
 - Aplicar configuraciones de GNOME
-- **Sincronización con la nube (Rclone)** - GDrive y OneDrive
 
 ## 🗺️ Estructura del Proyecto
 
@@ -69,20 +61,16 @@ ubuntu/
 │   ├── disable-suspend.sh    # Deshabilitar suspensión
 │   ├── cpu-performance.sh    # Modo performance de CPU
 │   ├── verify.sh             # Verificación de configuración
+│   ├── enable-vnc.sh         # Habilitar servidor VNC
 │   ├── install-rclone.sh     # Instalación de rclone
-│   ├── configure-rclone.sh   # Configuración de remotos cloud
-│   ├── enable-rclone-mount.sh # Habilitar montajes automáticos
-│   └── sync-rclone-config.sh # Sincronizar config con Docker
+│   └── backup-onedrive.sh    # Backup de OneDrive
 │
 ├── config/                    # ⚙️ Archivos de configuración
 │   ├── cpu-performance.service  # Servicio systemd para CPU
-│   ├── gnome-settings.sh     # Configuraciones de GNOME
-│   ├── rclone-gdrive.service # Servicio montaje Google Drive
-│   └── rclone-onedrive.service # Servicio montaje OneDrive
+│   └── gnome-settings.sh     # Configuraciones de GNOME
 │
 ├── docs/                      # 📖 Documentación
-│   ├── CONFIGURATION.md      # Guía detallada de configuración
-│   └── RCLONE.md             # Guía de Rclone
+│   └── CONFIGURATION.md      # Guía detallada de configuración
 │
 ├── .gitignore
 ├── agent.md                   # 🤖 Protocolo para IA
@@ -127,19 +115,34 @@ Se utiliza `x11vnc` para permitir acceso remoto a la sesión de escritorio.
 - **Wayland:** Deshabilitado (requerido para x11vnc)
 - **Comando:** `make vnc`
 
-### 5. Sincronización con la Nube (Rclone)
+### 5. Sincronización Cloud (rclone)
 
-Montaje automático de Google Drive y OneDrive como sistema de archivos.
+Herramienta para sincronizar archivos con servicios cloud (Google Drive, S3, etc.).
 
-| Remoto | Cuenta | Punto de Montaje |
-|--------|--------|------------------|
-| `gdrive-udugunmur` | udugunmur@gmail.com | `/mnt/disk2/rclone/gdrive` |
-| `onedrive-edugonmor` | edugonmor@outlook.com | `/mnt/disk2/rclone/onedrive` |
+| Aspecto | Valor |
+|---------|-------|
+| Método de instalación | Script oficial (https://rclone.org/install/) |
+| Ubicación binario | `/usr/bin/rclone` |
+| Archivo de configuración | `~/.config/rclone/rclone.conf` |
+| Auto-actualización | `sudo rclone selfupdate` |
 
-- **Servicios:** `rclone-gdrive.service`, `rclone-onedrive.service`
-- **Inicio automático:** `enabled`
-- **Logs:** `/var/log/rclone-gdrive.log`, `/var/log/rclone-onedrive.log`
-- **Documentación:** [docs/RCLONE.md](docs/RCLONE.md)
+- **Comando:** `make rclone`
+- **Documentación:** https://rclone.org/docs/
+
+### 6. Backup de OneDrive
+
+Script para realizar backup manual de OneDrive a disco local.
+
+| Aspecto | Valor |
+|---------|-------|
+| Remote | `onedrive-edugonmor:` |
+| Destino | `/mnt/disk2/rclone/oneDrive/edugonmor/` |
+| Logs | `/var/log/rclone/onedrive-backup-YYYYMMDD_HHMMSS.log` |
+| Exclusiones | `Almacén personal` (Personal Vault) |
+| Método | `rclone copy` (no borra archivos en destino) |
+
+- **Comando:** `make backup-onedrive`
+- **Documentación:** https://rclone.org/commands/rclone_copy/
 
 ## 📊 Resumen de Estado
 
@@ -151,15 +154,13 @@ Montaje automático de Google Drive y OneDrive como sistema de archivos.
 | **Suspensión** | `masked` | Completamente bloqueada |
 | **CPU Governor** | `performance` | Máximo rendimiento |
 | **Inicio automático** | `enabled` | Servicio cpu-performance.service |
-| **Rclone GDrive** | `/mnt/disk2/rclone/gdrive` | Montaje automático |
-| **Rclone OneDrive** | `/mnt/disk2/rclone/onedrive` | Montaje automático |
 
 ## 📚 Documentación de Referencia
 
 - **Ubuntu Server**: https://ubuntu.com/server/docs
 - **systemd**: https://www.freedesktop.org/software/systemd/man/
 - **GNOME gsettings**: https://help.gnome.org/admin/system-admin-guide/stable/gsettings.html
-- **Rclone**: https://rclone.org/docs/
+- **rclone**: https://rclone.org/docs/
 
 ---
 

@@ -1,4 +1,4 @@
-.PHONY: help setup optimize verify status stable rclone rclone-config rclone-mount rclone-sync
+.PHONY: help setup optimize verify status stable
 
 help: ## Muestra esta ayuda
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -18,6 +18,16 @@ vnc: ## Habilita servidor VNC (requiere sudo)
 	@sudo ./scripts/enable-vnc.sh
 	@echo "✅ VNC configurado."
 
+rclone: ## Instala rclone para sincronización cloud (requiere sudo)
+	@echo "☁️ Instalando rclone..."
+	@sudo ./scripts/install-rclone.sh
+	@echo "✅ rclone instalado."
+
+backup-onedrive: ## Ejecuta backup de OneDrive a disco local
+	@echo "💾 Ejecutando backup de OneDrive..."
+	@./scripts/backup-onedrive.sh
+	@echo "✅ Backup completado."
+
 verify: ## Verifica estado de la configuración
 	@echo "🔍 Verificando configuración..."
 	@./scripts/verify.sh
@@ -33,36 +43,6 @@ status: ## Muestra estado actual del sistema
 	@echo ""
 	@echo "=== GNOME Lock Screen ==="
 	@gsettings get org.gnome.desktop.screensaver lock-enabled 2>/dev/null || echo "No disponible"
-	@echo ""
-	@echo "=== Rclone ==="
-	@rclone version 2>/dev/null | head -1 || echo "No instalado"
-	@echo ""
-	@echo "=== Montajes Rclone ==="
-	@mountpoint /mnt/disk2/rclone/gdrive 2>/dev/null && echo "GDrive: montado" || echo "GDrive: no montado"
-	@mountpoint /mnt/disk2/rclone/onedrive 2>/dev/null && echo "OneDrive: montado" || echo "OneDrive: no montado"
-
-# ------------------------------------------------------------------------------
-# RCLONE - Sincronización con la nube
-# ------------------------------------------------------------------------------
-
-rclone: ## Instala rclone y dependencias (requiere sudo)
-	@echo "☁️ Instalando rclone..."
-	@sudo ./scripts/install-rclone.sh
-	@echo "✅ Rclone instalado."
-
-rclone-config: ## Configura remotos de rclone (GDrive, OneDrive)
-	@echo "⚙️ Configurando remotos rclone..."
-	@./scripts/configure-rclone.sh
-
-rclone-mount: ## Habilita servicios de montaje automático (requiere sudo)
-	@echo "📁 Habilitando montajes rclone..."
-	@sudo ./scripts/enable-rclone-mount.sh
-	@echo "✅ Montajes habilitados."
-
-rclone-sync: ## Sincroniza configuración de rclone con proyecto Docker
-	@echo "🔄 Sincronizando configuración..."
-	@./scripts/sync-rclone-config.sh
-	@echo "✅ Configuración sincronizada."
 
 # ------------------------------------------------------------------------------
 # SINCRONIZACIÓN CON REPOSITORIO REMOTO
