@@ -34,7 +34,9 @@ sudo ./scripts/setup.sh
 | `make setup-minimal` | Ejecuta solo configuración de energía |
 | `make vnc` | Habilita servidor VNC (x11vnc) |
 | `make rclone` | Instala rclone para sincronización cloud |
+| `make samba` | Instala Samba para compartir archivos vía SMB |
 | `make backup-onedrive` | Ejecuta backup de OneDrive a disco local |
+| `make upload-gdrive` | Sube archivos locales a Google Drive (udugunmur@gmail.com) |
 | `make chrome` | Instala Google Chrome desde repositorio oficial |
 | `make verify` | Verifica estado de la configuración |
 | `make status` | Muestra estado actual del sistema |
@@ -69,7 +71,8 @@ ubuntu/
 │   │   └── configure-vnc-server.sh  # Servidor VNC (x11vnc)
 │   │
 │   ├── backup/                   # 💾 Scripts de backup
-│   │   └── backup-onedrive.sh    # Backup de OneDrive
+│   │   ├── backup-onedrive.sh    # Backup de OneDrive
+│   │   └── upload-gdrive.sh      # Subida a Google Drive
 │   │
 │   └── desktop/                  # 🖥️ Configuración de escritorio
 │       └── configure-gnome-desktop.sh  # Ajustes GNOME
@@ -152,7 +155,57 @@ Script para realizar backup manual de OneDrive a disco local.
 - **Comando:** `make backup-onedrive`
 - **Documentación:** https://rclone.org/commands/rclone_copy/
 
-### 7. Google Chrome
+### 9. Subida a Google Drive
+
+Script para subir archivos locales a Google Drive (subida única, sin sincronización continua).
+
+| Aspecto | Valor |
+|---------|-------|
+| Origen | `/mnt/disk2/rclone/oneDrive/edugonmor/` |
+| Destino | `gdrive-udugunmur:` (raíz de Google Drive) |
+| Cuenta | `udugunmur@gmail.com` |
+| Config rclone | `/home/edugonmor/repos/edugonmor/rclone/docker/config/rclone.conf` |
+| Método | `rclone copy` (no borra archivos en destino) |
+| Características | Confirmación interactiva, verificación de espacio, progreso en tiempo real |
+
+- **Comando:** `make upload-gdrive`
+- **Documentación:** https://rclone.org/drive/
+
+### 10. Compartición de Archivos (Samba/SMB)
+
+Servidor Samba para acceder a los discos de Ubuntu desde macOS vía Finder.
+
+| Aspecto | Valor |
+|---------|-------|
+| Protocolo | SMB/CIFS |
+| Puerto | 445 |
+| Servicios | `smbd`, `nmbd` |
+| Config | `/etc/samba/smb.conf` |
+| Logs | `/var/log/samba/` |
+
+**Shares configurados:**
+
+| Share | Ruta | Descripción |
+|-------|------|-------------|
+| `home` | `/home/edugonmor` | Directorio de usuario |
+| `disk1` | `/mnt/disk1` | Disco adicional 1 |
+| `disk2` | `/mnt/disk2` | Disco adicional 2 |
+
+**Conexión desde Mac:**
+
+```bash
+# Opción 1: Finder
+# Ir → Conectar al servidor... (⌘K)
+# smb://192.168.1.233
+
+# Opción 2: Terminal
+open smb://192.168.1.233
+```
+
+- **Comando:** `make samba`
+- **Documentación:** https://www.samba.org/samba/docs/
+
+### 11. Google Chrome
 
 Navegador web instalado desde el repositorio oficial de Google.
 

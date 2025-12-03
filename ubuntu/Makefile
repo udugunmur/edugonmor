@@ -1,4 +1,4 @@
-.PHONY: help setup setup-minimal verify status stable chrome vnc rclone backup-onedrive
+.PHONY: help setup setup-minimal verify status stable chrome vnc rclone samba backup-onedrive
 
 help: ## Muestra esta ayuda
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -52,6 +52,11 @@ rclone: ## Instala rclone para sincronización cloud (requiere sudo)
 	@sudo ./scripts/install/install-rclone.sh
 	@echo "✅ rclone instalado."
 
+samba: ## Instala y configura Samba para compartir archivos vía SMB (requiere sudo)
+	@echo "🗂️ Instalando Samba..."
+	@sudo ./scripts/install/install-samba.sh
+	@echo "✅ Samba instalado."
+
 # ------------------------------------------------------------------------------
 # BACKUP Y UTILIDADES
 # ------------------------------------------------------------------------------
@@ -60,6 +65,11 @@ backup-onedrive: ## Ejecuta backup de OneDrive a disco local
 	@echo "💾 Ejecutando backup de OneDrive..."
 	@./scripts/backup/backup-onedrive.sh
 	@echo "✅ Backup completado."
+
+upload-gdrive: ## Sube archivos locales a Google Drive (udugunmur@gmail.com)
+	@echo "☁️ Iniciando subida a Google Drive..."
+	@./scripts/backup/upload-gdrive.sh
+	@echo "✅ Subida completada."
 
 # ------------------------------------------------------------------------------
 # SINCRONIZACIÓN CON REPOSITORIO REMOTO

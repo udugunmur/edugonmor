@@ -245,14 +245,16 @@ print_summary() {
     
     # Show errors if any
     if [ -f "${LOG_FILE}" ]; then
-        ERROR_COUNT=$(grep -c "ERROR" "${LOG_FILE}" 2>/dev/null || echo "0")
-        WARN_COUNT=$(grep -c "WARN" "${LOG_FILE}" 2>/dev/null || echo "0")
+        ERROR_COUNT=$(grep -c "ERROR" "${LOG_FILE}" 2>/dev/null | head -1 || echo "0")
+        ERROR_COUNT=${ERROR_COUNT:-0}
+        WARN_COUNT=$(grep -c "WARN" "${LOG_FILE}" 2>/dev/null | head -1 || echo "0")
+        WARN_COUNT=${WARN_COUNT:-0}
         
         echo ""
-        if [ "$ERROR_COUNT" -gt 0 ]; then
+        if [ "${ERROR_COUNT}" -gt 0 ] 2>/dev/null; then
             print_warn "Errores encontrados: ${ERROR_COUNT} (ver log para detalles)"
         fi
-        if [ "$WARN_COUNT" -gt 0 ]; then
+        if [ "${WARN_COUNT}" -gt 0 ] 2>/dev/null; then
             print_warn "Advertencias: ${WARN_COUNT}"
         fi
     fi
