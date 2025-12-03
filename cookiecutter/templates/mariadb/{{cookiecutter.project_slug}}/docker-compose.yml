@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  {{cookiecutter.project_slug}}_mariadb_services:
+    image: {{cookiecutter.project_slug}}_mariadb_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: {{cookiecutter.project_slug}}_mariadb_services
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - {{cookiecutter.project_slug}}_mariadb_volumen:/var/lib/mysql
+      - ./config/init-data.json:/etc/mysql/custom/init-data.json:ro
+    networks:
+      - {{cookiecutter.network_name}}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  {{cookiecutter.project_slug}}_backup:
+    image: fradelg/mysql-cron-backup
+    container_name: {{cookiecutter.project_slug}}_backup
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MYSQL_HOST={{cookiecutter.project_slug}}_mariadb_services
+      - MYSQL_USER=root
+      - MYSQL_PASS=${MARIADB_ROOT_PASSWORD}
+      - MAX_BACKUPS={{cookiecutter.backup_retention}}
+      - INIT_BACKUP=1
+      - CRON_TIME={{cookiecutter.cron_schedule}}
+    volumes:
+      - {{cookiecutter.project_slug}}_backups:/backup
+    networks:
+      - {{cookiecutter.network_name}}
+    depends_on:
+      - {{cookiecutter.project_slug}}_mariadb_services
+
+networks:
+  {{cookiecutter.network_name}}:
+    external: true
+    name: {{cookiecutter.network_name}}
+
+volumes:
+  {{cookiecutter.project_slug}}_mariadb_volumen:
+  {{cookiecutter.project_slug}}_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb

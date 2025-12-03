@@ -1,0 +1,9 @@
+{
+  "project_name": "MySQL Project",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "db_root_password": "root_password_dev",
+  "backup_retention": "10",
+  "cron_schedule": "0 3 * * *",
+  "network_name": "shared_network",
+  "rclone_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
+}
