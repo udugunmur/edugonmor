@@ -85,7 +85,8 @@ cookiecutter/
 │   └── post_gen_project.py
 │
 ├── src/                         # 🧠 CÓDIGO AUXILIAR
-│   └── .gitkeep
+│   ├── .gitkeep
+│   └── generate.py          # Script de generación
 │
 ├── tests/                       # 🧪 TESTING
 │   └── test_cookiecutter.py

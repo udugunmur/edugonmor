@@ -7,14 +7,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cookiecutter_services
-    restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - TEMPLATE=${TEMPLATE:-mysql}
+      - CONFIG_FILE=${CONFIG_FILE:-/config/example.json}
     volumes:
-      - .:/workspace
+      - ../template_mysql:/templates/mysql:ro
+      - ../template_mariadb:/templates/mariadb:ro
+      - ../generator:/output
+      - ./docker/volumes/config:/config:ro
     networks:
       - shared_network
-    command: ["tail", "-f", "/dev/null"]
 
 networks:
   shared_network:
