@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mariadb_services:
+    image: mariadb_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: mariadb_services
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - mariadb_volumen:/var/lib/mysql
+      - ./config/init-data.json:/etc/mysql/custom/init-data.json:ro
+    networks:
+      - shared_network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  mariadb_backup:
+    image: fradelg/mysql-cron-backup
+    container_name: mariadb_backup
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MYSQL_HOST=mariadb_services
+      - MYSQL_USER=root
+      - MYSQL_PASS=${MARIADB_ROOT_PASSWORD}
+      - MAX_BACKUPS=10
+      - INIT_BACKUP=1
+      - CRON_TIME=0 3 * * *
+    volumes:
+      - mariadb_backups:/backup
+    networks:
+      - shared_network
+    depends_on:
+      - mariadb_services
+
+networks:
+  shared_network:
+    external: true
+    name: shared_network
+
+volumes:
+  mariadb_volumen:
+  mariadb_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen/mariadb

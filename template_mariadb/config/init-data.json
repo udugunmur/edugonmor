@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "username": "mariadb_user",
+      "password": "mariadb_password",
+      "databases": [
+        "mariadb_db"
+      ],
+      "privileges": ["ALL PRIVILEGES"]
+    }
+  ]
+}
