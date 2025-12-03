@@ -1,6 +1,0 @@
-version: '3.8'
-
-services:
-  mariadb_services:
-    restart: always
-    ports: [] # No ports exposed in production
