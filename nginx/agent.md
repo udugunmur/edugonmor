@@ -51,7 +51,6 @@ Al final de tu respuesta, genera un bloque:
 - **Gestión de Secretos:** El archivo `.env` DEBE ser commiteado al repositorio (Tracked).
 - **Manejo de Errores:** Siempre usa `try/catch` y logs estructurados.
 - **Validación:** Valida inputs siempre. Nunca confíes en el usuario.
-- **Orquestación:** Usa el `Makefile` como punto de entrada preferido.
 
 ---
 
@@ -114,7 +113,6 @@ nombre-repo/
 ├── .gitignore                   # Exclusiones Git
 ├── .env                         # ⚠️ VARIABLES DE ENTORNO (Tracked)
 ├── Dockerfile                   # 🏗️ IMAGEN PRODUCCIÓN (Multi-stage)
-├── Makefile                     # 🕹️ COMANDOS (make up, make test)
 ├── README.md                    # Entry point
 ├── docker-compose.yml           # 🚀 ORQUESTACIÓN BASE
 ├── docker-compose.override.yml  # 🔧 DEV (Puertos, Bind-mounts, Tracked)

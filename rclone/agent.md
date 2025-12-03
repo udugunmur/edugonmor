@@ -99,9 +99,6 @@ Las DL:
 
 El agente puede apoyarse en DL cuando:
 
-### 🏗️ Política de Makefile
-No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola linea.
-
 ---
 
 ### 0.5. Ciclo de Vida y Mantenimiento
@@ -122,7 +119,7 @@ La persistencia de datos de este servicio está protegida mediante el sistema ce
 
 
 
-- **Mecanismo:** Usa el comando `make stable` para sincronizar ambos remotos automáticamente.
+- **Mecanismo:** Usa el comando `git push` para sincronizar ambos remotos automáticamente.
 - **Verificación:** El agente debe preguntar al finalizar cada tarea si se desea ejecutar la sincronización.
 
 ---

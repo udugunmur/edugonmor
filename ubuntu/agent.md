@@ -123,7 +123,6 @@ ubuntu/
 │   └── cpu-performance.service   # Servicio systemd para CPU
 ├── docs/                         # Documentación
 ├── agent.md
-├── Makefile
 └── README.md
 ```
 
@@ -164,15 +163,12 @@ systemctl status sleep.target suspend.target hibernate.target
 
 ## 7. CICLO DE VIDA Y MANTENIMIENTO
 
-### 🏗️ Política de Makefile
-No añadir comandos de una sola línea.
-
 ### 🔄 Protocolo de Push
-Usar SIEMPRE `make stable`.
+Usar SIEMPRE `git push`.
 
 ### 📋 Cierre de Ciclo
 Al finalizar CUALQUIER tarea, preguntar:
-> "¿Deseas ejecutar `make stable` para sincronizar los cambios?"
+> "¿Deseas ejecutar `git push` para sincronizar los cambios?"
 
 ---
 
