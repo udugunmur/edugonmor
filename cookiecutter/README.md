@@ -1,44 +1,41 @@
-# Cookiecutter Project
+# Cookiecutter Templates Collection
 
-Este repositorio contiene una plantilla de proyecto basada en **Cookiecutter**, siguiendo los estándares de infraestructura definidos.
+Este directorio contiene la colección centralizada de plantillas **Cookiecutter** para el ecosistema Edugonmor.
 
-## Structure
-- `AGENTS.md`: Master Protocol and Architecture Guidelines.
-- `docker/`: Infrastructure configuration.
-- `cookiecutter.json`: Configuration for the template.
-- `{{cookiecutter.project_slug}}/`: The project template itself.
+## 📂 Plantillas Disponibles
 
-## Estándar de Infraestructura
+Las plantillas se encuentran organizadas dentro del directorio `templates/`:
 
-Este proyecto sigue estrictamente el patrón de infraestructura definido. Cualquier modificación en `docker-compose.yml` debe respetar las siguientes reglas:
+| Plantilla | Descripción | Ruta |
+|-----------|-------------|------|
+| **MariaDB** | Plantilla para proyectos de base de datos MariaDB con Docker, Backups y Monitorización. | `templates/mariadb` |
+| **MySQL** | Plantilla para proyectos de base de datos MySQL con Docker, Backups y Monitorización. | `templates/mysql` |
 
-1.  **Nomenclatura de Servicios:**
-    *   Servicio Principal: `cookiecutter_services`
-    *   Servicio de Backup: `cookiecutter_backup` (si aplica)
-    *   Contenedores: `container_name: cookiecutter_<rol>`
-2.  **Configuración:**
-    *   Uso obligatorio de archivo `.env`.
-    *   Credenciales inyectadas vía variables de entorno.
-3.  **Redes:**
-    *   Red compartida: `shared_network`
+## 🚀 Uso
 
-## Uso
+Para iniciar un nuevo proyecto utilizando una de estas plantillas, ejecuta el comando `cookiecutter` apuntando a la ruta específica:
 
-### Requisitos
-- Docker
-- Docker Compose
-
-### Generar un Proyecto
-Para generar un nuevo proyecto usando esta plantilla dentro del entorno contenedorizado:
-
+### MariaDB
 ```bash
-make run
-# Dentro del contenedor:
-cookiecutter .
+cookiecutter ./cookiecutter/templates/mariadb
 ```
 
-O para ejecutar pruebas sobre la plantilla:
-
+### MySQL
 ```bash
-make test
+cookiecutter ./cookiecutter/templates/mysql
 ```
+
+## 📚 Documentación y Estándares
+
+*   **[Arquitectura de Plantillas](docs/arquitectura_plantilla.md)**: Detalles técnicos sobre cómo funcionan estas plantillas.
+*   **[AGENTS.md](AGENTS.md)**: Protocolo Maestro para el desarrollo y mantenimiento de estas plantillas por parte de Agentes de IA.
+
+## 🛠️ Mantenimiento
+
+Para agregar una nueva plantilla:
+1.  Crea una nueva carpeta en `templates/<nombre_tecnologia>`.
+2.  Asegúrate de incluir `cookiecutter.json` y la estructura `{{cookiecutter.project_slug}}/`.
+3.  Sigue los estándares definidos en `AGENTS.md`.
+
+---
+**Edugonmor Infrastructure**
