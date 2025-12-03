@@ -1,6 +1,5 @@
 **/volumes/
 **/data/
-**/.env
 *.log
 __pycache__/
 .DS_Store
