@@ -1,0 +1,6 @@
+.git
+.env
+docker/secrets
+docker/volumes
+node_modules
+dist

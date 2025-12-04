@@ -54,7 +54,7 @@ Al final de tu respuesta, genera un bloque:
 > **🛡️ REPORTE DE CALIDAD Y PRUEBAS**
 > 1. **Pruebas Realizadas:** Qué lógica o sintaxis verificaste.
 > 2. **Casos Borde:** Qué escenarios extremos cubriste (nulos, vacíos, errores de red).
-> 3. **Comando de Verificación:** El comando exacto (ej: `make test`, `curl...`) para validar esto AHORA.
+> 3. **Comando de Verificación:** El comando exacto (ej: `./scripts/test.sh`, `curl...`) para validar esto AHORA.
 > 4. **Cierre de Ciclo:** FINALIZA SIEMPRE tu respuesta preguntando:
 
 ---
@@ -63,7 +63,6 @@ Al final de tu respuesta, genera un bloque:
 - **Gestión de Secretos:** El archivo `.env` DEBE ser commiteado al repositorio (Tracked).
 - **Manejo de Errores:** Siempre usa `try/catch` y logs estructurados.
 - **Validación:** Valida inputs siempre. Nunca confíes en el usuario.
-- **Orquestación:** Usa el `Makefile` como punto de entrada preferido.
 
 ---
 
@@ -97,9 +96,6 @@ nombre-repo/
 │   │   ├── healthcheck.sh       # Verificación estado
 │   │   └── wait-for-it.sh       # Control dependencias
 │   ├── secrets/                 # 🔐 SECRETOS LOCALES (Gitignored)
-
-### 🏗️ Política de Makefile
-No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola linea.
 ```
 
 ---
@@ -110,8 +106,7 @@ No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola
 
 **Protocolo de Push:**
 - NUNCA hagas `git push` manual solo a origin.
-- Usa SIEMPRE el comando estandarizado `make stable`.
-- Este comando sincroniza ambos remotos automáticamente.
+- Usa SIEMPRE el comando estandarizado `git push`.
 
 ### 📦 Gestión de Imágenes (Nexus Registry)
 Para optimizar tiempos de despliegue y garantizar la inmutabilidad de los entornos, este servicio se adhiere al siguiente flujo de trabajo con el registro local Nexus:

@@ -112,16 +112,12 @@ tools/
 ├── .gitignore
 ├── agent.md                   # 🤖 Este archivo
 ├── docker-compose.yml
-├── Makefile
 └── README.md
 ```
 
 ---
 
 ## 6. CICLO DE VIDA Y MANTENIMIENTO
-
-### 🏗️ Política de Makefile
-No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola línea.
 
 ### 📦 Gestión de Imágenes (Nexus Registry)
 1. **Desarrollo**: Los cambios se construyen localmente.
@@ -135,7 +131,7 @@ No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola
 
 ### 🔄 Protocolo de Push
 - NUNCA hagas `git push` manual solo a origin.
-- Usa SIEMPRE el comando estandarizado `make stable`.
+- Usa SIEMPRE el comando estandarizado `git push`.
 
 ---
 
@@ -174,13 +170,13 @@ No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola
 
 ```bash
 # Estado de servicios
-make status
+docker compose ps
 
 # Tests automatizados
-make test
+./tests/test-connection.sh
 
 # Logs en tiempo real
-make logs
+docker compose logs -f
 ```
 
 ### Checklist de Despliegue

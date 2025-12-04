@@ -1,0 +1,32 @@
+# ============================================================================
+# .gitignore for MongoDB {{cookiecutter.mongo_version}} Project
+# ============================================================================
+
+
+# Docker volumes (persistent data)
+docker/volumes/
+
+# Backup files
+docker/backups/*.gz
+docker/backups/*.archive
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/

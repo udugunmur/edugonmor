@@ -24,13 +24,6 @@ ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# Configuración sensible
-docker/config/rclone.conf
-config/*.env
-*.secret
-*.key
-.env.local
-.env.*.local
 
 # Volúmenes y Datos
 volumes/

@@ -51,7 +51,6 @@ Al final de tu respuesta, genera un bloque:
 - **Gestión de Secretos:** El archivo `.env` DEBE ser commiteado al repositorio (Tracked) si no contiene secretos reales (solo config).
 - **Manejo de Errores:** Siempre usa validación en hooks (`pre_gen_project.py`).
 - **Validación:** Valida inputs en `cookiecutter.json` o hooks.
-- **Orquestación:** Usa el `Makefile` como punto de entrada preferido.
 
 ---
 
@@ -99,7 +98,6 @@ cookiecutter/
 ├── .env                         # ⚠️ VARIABLES DE ENTORNO
 ├── cookiecutter.json            # ⚙️ CONFIGURACIÓN COOKIECUTTER
 ├── Dockerfile                   # 🏗️ IMAGEN DE EJECUCIÓN
-├── Makefile                     # 🕹️ COMANDOS (make build, make test)
 ├── README.md                    # Entry point
 ├── docker-compose.yml           # 🚀 ORQUESTACIÓN BASE
 └── docker-compose.override.yml  # 🔧 DEV
@@ -111,8 +109,7 @@ cookiecutter/
 
 **Protocolo de Push:**
 - NUNCA hagas `git push` manual solo a origin.
-- Usa SIEMPRE el comando estandarizado `make stable`.
-- Este comando sincroniza ambos remotos automáticamente.
+- Asegúrate de sincronizar ambos remotos.
 
 ### 📦 Gestión de Imágenes (Nexus Registry)
 1.  **Desarrollo**: Los cambios se construyen localmente.
@@ -123,8 +120,3 @@ cookiecutter/
 *   **Alcance**: Volúmenes persistentes deben ser accesibles por `rclone`.
 
 ---
-
-## 7. POLÍTICAS ESPECÍFICAS
-
-### 🛡️ Política de Makefile
-No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola linea. Si no que para añadirse aqui debe ser una concatenación o tener algo programático para que merezca la pena estar en makefile.

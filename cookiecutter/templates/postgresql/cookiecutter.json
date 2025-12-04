@@ -1,0 +1,13 @@
+{
+  "project_name": "PostgreSQL Project",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "postgres_version": "16",
+  "postgres_port": "5432",
+  "postgres_user": "postgres",
+  "postgres_db": "postgres",
+  "db_root_password": "change_me_in_prod",
+  "backup_retention": "7",
+  "cron_schedule": "0 3 * * *",
+  "network_name": "shared_network",
+  "rclone_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
+}

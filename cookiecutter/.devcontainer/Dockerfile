@@ -1,2 +1,7 @@
-FROM python:3.12-slim
-RUN apt-get update && apt-get install -y git
+FROM mcr.microsoft.com/devcontainers/python:3.11-bookworm
+
+# Install cookiecutter globally
+RUN pip install --no-cache-dir cookiecutter
+
+# Verify installation
+RUN cookiecutter --version

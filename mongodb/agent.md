@@ -42,7 +42,7 @@ Al final de tu respuesta, genera un bloque:
 > **🛡️ REPORTE DE CALIDAD Y PRUEBAS**
 > 1. **Pruebas Realizadas:** Qué lógica o sintaxis verificaste.
 > 2. **Casos Borde:** Qué escenarios extremos cubriste (nulos, vacíos, errores de red).
-> 3. **Comando de Verificación:** El comando exacto (ej: `make test`, `curl...`) para validar esto AHORA.
+> 3. **Comando de Verificación:** El comando exacto (ej: `./scripts/test.sh`, `curl...`) para validar esto AHORA.
 > 4. **Cierre de Ciclo:** FINALIZA SIEMPRE tu respuesta preguntando:
 
 ---
@@ -51,7 +51,6 @@ Al final de tu respuesta, genera un bloque:
 - **Gestión de Secretos:** El archivo `.env` DEBE ser commiteado al repositorio (Tracked).
 - **Manejo de Errores:** Siempre usa `try/catch` y logs estructurados.
 - **Validación:** Valida inputs siempre. Nunca confíes en el usuario.
-- **Orquestación:** Usa el `Makefile` como punto de entrada preferido.
 
 ---
 
@@ -110,11 +109,10 @@ nombre-repo/
 │   └── e2e/
 │
 ├── .dockerignore                # Exclusiones Docker
-├── .env.example                 # Plantilla variables
+├── .env                         # variables
 ├── .gitignore                   # Exclusiones Git
 ├── .env                         # ⚠️ VARIABLES DE ENTORNO (Tracked)
 ├── Dockerfile                   # 🏗️ IMAGEN PRODUCCIÓN (Multi-stage)
-├── Makefile                     # 🕹️ COMANDOS (make up, make test)
 ├── README.md                    # Entry point
 ├── docker-compose.yml           # 🚀 ORQUESTACIÓN BASE
 ├── docker-compose.override.yml  # 🔧 DEV (Puertos, Bind-mounts, Tracked)
@@ -129,8 +127,7 @@ nombre-repo/
 
 **Protocolo de Push:**
 - NUNCA hagas `git push` manual solo a origin.
-- Usa SIEMPRE el comando estandarizado `make stable`.
-- Este comando sincroniza ambos remotos automáticamente.
+- Usa SIEMPRE el comando estandarizado `git push`.
 
 ### 📦 Gestión de Imágenes (Nexus Registry)
 Para optimizar tiempos de despliegue y garantizar la inmutabilidad de los entornos, este servicio se adhiere al siguiente flujo de trabajo con el registro local Nexus:
@@ -152,10 +149,3 @@ La persistencia de datos de este servicio está protegida mediante el sistema ce
 *   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
 *   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
 *   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
-
----
-
-## 7. POLÍTICAS ESPECÍFICAS
-
-### 🛡️ Política de Makefile
-No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola linea. Si no que para añadirse aqui debe ser una concatenación o tener algo programático para que merezca la pena estar en makefile.

@@ -13,7 +13,6 @@
 windows/
 ├── agent.md              # Este archivo - Protocolo del agente
 ├── README.md             # Documentación principal
-├── Makefile              # Comandos de automatización (via WSL/Git Bash)
 ├── .gitignore            # Exclusiones de Git
 ├── config/               # Archivos de configuración
 ├── docs/                 # Documentación detallada

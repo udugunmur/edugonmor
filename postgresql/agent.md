@@ -52,7 +52,6 @@ Al final de tu respuesta, genera un bloque:
 - **Gestión de Secretos:** El archivo `.env` DEBE ser commiteado al repositorio (Tracked).
 - **Manejo de Errores:** Siempre usa `try/catch` y logs estructurados.
 - **Validación:** Valida inputs siempre. Nunca confíes en el usuario.
-- **Orquestación:** Usa el `Makefile` como punto de entrada preferido.
 
 ### 4.1. Credenciales del Servicio
 
@@ -127,7 +126,6 @@ nombre-repo/
 ├── .gitignore                   # Exclusiones Git
 ├── .env                         # ⚠️ VARIABLES DE ENTORNO (Tracked)
 ├── Dockerfile                   # 🏗️ IMAGEN PRODUCCIÓN (Multi-stage)
-├── Makefile                     # 🕹️ COMANDOS (make up, make test)
 ├── README.md                    # Entry point
 ├── docker-compose.yml           # 🚀 ORQUESTACIÓN BASE
 ├── docker-compose.override.yml  # 🔧 DEV (Puertos, Bind-mounts, Tracked)
@@ -158,17 +156,3 @@ La persistencia de datos de este servicio está protegida mediante el sistema ce
 *   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
 *   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
 *   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
-
-### 🛡️ Política de Backups (Rclone Centralizado - rclone)
-La persistencia de datos de este servicio está protegida mediante el sistema centralizado de backups (**rclone**).
-
-*   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
-*   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
-*   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
-
----
-
-## 7. POLÍTICAS ESPECÍFICAS
-
-### 🛡️ Política de Makefile
-No se debe añadir en Makefile ningún comando que se pueda ejecutar en una sola linea. Si no que para añadirse aqui debe ser una concatenación o tener algo programático para que merezca la pena estar en makefile.
