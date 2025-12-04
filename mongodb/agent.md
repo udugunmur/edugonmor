@@ -109,7 +109,7 @@ nombre-repo/
 │   └── e2e/
 │
 ├── .dockerignore                # Exclusiones Docker
-├── .env.example                 # Plantilla variables
+├── .env                         # variables
 ├── .gitignore                   # Exclusiones Git
 ├── .env                         # ⚠️ VARIABLES DE ENTORNO (Tracked)
 ├── Dockerfile                   # 🏗️ IMAGEN PRODUCCIÓN (Multi-stage)

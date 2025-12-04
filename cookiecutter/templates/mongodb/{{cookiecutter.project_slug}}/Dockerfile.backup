@@ -1,0 +1,24 @@
+# MongoDB {{cookiecutter.mongo_version}} Backup - Imagen oficial con cron
+# Documentación: https://www.mongodb.com/docs/database-tools/mongodump/
+FROM mongo:{{cookiecutter.mongo_version}}
+
+# Instalar cron y herramientas necesarias en BUILD TIME (no en runtime)
+RUN apt-get update && apt-get install -y \
+    cron \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar scripts de backup
+COPY docker/scripts/backup.sh /usr/local/bin/backup.sh
+COPY docker/scripts/restore.sh /usr/local/bin/restore.sh
+COPY docker/scripts/entrypoint-backup.sh /usr/local/bin/entrypoint-backup.sh
+
+# Dar permisos de ejecución
+RUN chmod +x /usr/local/bin/backup.sh \
+    /usr/local/bin/restore.sh \
+    /usr/local/bin/entrypoint-backup.sh
+
+# Crear directorio de backups
+RUN mkdir -p /backup
+
+# Usar entrypoint personalizado que configura cron
+ENTRYPOINT ["/usr/local/bin/entrypoint-backup.sh"]

@@ -20,7 +20,7 @@ git clone https://github.com/edugonmor/tools.git
 cd tools
 
 # 2. Configurar variables de entorno
-cp .env.example .env
+cp .env
 # Editar .env con tus valores
 
 # 3. Desplegar servicios
@@ -160,7 +160,7 @@ tools/
 │   └── test-portainer.sh     # Test de Portainer
 │
 ├── .dockerignore              # Exclusiones Docker
-├── .env.example               # Variables de entorno ejemplo
+├── .env                       # Variables de entorno
 ├── .gitignore                 # Archivos ignorados
 ├── agent.md                   # 🤖 Protocolo para IA
 ├── docker-compose.yml         # 📦 Definición de servicios

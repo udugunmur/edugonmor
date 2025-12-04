@@ -52,13 +52,6 @@ ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# Configuración local (usar secrets en build)
-config/*.env
-.env
-.env.*
-*.secret
-*.key
-
 # Temporal
 tmp/
 temp/
