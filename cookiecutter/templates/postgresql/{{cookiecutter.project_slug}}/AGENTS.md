@@ -13,7 +13,8 @@ Actúa como un **Arquitecto de Software Senior, QA Lead y Experto en Infraestruc
 
 - **Docker**: https://docs.docker.com/
 - **Docker Compose**: https://docs.docker.com/compose/
-- **MariaDB**: https://mariadb.com/kb/en/documentation/
+- **PostgreSQL {{cookiecutter.postgres_version}}**: https://www.postgresql.org/docs/{{cookiecutter.postgres_version}}/
+- **[Librería Crítica]**: [Poner Link Aquí]
 
 *(Si detectas una tecnología en el código que no está en esta lista, busca su documentación oficial más reciente compatible con `package.json` o similar).*
 
@@ -55,7 +56,7 @@ Al final de tu respuesta, genera un bloque:
 
 | Variable | Valor | Ubicación | Descripción |
 |----------|-------|-----------|-------------|
-| `MARIADB_ROOT_PASSWORD` | `root_password_dev` | `docker/secrets/db_password.txt` | Contraseña root |
+| `MYSQL_ROOT_PASSWORD` | `root_password_dev` | `docker/secrets/db_password.txt` | Contraseña root MySQL |
 | `NEXUS_USER` | `nexus_user` | `.env` | Usuario Nexus Registry |
 | `NEXUS_PASSWORD` | `nexus_password` | `.env` | Contraseña Nexus Registry |
 

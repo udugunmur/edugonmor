@@ -1,0 +1,82 @@
+services:
+  {{cookiecutter.project_slug}}_services:
+    image: {{cookiecutter.project_slug}}_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host # Fix for VPN connection
+    container_name: {{cookiecutter.project_slug}}_services
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - {{cookiecutter.project_slug}}_volumen:/var/lib/postgresql/data
+      - ./config/init-data.json:/etc/postgresql-custom/init-data.json:ro
+    networks:
+      - {{cookiecutter.network_name}}
+    command: [
+      "postgres",
+      "-c",
+      "config_file=/etc/postgresql/postgresql.conf"
+    ]
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "pg_isready -U ${POSTGRES_USER:-postgres}"
+      ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  {{cookiecutter.project_slug}}_backup:
+    image: prodrigestivill/postgres-backup-local
+    container_name: {{cookiecutter.project_slug}}_backup
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST={{cookiecutter.project_slug}}_services
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_CLUSTER=TRUE
+      - POSTGRES_EXTRA_OPTS=
+      - SCHEDULE={{cookiecutter.cron_schedule}}
+      - BACKUP_KEEP_DAYS={{cookiecutter.backup_retention}}
+    volumes:
+      - {{cookiecutter.project_slug}}_backups:/backups
+    networks:
+      - {{cookiecutter.network_name}}
+    depends_on:
+      {{cookiecutter.project_slug}}_services:
+        condition: service_healthy
+
+volumes:
+  {{cookiecutter.project_slug}}_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/{{cookiecutter.project_slug}}_volumen
+  {{cookiecutter.project_slug}}_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}
+
+networks:
+  {{cookiecutter.network_name}}:
+    external: true
+    name: {{cookiecutter.network_name}}

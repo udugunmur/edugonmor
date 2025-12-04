@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   {{cookiecutter.project_slug}}_mariadb_services:
     image: {{cookiecutter.project_slug}}_mariadb_services:latest
