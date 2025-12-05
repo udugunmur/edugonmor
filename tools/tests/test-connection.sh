@@ -38,7 +38,7 @@ run_test "Contenedor Backup existe" "docker ps -a | grep -q tools_backup"
 
 echo ""
 echo "--- Red ---"
-run_test "Red tools_network existe" "docker network ls | grep -q tools_network"
+run_test "Red shared_network existe" "docker network ls | grep -q shared_network"
 
 echo ""
 echo "--- Volúmenes ---"
