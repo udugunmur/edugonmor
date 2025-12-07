@@ -3,7 +3,7 @@
 # Test de Conexión PostgreSQL
 # ============================================================================
 # Descripción: Script para probar la conexión a PostgreSQL
-# Documentación: https://www.postgresql.org/docs/{{cookiecutter.postgres_version}}/
+# Documentación: https://www.postgresql.org/docs/{{cookiecutter._postgres_version}}/
 
 set -e
 

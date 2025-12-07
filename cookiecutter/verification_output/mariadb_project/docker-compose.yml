@@ -1,21 +1,21 @@
 services:
-  {{cookiecutter.project_slug}}_mariadb_services:
-    image: {{cookiecutter.project_slug}}_mariadb_services:latest
+  mariadb_project_mariadb_services:
+    image: mariadb_project_mariadb_services:latest
     build:
       context: .
       dockerfile: Dockerfile
       network: host
-    container_name: {{cookiecutter.project_slug}}_mariadb_services
+    container_name: mariadb_project_mariadb_services
     restart: always
     env_file:
       - .env
     environment:
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     volumes:
-      - {{cookiecutter.project_slug}}_mariadb_volumen:/var/lib/mysql
+      - mariadb_project_mariadb_volumen:/var/lib/mysql
       - ./config/init-data.json:/etc/mysql/custom/init-data.json:ro
     networks:
-      - {{cookiecutter._network_name}}
+      - shared_network
     ports:
       - "${MARIADB_PORT}:3306"
     healthcheck:
@@ -33,18 +33,18 @@ services:
           cpus: '0.5'
           memory: 512M
 
-  {{cookiecutter.project_slug}}_backup:
-    image: {{cookiecutter.project_slug}}_backup:latest
+  mariadb_project_backup:
+    image: mariadb_project_backup:latest
     build:
       context: .
       dockerfile: Dockerfile.backup
       network: host
-    container_name: {{cookiecutter.project_slug}}_backup
+    container_name: mariadb_project_backup
     restart: always
     env_file:
       - .env
     environment:
-      - MARIADB_HOST={{cookiecutter.project_slug}}_mariadb_services
+      - MARIADB_HOST=mariadb_project_mariadb_services
       - MARIADB_PORT=3306
       - MARIADB_USER=root
       - MARIADB_PASSWORD=${MARIADB_ROOT_PASSWORD}
@@ -52,23 +52,23 @@ services:
       - CRON_SCHEDULE=${CRON_SCHEDULE}
       - INIT_BACKUP=1
     volumes:
-      - {{cookiecutter.project_slug}}_backups:/backup
+      - mariadb_project_backups:/backup
     networks:
-      - {{cookiecutter._network_name}}
+      - shared_network
     depends_on:
-      {{cookiecutter.project_slug}}_mariadb_services:
+      mariadb_project_mariadb_services:
         condition: service_healthy
 
 networks:
-  {{cookiecutter._network_name}}:
+  shared_network:
     external: true
-    name: {{cookiecutter._network_name}}
+    name: shared_network
 
 volumes:
-  {{cookiecutter.project_slug}}_mariadb_volumen:
-  {{cookiecutter.project_slug}}_backups:
+  mariadb_project_mariadb_volumen:
+  mariadb_project_backups:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
+      device: /workspaces/edugonmor/cookiecutter/verification_output/backups

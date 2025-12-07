@@ -152,8 +152,8 @@ Este servicio utiliza **mariadb-dump** (herramienta oficial de MariaDB) para bac
 *   **Herramienta**: `mariadb-dump` (incluida en imagen oficial MariaDB)
 *   **Tipo**: Backup lógico (SQL)
 *   **Servicio**: `{{cookiecutter.project_slug}}_backup` (Dockerfile.backup propio)
-*   **Programación**: Cron schedule: `{{cookiecutter.cron_schedule}}`
-*   **Retención**: `{{cookiecutter.backup_retention}}` días
+*   **Programación**: Cron schedule: `{{cookiecutter._cron_schedule}}`
+*   **Retención**: `{{cookiecutter._backup_retention}}` días
 
 **Opciones de mariadb-dump (según documentación oficial):**
 | Opción | Descripción | Fuente |
@@ -183,7 +183,7 @@ docker logs {{cookiecutter.project_slug}}_backup
 ```
 
 **Integración con Rclone:**
-*   Los backups se almacenan en `{{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb`
+*   Los backups se almacenan en `{{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb`
 *   Rclone sincroniza automáticamente con la nube según la política global
 
 ---

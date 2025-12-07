@@ -15,7 +15,7 @@ services:
       - {{cookiecutter.project_slug}}_mysql_volumen:/var/lib/mysql
       - ./config/init-data.json:/etc/mysql/custom/init-data.json:ro
     networks:
-      - {{cookiecutter.network_name}}
+      - {{cookiecutter._network_name}}
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
       interval: 30s
@@ -24,29 +24,35 @@ services:
       start_period: 30s
 
   {{cookiecutter.project_slug}}_backup:
-    image: fradelg/mysql-cron-backup
+    image: {{cookiecutter.project_slug}}_backup:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+      network: host
     container_name: {{cookiecutter.project_slug}}_backup
     restart: always
     env_file:
       - .env
     environment:
       - MYSQL_HOST={{cookiecutter.project_slug}}_mysql_services
+      - MYSQL_PORT=3306
       - MYSQL_USER=root
-      - MYSQL_PASS=${MYSQL_ROOT_PASSWORD}
-      - MAX_BACKUPS={{cookiecutter.backup_retention}}
+      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - BACKUP_RETENTION=${BACKUP_RETENTION}
+      - CRON_SCHEDULE=${CRON_SCHEDULE}
       - INIT_BACKUP=1
-      - CRON_TIME={{cookiecutter.cron_schedule}}
     volumes:
-      - {{cookiecutter.project_slug}}_backups:/backup
+      - {{cookiecutter.project_slug}}_backups:/backups
     networks:
-      - {{cookiecutter.network_name}}
+      - {{cookiecutter._network_name}}
     depends_on:
-      - {{cookiecutter.project_slug}}_mysql_services
+      {{cookiecutter.project_slug}}_mysql_services:
+        condition: service_healthy
 
 networks:
-  {{cookiecutter.network_name}}:
+  {{cookiecutter._network_name}}:
     external: true
-    name: {{cookiecutter.network_name}}
+    name: {{cookiecutter._network_name}}
 
 volumes:
   {{cookiecutter.project_slug}}_mysql_volumen:
@@ -55,4 +61,4 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mysql
+      device: {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mysql

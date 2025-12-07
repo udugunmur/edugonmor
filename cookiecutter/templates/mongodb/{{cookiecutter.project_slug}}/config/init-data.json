@@ -1,11 +1,11 @@
 {
-  "description": "Initial data configuration for MongoDB {{cookiecutter.mongo_version}}",
+  "description": "Initial data configuration for MongoDB {{cookiecutter._mongo_version}}",
   "users": [
     {
       "username": "app_user",
       "password": "app_password_dev",
       "roles": [
-        { "role": "readWrite", "db": "{{cookiecutter.mongo_database}}" }
+        { "role": "readWrite", "db": "{{cookiecutter._mongo_database}}" }
       ],
       "description": "Application user with read/write access to app database"
     },
@@ -13,7 +13,7 @@
       "username": "readonly_user",
       "password": "readonly_password_dev",
       "roles": [
-        { "role": "read", "db": "{{cookiecutter.mongo_database}}" }
+        { "role": "read", "db": "{{cookiecutter._mongo_database}}" }
       ],
       "description": "Read-only user for reporting"
     }
@@ -21,7 +21,7 @@
   "collections": [
     {
       "name": "config",
-      "database": "{{cookiecutter.mongo_database}}",
+      "database": "{{cookiecutter._mongo_database}}",
       "documents": [
         {
           "key": "app_version",
@@ -30,7 +30,7 @@
         },
         {
           "key": "initialized_at",
-          "value": "{{cookiecutter.project_name}}",
+          "value": "{{cookiecutter._project_name}}",
           "description": "Project name"
         }
       ]
@@ -39,7 +39,7 @@
   "indexes": [
     {
       "collection": "config",
-      "database": "{{cookiecutter.mongo_database}}",
+      "database": "{{cookiecutter._mongo_database}}",
       "keys": { "key": 1 },
       "options": { "unique": true }
     }

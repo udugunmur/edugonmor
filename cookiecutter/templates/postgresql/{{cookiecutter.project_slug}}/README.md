@@ -1,4 +1,4 @@
-# {{cookiecutter.project_name}}
+# {{cookiecutter._project_name}}
 
 ## Estándar de Infraestructura
 
@@ -16,7 +16,7 @@ Este proyecto sigue estrictamente el patrón de infraestructura "Standard Patter
     *   Prohibido el uso de Docker Secrets (`secrets:`).
     *   Credenciales inyectadas vía variables de entorno.
 4.  **Redes:**
-    *   Red dedicada: `{{cookiecutter.network_name}}`
+    *   Red dedicada: `{{cookiecutter._network_name}}`
 
 ## Comandos Rápidos
 

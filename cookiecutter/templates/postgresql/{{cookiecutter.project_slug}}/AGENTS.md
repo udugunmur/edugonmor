@@ -13,7 +13,7 @@ Actúa como un **Arquitecto de Software Senior, QA Lead y Experto en Infraestruc
 
 - **Docker**: https://docs.docker.com/
 - **Docker Compose**: https://docs.docker.com/compose/
-- **PostgreSQL {{cookiecutter.postgres_version}}**: https://www.postgresql.org/docs/{{cookiecutter.postgres_version}}/
+- **PostgreSQL {{cookiecutter._postgres_version}}**: https://www.postgresql.org/docs/{{cookiecutter._postgres_version}}/
 - **[Librería Crítica]**: [Poner Link Aquí]
 
 *(Si detectas una tecnología en el código que no está en esta lista, busca su documentación oficial más reciente compatible con `package.json` o similar).*

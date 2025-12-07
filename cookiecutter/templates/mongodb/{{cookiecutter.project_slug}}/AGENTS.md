@@ -13,7 +13,7 @@ Actúa como un **Arquitecto de Software Senior, QA Lead y Experto en Infraestruc
 
 - **Docker**: https://docs.docker.com/
 - **Docker Compose**: https://docs.docker.com/compose/
-- **MongoDB**: https://www.mongodb.com/docs/v{{cookiecutter.mongo_version}}/
+- **MongoDB**: https://www.mongodb.com/docs/v{{cookiecutter._mongo_version}}/
 - **MongoDB Database Tools (mongodump/mongorestore)**: https://www.mongodb.com/docs/database-tools/
 
 *(Si detectas una tecnología en el código que no está en esta lista, busca su documentación oficial más reciente compatible con `package.json` o similar).*
@@ -56,9 +56,9 @@ Al final de tu respuesta, genera un bloque:
 
 | Variable | Valor | Ubicación | Descripción |
 |----------|-------|-----------|-------------|
-| `MONGO_INITDB_ROOT_USERNAME` | `{{cookiecutter.mongo_root_user}}` | `.env` | Usuario root MongoDB |
-| `MONGO_INITDB_ROOT_PASSWORD` | `{{cookiecutter.mongo_root_password}}` | `.env` | Contraseña root MongoDB |
-| `MONGO_INITDB_DATABASE` | `{{cookiecutter.mongo_database}}` | `.env` | Base de datos inicial |
+| `MONGO_INITDB_ROOT_USERNAME` | `{{cookiecutter._mongo_root_user}}` | `.env` | Usuario root MongoDB |
+| `MONGO_INITDB_ROOT_PASSWORD` | `{{cookiecutter._mongo_root_password}}` | `.env` | Contraseña root MongoDB |
+| `MONGO_INITDB_DATABASE` | `{{cookiecutter._mongo_database}}` | `.env` | Base de datos inicial |
 | `NEXUS_USER` | `nexus_user` | `.env` | Usuario Nexus Registry |
 | `NEXUS_PASSWORD` | `nexus_password` | `.env` | Contraseña Nexus Registry |
 
@@ -108,8 +108,8 @@ Este proyecto utiliza las herramientas oficiales de MongoDB para backups:
 
 ### 🔄 Servicio de Backup Automático
 El servicio `{{cookiecutter.project_slug}}_backup`:
-- Ejecuta backups automáticos según cron: `{{cookiecutter.cron_schedule}}`
-- Retención de backups: `{{cookiecutter.backup_retention}}` días
+- Ejecuta backups automáticos según cron: `{{cookiecutter._cron_schedule}}`
+- Retención de backups: `{{cookiecutter._backup_retention}}` días
 - Almacenamiento: `/backup` (mapeado a `docker/backups/`)
 
 ### 📋 Comandos Útiles
@@ -143,9 +143,9 @@ Para optimizar tiempos de despliegue y garantizar la inmutabilidad de los entorn
 ### 🛡️ Política de Backups (Rclone Centralizado)
 La persistencia de datos está protegida mediante el sistema centralizado de backups (**rclone**).
 
-*   **Alcance**: Backups de MongoDB sincronizados con `{{cookiecutter.rclone_base_path}}`
+*   **Alcance**: Backups de MongoDB sincronizados con `{{cookiecutter._rclone_base_path}}`
 *   **Mecanismo**: Los backups se copian al volumen de rclone para sincronización con la nube.
-*   **Frecuencia**: Según cron schedule: `{{cookiecutter.cron_schedule}}`
+*   **Frecuencia**: Según cron schedule: `{{cookiecutter._cron_schedule}}`
 
 ---
 
@@ -155,13 +155,13 @@ La persistencia de datos está protegida mediante el sistema centralizado de bac
 
 ```bash
 # Conexión con mongosh (cliente oficial)
-docker exec -it {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter.mongo_root_user}} -p {{cookiecutter.mongo_root_password}}
+docker exec -it {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter._mongo_root_user}} -p {{cookiecutter._mongo_root_password}}
 
 # Verificar estado
 docker exec {{cookiecutter.project_slug}}_services mongosh --eval "db.adminCommand('ping')"
 
 # Listar bases de datos
-docker exec {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter.mongo_root_user}} -p {{cookiecutter.mongo_root_password}} --eval "show dbs"
+docker exec {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter._mongo_root_user}} -p {{cookiecutter._mongo_root_password}} --eval "show dbs"
 ```
 
 ### 🧪 Tests de Conectividad

@@ -6,14 +6,19 @@ TIMESTAMP=$(date +"%d%m%Y_%H%M%S")
 BACKUP_DIR="/backups"
 BACKUP_FILE="${BACKUP_DIR}/backup_${TIMESTAMP}.sql.gz"
 
-echo "[$(date)] Iniciando backup de PostgreSQL..."
+echo "[$(date)] Iniciando backup de MySQL..."
 
-# Ejecutar backup (pg_dumpall para cluster completo)
-PGPASSWORD="${POSTGRES_PASSWORD}" pg_dumpall \
-    -h "${POSTGRES_HOST}" \
-    -U "${POSTGRES_USER}" \
-    --clean \
-    --if-exists \
+# Ejecutar backup (mysqldump --all-databases)
+# Importante: --single-transaction para InnoDB
+mysqldump \
+    -h "${MYSQL_HOST}" \
+    -u "${MYSQL_USER}" \
+    -p"${MYSQL_PASS}" \
+    --all-databases \
+    --single-transaction \
+    --routines \
+    --triggers \
+    --events \
     | gzip > "${BACKUP_FILE}"
 
 echo "[$(date)] Backup completado: ${BACKUP_FILE}"

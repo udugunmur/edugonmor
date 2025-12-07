@@ -1,11 +1,11 @@
-# 📋 Guía de Verificación - {{cookiecutter.project_name}}
+# 📋 Guía de Verificación - {{cookiecutter._project_name}}
 
 ## Pasos para Verificar la Plantilla MariaDB
 
 ### 1. Crear directorio de salida para backups (requerido por el volumen)
 
 ```bash
-mkdir -p {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
+mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
 ```
 
 ### 2. Verificar sintaxis de docker-compose
@@ -17,7 +17,7 @@ docker compose config --quiet && echo "✅ MariaDB docker-compose OK"
 ### 3. Crear red compartida si no existe
 
 ```bash
-docker network create {{cookiecutter.network_name}} 2>/dev/null || echo "Red ya existe"
+docker network create {{cookiecutter._network_name}} 2>/dev/null || echo "Red ya existe"
 ```
 
 ### 4. Construir y levantar servicios
@@ -35,7 +35,7 @@ docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb-admin ping -h
 ### 6. Verificar que el usuario root tiene permisos
 
 ```bash
-docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb -u root -p{{cookiecutter.db_root_password}} -e "SHOW DATABASES;"
+docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb -u root -p{{cookiecutter._db_root_password}} -e "SHOW DATABASES;"
 ```
 
 ### 7. Probar backup manual
@@ -47,7 +47,7 @@ docker exec {{cookiecutter.project_slug}}_backup /usr/local/bin/backup.sh
 ### 8. Verificar archivo de backup creado
 
 ```bash
-ls -la {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb/
+ls -la {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb/
 ```
 
 ---
@@ -57,12 +57,12 @@ ls -la {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb/
 **Error de volumen no encontrado:**
 ```bash
 # Crear directorio de backups manualmente
-mkdir -p {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
+mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
 ```
 
 **Error de red no encontrada:**
 ```bash
-docker network create {{cookiecutter.network_name}}
+docker network create {{cookiecutter._network_name}}
 ```
 
 **Error de conexión a MariaDB:**
@@ -77,12 +77,12 @@ docker compose logs {{cookiecutter.project_slug}}_mariadb_services
 
 ### Listar bases de datos
 ```bash
-docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb -u root -p{{cookiecutter.db_root_password}} -e "SHOW DATABASES;"
+docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb -u root -p{{cookiecutter._db_root_password}} -e "SHOW DATABASES;"
 ```
 
 ### Verificar usuarios
 ```bash
-docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb -u root -p{{cookiecutter.db_root_password}} -e "SELECT user, host FROM mysql.user;"
+docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb -u root -p{{cookiecutter._db_root_password}} -e "SELECT user, host FROM mysql.user;"
 ```
 
 ### Ver logs del servicio

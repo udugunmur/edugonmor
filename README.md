@@ -73,6 +73,13 @@ Cada directorio contiene su propia documentación:
 
 El servicio `rclone/` gestiona los backups centralizados de todos los volúmenes persistentes.
 
+### Estrategia de Backup
+Todos los servicios de base de datos implementan el patrón **Official Sidecar**:
+1. Contenedor dedicado `_backup` basado en la **imagen oficial** de la tecnología.
+2. Cron job interno para dumps periódicos.
+3. Volúmenes montados en `rclone/` para sincronización cloud.
+4. **Cero dependencias** de imágenes de terceros para procesos críticos.
+
 ---
 
 **Edugonmor Infrastructure** - Mantenido bajo Protocolo Maestro

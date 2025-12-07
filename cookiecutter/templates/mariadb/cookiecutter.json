@@ -1,11 +1,11 @@
 {
-  "project_name": "MariaDB Project",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "mariadb_version": "11.4",
-  "mariadb_port": "3306",
-  "db_root_password": "root_password_dev",
-  "backup_retention": "10",
-  "cron_schedule": "0 3 * * *",
-  "network_name": "shared_network",
-  "rclone_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
+  "_project_name": "MariaDB Project",
+  "project_slug": "{{ cookiecutter._project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_mariadb_version": "11.4",
+  "_mariadb_port": "3306",
+  "_db_root_password": "root_password_dev",
+  "_backup_retention": "10",
+  "_cron_schedule": "0 3 * * *",
+  "_network_name": "shared_network",
+  "_rclone_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
 }

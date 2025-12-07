@@ -1,15 +1,15 @@
-# 🍃 {{cookiecutter.project_name}}
+# 🍃 {{cookiecutter._project_name}}
 
-> MongoDB {{cookiecutter.mongo_version}} - Base de datos NoSQL documental
+> MongoDB {{cookiecutter._mongo_version}} - Base de datos NoSQL documental
 
-[![MongoDB](https://img.shields.io/badge/MongoDB-{{cookiecutter.mongo_version}}-green?style=flat-square&logo=mongodb)](https://www.mongodb.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-{{cookiecutter._mongo_version}}-green?style=flat-square&logo=mongodb)](https://www.mongodb.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=flat-square&logo=docker)](https://docs.docker.com/compose/)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 ## 📋 Descripción
 
-Proyecto de base de datos MongoDB {{cookiecutter.mongo_version}} containerizada con Docker, incluyendo:
-- 🍃 MongoDB {{cookiecutter.mongo_version}} (imagen oficial)
+Proyecto de base de datos MongoDB {{cookiecutter._mongo_version}} containerizada con Docker, incluyendo:
+- 🍃 MongoDB {{cookiecutter._mongo_version}} (imagen oficial)
 - 🔄 Sistema de backups automáticos con `mongodump`
 - 🔒 Configuración segura con variables de entorno
 - 📊 Healthchecks integrados
@@ -42,7 +42,7 @@ docker compose ps
 ### Cadena de Conexión
 
 ```
-mongodb://{{cookiecutter.mongo_root_user}}:{{cookiecutter.mongo_root_password}}@localhost:{{cookiecutter.mongo_port}}/{{cookiecutter.mongo_database}}?authSource=admin
+mongodb://{{cookiecutter._mongo_root_user}}:{{cookiecutter._mongo_root_password}}@localhost:{{cookiecutter._mongo_port}}/{{cookiecutter._mongo_database}}?authSource=admin
 ```
 
 ### Conexión con mongosh
@@ -50,8 +50,8 @@ mongodb://{{cookiecutter.mongo_root_user}}:{{cookiecutter.mongo_root_password}}@
 ```bash
 # Conectar al contenedor
 docker exec -it {{cookiecutter.project_slug}}_services mongosh \
-  -u {{cookiecutter.mongo_root_user}} \
-  -p {{cookiecutter.mongo_root_password}} \
+  -u {{cookiecutter._mongo_root_user}} \
+  -p {{cookiecutter._mongo_root_password}} \
   --authenticationDatabase admin
 ```
 
@@ -60,7 +60,7 @@ docker exec -it {{cookiecutter.project_slug}}_services mongosh \
 ```javascript
 const { MongoClient } = require('mongodb');
 
-const uri = 'mongodb://{{cookiecutter.mongo_root_user}}:{{cookiecutter.mongo_root_password}}@localhost:{{cookiecutter.mongo_port}}/{{cookiecutter.mongo_database}}?authSource=admin';
+const uri = 'mongodb://{{cookiecutter._mongo_root_user}}:{{cookiecutter._mongo_root_password}}@localhost:{{cookiecutter._mongo_port}}/{{cookiecutter._mongo_database}}?authSource=admin';
 const client = new MongoClient(uri);
 
 async function run() {
@@ -95,7 +95,7 @@ async function run() {
 ## 🔄 Sistema de Backups
 
 ### Backup Automático
-Los backups se ejecutan automáticamente según el cron configurado: `{{cookiecutter.cron_schedule}}`
+Los backups se ejecutan automáticamente según el cron configurado: `{{cookiecutter._cron_schedule}}`
 
 ```bash
 # Backup manual
@@ -116,7 +116,7 @@ docker exec -it {{cookiecutter.project_slug}}_backup /scripts/restore.sh mongodb
 ```
 
 ### Retención
-Los backups se retienen por **{{cookiecutter.backup_retention}} días** antes de ser eliminados automáticamente.
+Los backups se retienen por **{{cookiecutter._backup_retention}} días** antes de ser eliminados automáticamente.
 
 ## ⚙️ Configuración
 
@@ -124,16 +124,16 @@ Los backups se retienen por **{{cookiecutter.backup_retention}} días** antes de
 
 | Variable | Descripción | Default |
 |----------|-------------|---------|
-| `MONGO_INITDB_ROOT_USERNAME` | Usuario root | `{{cookiecutter.mongo_root_user}}` |
-| `MONGO_INITDB_ROOT_PASSWORD` | Contraseña root | `{{cookiecutter.mongo_root_password}}` |
-| `MONGO_INITDB_DATABASE` | Base de datos inicial | `{{cookiecutter.mongo_database}}` |
+| `MONGO_INITDB_ROOT_USERNAME` | Usuario root | `{{cookiecutter._mongo_root_user}}` |
+| `MONGO_INITDB_ROOT_PASSWORD` | Contraseña root | `{{cookiecutter._mongo_root_password}}` |
+| `MONGO_INITDB_DATABASE` | Base de datos inicial | `{{cookiecutter._mongo_database}}` |
 | `TZ` | Zona horaria | `Europe/Madrid` |
 
 ### Puertos
 
 | Puerto | Servicio | Descripción |
 |--------|----------|-------------|
-| `{{cookiecutter.mongo_port}}` | MongoDB | Conexiones cliente |
+| `{{cookiecutter._mongo_port}}` | MongoDB | Conexiones cliente |
 
 ## 🧪 Verificación
 
@@ -146,8 +146,8 @@ docker exec {{cookiecutter.project_slug}}_services mongosh --eval "db.adminComma
 
 # Listar bases de datos
 docker exec {{cookiecutter.project_slug}}_services mongosh \
-  -u {{cookiecutter.mongo_root_user}} \
-  -p {{cookiecutter.mongo_root_password}} \
+  -u {{cookiecutter._mongo_root_user}} \
+  -p {{cookiecutter._mongo_root_password}} \
   --authenticationDatabase admin \
   --eval "show dbs"
 ```
@@ -173,7 +173,7 @@ docker exec -it {{cookiecutter.project_slug}}_services bash
 
 ## 📚 Documentación
 
-- [MongoDB {{cookiecutter.mongo_version}} Documentation](https://www.mongodb.com/docs/v{{cookiecutter.mongo_version}}/)
+- [MongoDB {{cookiecutter._mongo_version}} Documentation](https://www.mongodb.com/docs/v{{cookiecutter._mongo_version}}/)
 - [MongoDB Database Tools](https://www.mongodb.com/docs/database-tools/)
 - [Docker MongoDB Official Image](https://hub.docker.com/_/mongo)
 

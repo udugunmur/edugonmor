@@ -15,17 +15,16 @@ services:
       - {{cookiecutter.project_slug}}_volumen:/var/lib/postgresql/data
       - ./config/init-data.json:/etc/postgresql-custom/init-data.json:ro
     networks:
-      - {{cookiecutter.network_name}}
+      - {{cookiecutter._network_name}}
+    ports:
+      - "${POSTGRES_PORT}:5432"
     command: [
       "postgres",
       "-c",
       "config_file=/etc/postgresql/postgresql.conf"
     ]
     healthcheck:
-      test: [
-        "CMD-SHELL",
-        "pg_isready -U ${POSTGRES_USER:-postgres}"
-      ]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 30s
       timeout: 5s
       retries: 5
@@ -34,30 +33,33 @@ services:
       resources:
         limits:
           cpus: '2'
-          memory: 2G
+          memory: 4G
         reservations:
           cpus: '0.5'
-          memory: 512M
+          memory: 1G
 
   {{cookiecutter.project_slug}}_backup:
-    image: prodrigestivill/postgres-backup-local
+    image: {{cookiecutter.project_slug}}_backup:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+      network: host
     container_name: {{cookiecutter.project_slug}}_backup
     restart: always
     env_file:
       - .env
     environment:
       - POSTGRES_HOST={{cookiecutter.project_slug}}_services
-      - POSTGRES_DB=${POSTGRES_DB:-postgres}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_CLUSTER=TRUE
-      - POSTGRES_EXTRA_OPTS=
-      - SCHEDULE={{cookiecutter.cron_schedule}}
-      - BACKUP_KEEP_DAYS={{cookiecutter.backup_retention}}
+      - BACKUP_RETENTION=${BACKUP_RETENTION}
+      - CRON_SCHEDULE=${CRON_SCHEDULE}
+      - INIT_BACKUP=1
     volumes:
       - {{cookiecutter.project_slug}}_backups:/backups
     networks:
-      - {{cookiecutter.network_name}}
+      - {{cookiecutter._network_name}}
     depends_on:
       {{cookiecutter.project_slug}}_services:
         condition: service_healthy
@@ -74,9 +76,9 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}
+      device: {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}
 
 networks:
-  {{cookiecutter.network_name}}:
+  {{cookiecutter._network_name}}:
     external: true
-    name: {{cookiecutter.network_name}}
+    name: {{cookiecutter._network_name}}

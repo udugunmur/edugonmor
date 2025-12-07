@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# MariaDB {{cookiecutter.mariadb_version}} - Backup Script (mariadb-dump)
+# MariaDB {{cookiecutter._mariadb_version}} - Backup Script (mariadb-dump)
 # ============================================================================
 # Documentación: https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview/#mariadb-dump
 # Herramienta: mariadb-dump (oficial MariaDB)
@@ -14,7 +14,7 @@ MARIADB_PORT="${MARIADB_PORT:-3306}"
 MARIADB_USER="${MARIADB_USER:-root}"
 MARIADB_PASSWORD="${MARIADB_PASSWORD}"
 BACKUP_DIR="${BACKUP_DIR:-/backup}"
-BACKUP_RETENTION="${BACKUP_RETENTION:-{{cookiecutter.backup_retention}}}"
+BACKUP_RETENTION="${BACKUP_RETENTION:-{{cookiecutter._backup_retention}}}"
 
 # Generar nombre de archivo con timestamp
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")

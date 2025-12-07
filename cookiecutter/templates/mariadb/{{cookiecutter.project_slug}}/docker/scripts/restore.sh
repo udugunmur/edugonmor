@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# MariaDB {{cookiecutter.mariadb_version}} - Restore Script
+# MariaDB {{cookiecutter._mariadb_version}} - Restore Script
 # ============================================================================
 # Documentación: https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview/#mariadb-dump
 # Uso: ./restore.sh [backup_file.sql.gz]

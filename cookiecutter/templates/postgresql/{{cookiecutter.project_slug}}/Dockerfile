@@ -1,6 +1,6 @@
-# PostgreSQL {{cookiecutter.postgres_version}} - Imagen oficial
-# Documentación: https://www.postgresql.org/docs/{{cookiecutter.postgres_version}}/
-FROM postgres:{{cookiecutter.postgres_version}}
+# PostgreSQL {{cookiecutter._postgres_version}} - Imagen oficial
+# Documentación: https://www.postgresql.org/docs/{{cookiecutter._postgres_version}}/
+FROM postgres:{{cookiecutter._postgres_version}}
 
 # Instalar jq y gettext-base (para envsubst) para procesar archivos JSON y variables
 RUN apt-get update && apt-get install -y jq gettext-base && rm -rf /var/lib/apt/lists/*

@@ -1,9 +1,9 @@
 #!/bin/bash
 # ============================================================================
-# MongoDB {{cookiecutter.mongo_version}} - Database Initialization Script
+# MongoDB {{cookiecutter._mongo_version}} - Database Initialization Script
 # ============================================================================
 # Maintainer: edugonmor
-# Version: {{cookiecutter.mongo_version}}
+# Version: {{cookiecutter._mongo_version}}
 # Last Updated: 2025-12-04
 # Description: Initializes database, users, and sample collections
 # ============================================================================
@@ -19,7 +19,7 @@ MONGO_HOST="localhost"
 MONGO_PORT="27017"
 MONGO_URI="mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}"
 
-echo "🔧 Initializing MongoDB {{cookiecutter.mongo_version}}..."
+echo "🔧 Initializing MongoDB {{cookiecutter._mongo_version}}..."
 
 # Crear base de datos y usuario de aplicación
 mongosh "${MONGO_URI}/admin" <<EOF
@@ -54,7 +54,7 @@ db.config.insertMany([
     },
     {
         key: "project_name",
-        value: "{{cookiecutter.project_name}}",
+        value: "{{cookiecutter._project_name}}",
         description: "Project name",
         created_at: new Date()
     }

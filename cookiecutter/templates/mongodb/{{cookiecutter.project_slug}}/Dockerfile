@@ -1,6 +1,6 @@
-# MongoDB {{cookiecutter.mongo_version}} - Imagen oficial
-# Documentación: https://www.mongodb.com/docs/v{{cookiecutter.mongo_version}}/
-FROM mongo:{{cookiecutter.mongo_version}}
+# MongoDB {{cookiecutter._mongo_version}} - Imagen oficial
+# Documentación: https://www.mongodb.com/docs/v{{cookiecutter._mongo_version}}/
+FROM mongo:{{cookiecutter._mongo_version}}
 
 # Instalar herramientas adicionales
 RUN apt-get update && apt-get install -y \

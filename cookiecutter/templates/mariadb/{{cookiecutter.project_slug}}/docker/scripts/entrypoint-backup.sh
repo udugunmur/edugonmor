@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# MariaDB {{cookiecutter.mariadb_version}} - Backup Entrypoint
+# MariaDB {{cookiecutter._mariadb_version}} - Backup Entrypoint
 # ============================================================================
 # Configura cron y ejecuta el scheduler
 # ============================================================================

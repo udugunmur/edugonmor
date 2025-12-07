@@ -124,9 +124,10 @@ proyecto/
 
 ### 🛡️ Backups (Rclone Centralizado)
 
-- Todos los volúmenes accesibles por `rclone/`
-- Montaje en modo lectura (`:ro`)
-- Sincronización automática con nube
+- **Estrategia**: Sidecar container basado en **IMAGEN OFICIAL** + cron.
+- **Ubicación**: Todos los volúmenes accesibles por `rclone/`.
+- **Sincronización**: Automática con nube vía Rclone.
+- **Prohibido**: Imágenes de backup de terceros (security risk).
 
 ---
 

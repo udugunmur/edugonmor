@@ -29,9 +29,9 @@ echo "Esperando 5 segundos antes de continuar..."
 sleep 5
 
 # Restaurar
-gunzip < "${BACKUP_FILE}" | PGPASSWORD="${POSTGRES_PASSWORD}" psql \
-    -h "${POSTGRES_HOST}" \
-    -U "${POSTGRES_USER}" \
-    postgres
+gunzip < "${BACKUP_FILE}" | mysql \
+    -h "${MYSQL_HOST}" \
+    -u "${MYSQL_USER}" \
+    -p"${MYSQL_PASS}"
 
 echo "[$(date)] Restauración completada."

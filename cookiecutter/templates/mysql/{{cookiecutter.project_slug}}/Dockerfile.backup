@@ -1,19 +1,21 @@
 # ============================================================================
-# MariaDB {{cookiecutter._mariadb_version}} Backup - Imagen oficial con cron
+# MySQL {{cookiecutter._mysql_version}} Backup - Imagen oficial con cron
 # ============================================================================
-# Documentación: https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview/#mariadb-dump
-# Herramienta: mariadb-dump (incluida en imagen oficial)
+# Documentación: https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html
+# Herramienta: mysqldump (incluida en imagen oficial)
 # ============================================================================
-FROM mariadb:{{cookiecutter._mariadb_version}}
+FROM mysql:{{cookiecutter._mysql_version}}
 
 LABEL maintainer="edugonmor"
-LABEL description="MariaDB Backup Service with mariadb-dump and cron"
-LABEL version="{{cookiecutter._mariadb_version}}"
+LABEL description="MySQL Backup Service with mysqldump and cron"
+LABEL version="{{cookiecutter._mysql_version}}"
 
 # Instalar cron en BUILD TIME (no en runtime)
-RUN apt-get update && apt-get install -y \
-    cron \
-    && rm -rf /var/lib/apt/lists/*
+RUN microdnf update && microdnf install -y \
+    cronie \
+    gzip \
+    findutils \
+    && microdnf clean all
 
 # Copiar scripts de backup
 COPY docker/scripts/backup.sh /usr/local/bin/backup.sh
@@ -26,7 +28,7 @@ RUN chmod +x /usr/local/bin/backup.sh \
     /usr/local/bin/entrypoint-backup.sh
 
 # Crear directorio de backups
-RUN mkdir -p /backup
+RUN mkdir -p /backups
 
 # Usar entrypoint personalizado que configura cron
 ENTRYPOINT ["/usr/local/bin/entrypoint-backup.sh"]

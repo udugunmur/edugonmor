@@ -1,6 +1,6 @@
-# MongoDB {{cookiecutter.mongo_version}} Backup - Imagen oficial con cron
+# MongoDB {{cookiecutter._mongo_version}} Backup - Imagen oficial con cron
 # Documentación: https://www.mongodb.com/docs/database-tools/mongodump/
-FROM mongo:{{cookiecutter.mongo_version}}
+FROM mongo:{{cookiecutter._mongo_version}}
 
 # Instalar cron y herramientas necesarias en BUILD TIME (no en runtime)
 RUN apt-get update && apt-get install -y \

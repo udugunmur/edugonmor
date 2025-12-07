@@ -11,7 +11,7 @@ if not re.match(MODULE_REGEX, project_slug):
 
 # Validate mongo_version
 valid_versions = ['6.0', '7.0', '8.0']
-mongo_version = '{{ cookiecutter.mongo_version }}'
+mongo_version = '{{ cookiecutter._mongo_version }}'
 if mongo_version not in valid_versions:
     print('ERROR: mongo_version (%s) is not valid. Use one of: %s' % (mongo_version, ', '.join(valid_versions)))
     sys.exit(1)

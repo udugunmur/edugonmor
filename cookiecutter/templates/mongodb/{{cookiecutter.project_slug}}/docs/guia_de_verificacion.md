@@ -1,11 +1,11 @@
-# 📋 Guía de Verificación - {{cookiecutter.project_name}}
+# 📋 Guía de Verificación - {{cookiecutter._project_name}}
 
 ## Pasos para Verificar la Plantilla MongoDB
 
 ### 1. Crear directorio de salida para backups (requerido por el volumen)
 
 ```bash
-mkdir -p {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}
+mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}
 ```
 
 ### 2. Crear directorio de volumen de datos
@@ -35,7 +35,7 @@ docker exec {{cookiecutter.project_slug}}_services mongosh --eval "db.adminComma
 ### 6. Verificar que el usuario tiene permisos root
 
 ```bash
-docker exec {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter.mongo_root_user}} -p {{cookiecutter.mongo_root_password}} --authenticationDatabase admin --eval "db.adminCommand({listDatabases: 1})"
+docker exec {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter._mongo_root_user}} -p {{cookiecutter._mongo_root_password}} --authenticationDatabase admin --eval "db.adminCommand({listDatabases: 1})"
 ```
 
 ### 7. Probar backup manual
@@ -47,7 +47,7 @@ docker exec {{cookiecutter.project_slug}}_backup /usr/local/bin/backup.sh
 ### 8. Verificar archivo de backup creado
 
 ```bash
-ls -la {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/
+ls -la {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/
 ```
 
 ---
@@ -58,12 +58,12 @@ ls -la {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/
 ```bash
 # Crear directorios manualmente
 mkdir -p docker/volumes/{{cookiecutter.project_slug}}_volumen
-mkdir -p {{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}
+mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}
 ```
 
 **Error de red no encontrada:**
 ```bash
-docker network create {{cookiecutter.network_name}}
+docker network create {{cookiecutter._network_name}}
 ```
 
 ---
@@ -72,7 +72,7 @@ docker network create {{cookiecutter.network_name}}
 
 ### Listar bases de datos
 ```bash
-docker exec {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter.mongo_root_user}} -p {{cookiecutter.mongo_root_password}} --authenticationDatabase admin --eval "show dbs"
+docker exec {{cookiecutter.project_slug}}_services mongosh -u {{cookiecutter._mongo_root_user}} -p {{cookiecutter._mongo_root_password}} --authenticationDatabase admin --eval "show dbs"
 ```
 
 ### Ver logs del servicio

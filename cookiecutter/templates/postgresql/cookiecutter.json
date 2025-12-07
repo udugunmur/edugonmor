@@ -1,13 +1,13 @@
 {
-  "project_name": "PostgreSQL Project",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "postgres_version": "16",
-  "postgres_port": "5432",
-  "postgres_user": "postgres",
-  "postgres_db": "postgres",
-  "db_root_password": "change_me_in_prod",
-  "backup_retention": "7",
-  "cron_schedule": "0 3 * * *",
-  "network_name": "shared_network",
-  "rclone_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
+  "_project_name": "PostgreSQL Project",
+  "project_slug": "{{ cookiecutter._project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_postgres_version": "16",
+  "_postgres_port": "5432",
+  "_postgres_user": "postgres",
+  "_postgres_db": "postgres",
+  "_db_root_password": "change_me_in_prod",
+  "_backup_retention": "7",
+  "_cron_schedule": "0 3 * * *",
+  "_network_name": "shared_network",
+  "_rclone_base_path": "/home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen"
 }

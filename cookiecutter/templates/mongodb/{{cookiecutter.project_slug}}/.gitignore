@@ -1,5 +1,5 @@
 # ============================================================================
-# .gitignore for MongoDB {{cookiecutter.mongo_version}} Project
+# .gitignore for MongoDB {{cookiecutter._mongo_version}} Project
 # ============================================================================
 
 
