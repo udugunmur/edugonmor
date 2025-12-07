@@ -5,7 +5,7 @@
 ### 1. Crear directorio de salida para backups (requerido por el volumen)
 
 ```bash
-mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}
+mkdir -p {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}
 ```
 
 ### 2. Crear directorio de volumen de datos
@@ -47,7 +47,7 @@ docker exec {{cookiecutter.project_slug}}_backup /usr/local/bin/backup.sh
 ### 8. Verificar archivo de backup creado
 
 ```bash
-ls -la {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/
+ls -la {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/
 ```
 
 ---
@@ -58,7 +58,7 @@ ls -la {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/
 ```bash
 # Crear directorios manualmente
 mkdir -p docker/volumes/{{cookiecutter.project_slug}}_volumen
-mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}
+mkdir -p {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}
 ```
 
 **Error de red no encontrada:**

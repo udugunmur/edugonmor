@@ -75,7 +75,7 @@ docker exec postgresql_project_backup /usr/local/bin/backup.sh
 **Validar creación del archivo:**
 ```bash
 # Listar contenido del volumen de backups (mapeado localmente)
-ls -R ../../rclone/docker/volumes/rclone_local_backup_volumen/postgresql_project/postgresql/
+ls -R ../../backups/postgresql_project/
 ```
 *Deberías ver un archivo `.sql.gz` con la fecha actual.*
 

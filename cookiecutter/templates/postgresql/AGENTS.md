@@ -70,7 +70,7 @@ La IA debe respetar estrictamente esta jerarquía. No crees archivos fuera de su
 ```text
 nombre-repo/
 ├── .devcontainer/               # 🛠️ ENTORNO (VS Code / Codespaces)
-│   ├── devcontainer.json        # Configuración (extensiones, settings)
+│   ├── devcontainer.json      - [ ] Configurar backup en local `./backups`s, settings)
 │   └── Dockerfile               # Imagen para DESARROLLAR (git, zsh, linter)
 │
 ├── .github/                     # 🤖 AUTOMATIZACIÓN (CI/CD)
@@ -146,18 +146,11 @@ Para optimizar tiempos de despliegue y garantizar la inmutabilidad de los entorn
 2.  **Publicación**: Una vez validada, la imagen DEBE subirse al registro local.
 3.  **Producción**: El despliegue final (`docker-compose up`) DEBE consumir la imagen desde el registro, no construirla en tiempo de ejecución.
 
-### 🛡️ Política de Backups (Rclone Centralizado - rclone)
-La persistencia de datos de este servicio está protegida mediante el sistema centralizado de backups (**rclone**).
+### 🛡️ Política de Backups (Local Host Mount)
+La persistencia de datos de este servicio está protegida mediante dumps locales sincronizados al host.
 
-*   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
-*   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
-*   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
-
-### 🛡️ Política de Backups (Rclone Centralizado - rclone)
-La persistencia de datos de este servicio está protegida mediante el sistema centralizado de backups (**rclone**).
-
-*   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
-*   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
-*   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
+*   **Alcance**: Todos los volúmenes persistentes se montan en el host.
+*   **Mecanismo**: Volúmenes montados en `{{cookiecutter._host_backup_path}}`.
+*   **Frecuencia**: Las copias se realizan automáticamente mediante cron interno.
 
 ---

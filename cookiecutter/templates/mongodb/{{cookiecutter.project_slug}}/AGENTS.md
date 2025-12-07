@@ -140,12 +140,12 @@ Para optimizar tiempos de despliegue y garantizar la inmutabilidad de los entorn
 2.  **Publicación**: Una vez validada, la imagen DEBE subirse al registro local.
 3.  **Producción**: El despliegue final (`docker-compose up`) DEBE consumir la imagen desde el registro.
 
-### 🛡️ Política de Backups (Rclone Centralizado)
-La persistencia de datos está protegida mediante el sistema centralizado de backups (**rclone**).
+### 🛡️ Política de Backups (Local Host Mount)
+La persistencia de datos de este servicio está protegida mediante dumps locales sincronizados al host.
 
-*   **Alcance**: Backups de MongoDB sincronizados con `{{cookiecutter._rclone_base_path}}`
-*   **Mecanismo**: Los backups se copian al volumen de rclone para sincronización con la nube.
-*   **Frecuencia**: Según cron schedule: `{{cookiecutter._cron_schedule}}`
+*   **Alcance**: Todos los volúmenes persistentes se montan en el host.
+*   **Mecanismo**: Volúmenes montados en `{{cookiecutter._host_backup_path}}`.
+*   **Frecuencia**: Las copias se realizan automáticamente mediante cron interno.
 
 ---
 

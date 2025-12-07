@@ -5,6 +5,7 @@
 # Documentación: https://www.mongodb.com/docs/database-tools/mongodump/
 
 set -e
+set -o pipefail
 
 # Configuración desde variables de entorno
 MONGO_HOST="${MONGO_HOST:-localhost}"

@@ -61,4 +61,4 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mysql
+      device: {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mysql

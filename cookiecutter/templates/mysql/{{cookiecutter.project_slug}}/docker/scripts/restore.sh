@@ -28,10 +28,11 @@ echo "⚠️  ADVERTENCIA: Esto borrará y sobrescribirá los datos actuales."
 echo "Esperando 5 segundos antes de continuar..."
 sleep 5
 
+export MYSQL_PWD="${MYSQL_PASSWORD}"
+
 # Restaurar
 gunzip < "${BACKUP_FILE}" | mysql \
     -h "${MYSQL_HOST}" \
-    -u "${MYSQL_USER}" \
-    -p"${MYSQL_PASS}"
+    -u "${MYSQL_USER}"
 
 echo "[$(date)] Restauración completada."

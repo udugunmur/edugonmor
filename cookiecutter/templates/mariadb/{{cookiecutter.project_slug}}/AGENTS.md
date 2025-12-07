@@ -70,7 +70,7 @@ La IA debe respetar estrictamente esta jerarquía. No crees archivos fuera de su
 ```text
 nombre-repo/
 ├── .devcontainer/               # 🛠️ ENTORNO (VS Code / Codespaces)
-│   ├── devcontainer.json        # Configuración (extensiones, settings)
+│   ├── devcontainer.json      - [ ] Configurar backup en local `./backups`s, settings)
 │   └── Dockerfile               # Imagen para DESARROLLAR (git, zsh, linter)
 │
 ├── .github/                     # 🤖 AUTOMATIZACIÓN (CI/CD)
@@ -161,6 +161,7 @@ Este servicio utiliza **mariadb-dump** (herramienta oficial de MariaDB) para bac
 | `--single-transaction` | Backup consistente sin bloquear tablas InnoDB | [Docs](https://mariadb.com/kb/en/mariadb-dump/#single-transaction) |
 | `--quick` | Descarga fila por fila (recomendado para tablas grandes) | [Docs](https://mariadb.com/kb/en/mariadb-dump/#q-quick) |
 | `--routines` | Incluye stored procedures y functions | [Docs](https://mariadb.com/kb/en/mariadb-dump/#r-routines) |
+
 | `--triggers` | Incluye triggers (habilitado por defecto) | [Docs](https://mariadb.com/kb/en/mariadb-dump/#triggers) |
 | `--events` | Incluye eventos del Event Scheduler | [Docs](https://mariadb.com/kb/en/mariadb-dump/#e-events) |
 | `--add-drop-database` | Añade DROP DATABASE antes de CREATE | [Docs](https://mariadb.com/kb/en/mariadb-dump/#add-drop-database) |
@@ -182,8 +183,8 @@ docker exec -it {{cookiecutter.project_slug}}_backup /usr/local/bin/restore.sh
 docker logs {{cookiecutter.project_slug}}_backup
 ```
 
-**Integración con Rclone:**
-*   Los backups se almacenan en `{{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb`
-*   Rclone sincroniza automáticamente con la nube según la política global
+**Integración con Host (Local Mount):**
+*   **Ubicación**: Todos los volúmenes accesibles por `./backups`.
+*   **Sincronización**: Gestionada externamente si es necesario.
 
 ---

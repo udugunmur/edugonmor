@@ -1,7 +1,7 @@
 FROM mysql:latest
 
-# Install jq for JSON processing
-RUN microdnf update && microdnf install -y jq && microdnf clean all
+# Install jq for JSON processing and tzdata for Timezone
+RUN microdnf update && microdnf install -y jq tzdata && microdnf clean all
 
 # Copy custom configuration
 COPY config/my.cnf /etc/mysql/conf.d/custom.cnf

@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -o pipefail
 
 # Configuración
 TIMESTAMP=$(date +"%d%m%Y_%H%M%S")

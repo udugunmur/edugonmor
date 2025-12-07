@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -o pipefail
 
 # Configuración
 TIMESTAMP=$(date +"%d%m%Y_%H%M%S")
@@ -8,12 +9,13 @@ BACKUP_FILE="${BACKUP_DIR}/backup_${TIMESTAMP}.sql.gz"
 
 echo "[$(date)] Iniciando backup de MySQL..."
 
+export MYSQL_PWD="${MYSQL_PASSWORD}"
+
 # Ejecutar backup (mysqldump --all-databases)
 # Importante: --single-transaction para InnoDB
 mysqldump \
     -h "${MYSQL_HOST}" \
     -u "${MYSQL_USER}" \
-    -p"${MYSQL_PASS}" \
     --all-databases \
     --single-transaction \
     --routines \

@@ -7,6 +7,7 @@
 # ============================================================================
 
 set -e
+set -o pipefail
 
 # Variables de entorno (inyectadas desde docker-compose)
 MARIADB_HOST="${MARIADB_HOST:-{{cookiecutter.project_slug}}_mariadb_services}"

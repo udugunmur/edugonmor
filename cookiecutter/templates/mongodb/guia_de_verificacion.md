@@ -76,7 +76,7 @@ docker exec mongodb_project_backup /usr/local/bin/backup.sh
 ```bash
 # Listar contenido del volumen de backups (mapeado localmente)
 # Revisa la ruta en 'volumes' del docker-compose.yml si es diferente.
-ls -R ../../rclone/docker/volumes/rclone_local_backup_volumen/mongodb_project/mongodb/
+ls -R ../../backups/mongodb_project/
 ```
 *Deberías ver un archivo `.archive` o `.gz` con la fecha actual.*
 

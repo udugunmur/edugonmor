@@ -78,7 +78,7 @@ docker exec mysql_project_backup /usr/local/bin/backup.sh
 **Validar creación del archivo:**
 ```bash
 # Listar contenido del volumen de backups (mapeado localmente)
-ls -R ../../rclone/docker/volumes/rclone_local_backup_volumen/mysql_project/mysql/
+ls -R ../../backups/mysql_project/mysql/
 ```
 *Deberías ver un archivo `.sql.gz` con la fecha actual.*
 

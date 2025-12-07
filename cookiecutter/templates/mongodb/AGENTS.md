@@ -23,8 +23,7 @@ Actúa como un **Arquitecto de Software Senior, QA Lead y Experto en Infraestruc
 
 ## 3. DESCRIPCIÓN DE LA PLANTILLA
 
-Esta es una plantilla Cookiecutter para generar proyectos MongoDB containerizados.
-
+Esta es una plantilla Cookiecutter para generar
 ### 🍃 Características
 - MongoDB 6.0, 7.0 o 8.0 (configurable)
 - Sistema de backups automáticos con `mongodump` (herramienta oficial)
@@ -98,7 +97,7 @@ Al final de tu respuesta, genera un bloque:
 | `backup_retention` | Días de retención de backups | `10` |
 | `cron_schedule` | Programación cron para backups | `0 3 * * *` |
 | `network_name` | Red Docker compartida | `shared_network` |
-| `rclone_base_path` | Ruta base para rclone | `/home/edugonmor/repos/rclone/...` |
+| `host_backup_path` | Ruta base para backups en host | `./backups` |
 
 ---
 

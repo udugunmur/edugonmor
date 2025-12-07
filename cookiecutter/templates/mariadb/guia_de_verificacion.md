@@ -75,9 +75,7 @@ docker exec mariadb_project_backup /usr/local/bin/backup.sh
 **Validar creación del archivo:**
 ```bash
 # Listar contenido del volumen de backups (mapeado localmente)
-# Revisa la ruta en 'volumes' del docker-compose.yml si es diferente, 
-# por defecto suele estar en una ruta rclone o local './backups' configurada en .env
-ls -R ../../rclone/docker/volumes/rclone_local_backup_volumen/mariadb_project/mariadb/
+ls -R ../../backups/mariadb_project/mariadb/
 ```
 *Deberías ver un archivo `.sql.gz` con la fecha actual.*
 
@@ -109,4 +107,4 @@ cd ../..
 rm -rf verification_output/mariadb_project
 ```
 
-> **Nota:** Los backups generados en el volumen persistente (rclone path) **NO** se borran con `docker compose down`. Debes borrarlos manualmente si es una prueba.
+> **Nota:** Los backups generados en el volumen persistente (host path) **NO** se borran con `docker compose down`. Debes borrarlos manualmente si es una prueba.

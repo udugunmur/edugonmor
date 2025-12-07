@@ -5,7 +5,7 @@
 ### 1. Crear directorio de salida para backups (requerido por el volumen)
 
 ```bash
-mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
+mkdir -p {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mariadb
 ```
 
 ### 2. Verificar sintaxis de docker-compose
@@ -47,7 +47,7 @@ docker exec {{cookiecutter.project_slug}}_backup /usr/local/bin/backup.sh
 ### 8. Verificar archivo de backup creado
 
 ```bash
-ls -la {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb/
+ls -la {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mariadb/
 ```
 
 ---
@@ -57,7 +57,7 @@ ls -la {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb/
 **Error de volumen no encontrado:**
 ```bash
 # Crear directorio de backups manualmente
-mkdir -p {{cookiecutter._rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb
+mkdir -p {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mariadb
 ```
 
 **Error de red no encontrada:**

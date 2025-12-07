@@ -20,6 +20,8 @@ else
     exit 1
 fi
 
+export MYSQL_PWD="$ROOT_PASS"
+
 echo "Processing init-data.json..."
 
 # Read users array
@@ -32,18 +34,18 @@ for ((i=0; i<$USERS_COUNT; i++)); do
     echo "Creating user: $USERNAME"
 
     # Create user if not exists
-    mysql -u root -p"$ROOT_PASS" -e "CREATE USER IF NOT EXISTS '$USERNAME'@'%' IDENTIFIED BY '$PASSWORD';"
+    mysql -u root -e "CREATE USER IF NOT EXISTS '$USERNAME'@'%' IDENTIFIED BY '$PASSWORD';"
 
     # Process databases for this user
     DBS_COUNT=$(jq ".users[$i].databases | length" "$CONFIG_FILE")
     for ((j=0; j<$DBS_COUNT; j++)); do
         DBNAME=$(jq -r ".users[$i].databases[$j]" "$CONFIG_FILE")
         echo "  Creating database: $DBNAME"
-        mysql -u root -p"$ROOT_PASS" -e "CREATE DATABASE IF NOT EXISTS \`$DBNAME\`;"
-        mysql -u root -p"$ROOT_PASS" -e "GRANT ALL PRIVILEGES ON \`$DBNAME\`.* TO '$USERNAME'@'%';"
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`$DBNAME\`;"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON \`$DBNAME\`.* TO '$USERNAME'@'%';"
     done
 done
 
 echo "Flushing privileges..."
-mysql -u root -p"$ROOT_PASS" -e "FLUSH PRIVILEGES;"
+mysql -u root -e "FLUSH PRIVILEGES;"
 echo "Done."

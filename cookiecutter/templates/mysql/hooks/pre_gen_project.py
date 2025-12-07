@@ -30,7 +30,7 @@ def main():
     print(f"Backup Retention:  {context.get('_backup_retention')}")
     print(f"Cron Schedule:     {context.get('_cron_schedule')}")
     print(f"Network Name:      {context.get('_network_name')}")
-    print(f"Rclone Path:       {context.get('_rclone_base_path')}")
+    print(f"Host Backup Path:  {context.get('_host_backup_path')}")
     print("="*40 + "\n")
 
     print("Generando proyecto de forma silenciosa...")

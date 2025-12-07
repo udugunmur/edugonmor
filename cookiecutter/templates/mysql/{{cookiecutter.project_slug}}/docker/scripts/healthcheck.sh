@@ -10,4 +10,5 @@ else
 fi
 
 # Check if MySQL is ready
-mysqladmin ping -h localhost -u root --password="$PASS"
+export MYSQL_PWD="$PASS"
+mysqladmin ping -h localhost -u root
