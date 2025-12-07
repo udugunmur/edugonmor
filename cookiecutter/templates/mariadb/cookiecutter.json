@@ -1,6 +1,8 @@
 {
   "project_name": "MariaDB Project",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "mariadb_version": "11.4",
+  "mariadb_port": "3306",
   "db_root_password": "root_password_dev",
   "backup_retention": "10",
   "cron_schedule": "0 3 * * *",

@@ -13,7 +13,8 @@ Actúa como un **Arquitecto de Software Senior, QA Lead y Experto en Infraestruc
 
 - **Docker**: https://docs.docker.com/
 - **Docker Compose**: https://docs.docker.com/compose/
-- **MariaDB**: https://mariadb.com/kb/en/documentation/
+- **MariaDB**: https://mariadb.com/docs/server/
+- **mariadb-dump (Backup)**: https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview/#mariadb-dump
 
 *(Si detectas una tecnología en el código que no está en esta lista, busca su documentación oficial más reciente compatible con `package.json` o similar).*
 
@@ -144,18 +145,45 @@ Para optimizar tiempos de despliegue y garantizar la inmutabilidad de los entorn
 2.  **Publicación**: Una vez validada, la imagen DEBE subirse al registro local.
 3.  **Producción**: El despliegue final (`docker-compose up`) DEBE consumir la imagen desde el registro, no construirla en tiempo de ejecución.
 
-### 🛡️ Política de Backups (Rclone Centralizado - rclone)
-La persistencia de datos de este servicio está protegida mediante el sistema centralizado de backups (**rclone**).
+### 🛡️ Política de Backups (mariadb-dump + Rclone)
+Este servicio utiliza **mariadb-dump** (herramienta oficial de MariaDB) para backups lógicos.
 
-*   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
-*   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
-*   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
+**Sistema de Backup:**
+*   **Herramienta**: `mariadb-dump` (incluida en imagen oficial MariaDB)
+*   **Tipo**: Backup lógico (SQL)
+*   **Servicio**: `{{cookiecutter.project_slug}}_backup` (Dockerfile.backup propio)
+*   **Programación**: Cron schedule: `{{cookiecutter.cron_schedule}}`
+*   **Retención**: `{{cookiecutter.backup_retention}}` días
 
-### 🛡️ Política de Backups (Rclone Centralizado - rclone)
-La persistencia de datos de este servicio está protegida mediante el sistema centralizado de backups (**rclone**).
+**Opciones de mariadb-dump (según documentación oficial):**
+| Opción | Descripción | Fuente |
+|--------|-------------|--------|
+| `--single-transaction` | Backup consistente sin bloquear tablas InnoDB | [Docs](https://mariadb.com/kb/en/mariadb-dump/#single-transaction) |
+| `--quick` | Descarga fila por fila (recomendado para tablas grandes) | [Docs](https://mariadb.com/kb/en/mariadb-dump/#q-quick) |
+| `--routines` | Incluye stored procedures y functions | [Docs](https://mariadb.com/kb/en/mariadb-dump/#r-routines) |
+| `--triggers` | Incluye triggers (habilitado por defecto) | [Docs](https://mariadb.com/kb/en/mariadb-dump/#triggers) |
+| `--events` | Incluye eventos del Event Scheduler | [Docs](https://mariadb.com/kb/en/mariadb-dump/#e-events) |
+| `--add-drop-database` | Añade DROP DATABASE antes de CREATE | [Docs](https://mariadb.com/kb/en/mariadb-dump/#add-drop-database) |
+| `--add-drop-table` | Añade DROP TABLE antes de CREATE | [Docs](https://mariadb.com/kb/en/mariadb-dump/#add-drop-table) |
+| `--add-drop-trigger` | Añade DROP TRIGGER antes de CREATE | [Docs](https://mariadb.com/kb/en/mariadb-dump/#add-drop-trigger) |
+| `--flush-privileges` | Ejecuta FLUSH PRIVILEGES tras restaurar mysql db | [Docs](https://mariadb.com/kb/en/mariadb-dump/#flush-privileges) |
+| `--hex-blob` | Exporta datos binarios en hexadecimal (portabilidad) | [Docs](https://mariadb.com/kb/en/mariadb-dump/#hex-blob) |
+| `--default-character-set=utf8mb4` | Charset explícito para compatibilidad | [Docs](https://mariadb.com/kb/en/mariadb-dump/#default-character-set-name) |
 
-*   **Alcance**: Todos los volúmenes persistentes (archivos y bases de datos) deben ser accesibles por el contenedor central de Rclone.
-*   **Mecanismo**: Los volúmenes se montan en modo lectura (`:ro`) en el servicio de backup central.
-*   **Frecuencia**: Las copias se realizan y sincronizan con la nube automáticamente según la política global del proyecto.
+**Comandos útiles:**
+```bash
+# Backup manual
+docker exec {{cookiecutter.project_slug}}_backup /usr/local/bin/backup.sh
+
+# Restaurar último backup
+docker exec -it {{cookiecutter.project_slug}}_backup /usr/local/bin/restore.sh
+
+# Ver logs de backup
+docker logs {{cookiecutter.project_slug}}_backup
+```
+
+**Integración con Rclone:**
+*   Los backups se almacenan en `{{cookiecutter.rclone_base_path}}/{{cookiecutter.project_slug}}/mariadb`
+*   Rclone sincroniza automáticamente con la nube según la política global
 
 ---

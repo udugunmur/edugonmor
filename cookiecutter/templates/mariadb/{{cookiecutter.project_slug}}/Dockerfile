@@ -1,4 +1,13 @@
-FROM mariadb:latest
+# ============================================================================
+# MariaDB {{cookiecutter.mariadb_version}} - Imagen de Servicio
+# ============================================================================
+# Documentación: https://mariadb.com/docs/server/
+# ============================================================================
+FROM mariadb:{{cookiecutter.mariadb_version}}
+
+LABEL maintainer="edugonmor"
+LABEL description="MariaDB {{cookiecutter.mariadb_version}} Service"
+LABEL version="{{cookiecutter.mariadb_version}}"
 
 # Install jq for JSON processing
 RUN apt-get update && apt-get install -y jq && rm -rf /var/lib/apt/lists/*
