@@ -1,0 +1,32 @@
+{
+  "roles": [
+    {
+      "name": "app_reader",
+      "privileges": [
+        "CONNECT",
+        "SELECT"
+      ]
+    },
+    {
+      "name": "app_writer",
+      "privileges": [
+        "CONNECT",
+        "SELECT",
+        "INSERT",
+        "UPDATE",
+        "DELETE"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "penpot_user",
+      "password": "penpot_password",
+      "role": "app_writer",
+      "databases": [
+        "penpot_db"
+      ]
+    }
+  ],
+  "additional_databases": []
+}
