@@ -4,16 +4,16 @@ set -euo pipefail
 # ============================================================================
 # Nexus Backup Script
 # ============================================================================
-# Description: Creates a backup of NEXUS_DATA and manages retention.
-# Usage: ./backup.sh
+# Description: Creates a backup of NEXUS_DATA to local volume.
 # Environment Variables:
 #   - NEXUS_DATA: Path to Nexus data directory (default: /nexus-data)
+#   - BACKUP_ROOT: Path to store backups (default: /backups)
 #   - BACKUP_KEEP_DAYS: Number of days to keep backups (default: 7)
 # ============================================================================
 
 # Configuration
 NEXUS_DATA="${NEXUS_DATA:-/nexus-data}"
-BACKUP_ROOT="${NEXUS_DATA}/backups"
+BACKUP_ROOT="${BACKUP_ROOT:-/backups}"
 RETENTION_DAYS="${BACKUP_KEEP_DAYS:-7}"
 TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
 BACKUP_FILE="${BACKUP_ROOT}/nexus_data_${TIMESTAMP}.tar.gz"

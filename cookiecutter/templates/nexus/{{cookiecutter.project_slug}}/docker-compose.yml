@@ -1,0 +1,36 @@
+services:
+  {{cookiecutter.project_slug}}_services:
+    image: sonatype/nexus3:{{cookiecutter._nexus_version}}
+    container_name: {{cookiecutter.project_slug}}_services
+    restart: always
+    environment:
+      - INSTALL4J_ADD_VM_PARAMS=-Xms{{cookiecutter._nexus_vm_ms}} -Xmx{{cookiecutter._nexus_vm_mx}} -XX:MaxDirectMemorySize={{cookiecutter._nexus_vm_max_direct}} -Djava.util.prefs.userRoot=/nexus-data/javaprefs -Dnexus.security.randomPassword=false
+    env_file:
+      - .env
+    volumes:
+      - ./docker/volumes/nexus_data:/nexus-data
+    ports:
+      - "{{cookiecutter._nexus_port}}:8081"
+      - "{{cookiecutter._nexus_docker_port}}:8082"
+    networks:
+      - {{cookiecutter._network_name}}
+
+  {{cookiecutter.project_slug}}_backup:
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+      network: host
+    container_name: {{cookiecutter.project_slug}}_backup
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./docker/volumes/nexus_data:/nexus-data
+      - ./backups/nexus:/backups # Direct bind mount to matching host path
+    networks:
+      - {{cookiecutter._network_name}}
+
+networks:
+  {{cookiecutter._network_name}}:
+    external: true
+    name: {{cookiecutter._network_name}}

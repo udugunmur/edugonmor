@@ -1,0 +1,16 @@
+{
+    "_project_name": "Nexus Registry",
+    "project_slug": "nexus_project",
+    "_nexus_version": "latest",
+    "_nexus_user": "admin",
+    "_nexus_password": "admin123",
+    "_nexus_port": "8081",
+    "_nexus_docker_port": "8082",
+    "_nexus_vm_ms": "2703m",
+    "_nexus_vm_mx": "2703m",
+    "_nexus_vm_max_direct": "2703m",
+    "_network_name": "shared_network",
+    "_backup_retention": "7",
+    "_cron_schedule": "0 0 * * *",
+    "_host_backup_path": "./backups"
+}
