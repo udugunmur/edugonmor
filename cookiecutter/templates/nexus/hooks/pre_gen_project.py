@@ -5,12 +5,14 @@ from collections import OrderedDict
 def main():
     # Validar directorio de salida
     current_dir = os.getcwd()
-    if "output" not in current_dir:
+    parent_dir = os.path.dirname(current_dir)
+    grandparent_dir = os.path.dirname(parent_dir)
+
+    if os.path.basename(parent_dir) != 'output' or os.path.basename(grandparent_dir) != 'cookiecutter':
         print("\n" + "!"*60)
-        print("ERROR CRÍTICO: Directorio de salida inválido.")
+        print("ERROR CRÍTICO: Ubicación de salida no permitida.")
         print(f"Ruta actual: {current_dir}")
-        print("La generación DEBE realizarse dentro de un directorio 'output/'.")
-        print("Usa el flag '-o output' en tu comando cookiecutter.")
+        print("POLÍTICA ESTRICTA: La generación DEBE realizarse en '.../cookiecutter/output/'.")
         print("!"*60 + "\n")
         sys.exit(1)
 

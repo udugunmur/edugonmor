@@ -1,0 +1,11 @@
+{
+    "_project_name": "Redis Database",
+    "project_slug": "redis_project",
+    "_redis_version": "latest",
+    "_redis_port": "6379",
+    "_redis_password": "redis_default_password",
+    "_network_name": "shared_network",
+    "_backup_retention": "10",
+    "_cron_schedule": "0 3 * * *",
+    "_host_backup_path": "./backups"
+}

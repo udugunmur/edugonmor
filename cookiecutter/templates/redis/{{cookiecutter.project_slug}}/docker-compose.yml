@@ -1,0 +1,51 @@
+
+services:
+  {{cookiecutter.project_slug}}_services:
+    image: {{cookiecutter.project_slug}}_services:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    container_name: {{cookiecutter.project_slug}}_services
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - {{cookiecutter._network_name}}
+    volumes:
+      - {{cookiecutter.project_slug}}_data:/data
+
+  {{cookiecutter.project_slug}}_backup:
+    image: redis:{{cookiecutter._redis_version}}
+    container_name: {{cookiecutter.project_slug}}_backup
+    restart: always
+    env_file:
+      - .env
+    command: >
+      bash -c "apt-get update && apt-get install -y cron && echo '{{cookiecutter._cron_schedule}} redis-cli -h {{cookiecutter.project_slug}}_services -a \$$REDIS_PASSWORD save && cp /data/dump.rdb /backup/dump-\$$(date +\%Y\%m\%d-\%H\%M\%S).rdb && find /backup -name \"dump-*\" -mtime +{{cookiecutter._backup_retention}} -delete' | crontab - && cron -f"
+    volumes:
+      - {{cookiecutter.project_slug}}_data:/data:ro
+      - {{cookiecutter.project_slug}}_backups:/backup
+    networks:
+      - {{cookiecutter._network_name}}
+    depends_on:
+      - {{cookiecutter.project_slug}}_services
+
+volumes:
+  {{cookiecutter.project_slug}}_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/redis_data
+  {{cookiecutter.project_slug}}_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: {{cookiecutter._host_backup_path}}
+
+networks:
+  {{cookiecutter._network_name}}:
+    external: true
+    name: {{cookiecutter._network_name}}

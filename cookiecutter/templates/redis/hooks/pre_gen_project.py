@@ -16,11 +16,8 @@ def main():
         print("!"*60 + "\n")
         sys.exit(1)
 
-    # Cookiecutter renders this dict literal directly into the script
-    # It might render as OrderedDict(...) so we import it.
     context = {{ cookiecutter }}
 
-    # context is a dict or OrderedDict
     project_name = context.get('_project_name', 'UNKNOWN')
 
     print("\n" + "="*40)
@@ -28,7 +25,9 @@ def main():
     print("="*40)
     print(f"Project Name:      {context.get('_project_name')}")
     print(f"Project Slug:      {context.get('project_slug')}")
-    print(f"DB Root Password:  {context.get('_db_root_password')}")
+    print(f"Redis Version:     {context.get('_redis_version')}")
+    print(f"Redis Password:    {context.get('_redis_password')}")
+    print(f"Redis Port:        {context.get('_redis_port')}")
     print(f"Backup Retention:  {context.get('_backup_retention')}")
     print(f"Cron Schedule:     {context.get('_cron_schedule')}")
     print(f"Network Name:      {context.get('_network_name')}")

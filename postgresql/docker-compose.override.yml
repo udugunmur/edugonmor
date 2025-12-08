@@ -1,4 +1,0 @@
-services:
-  postgresql_services:
-    ports:
-      - "5432:5432"
