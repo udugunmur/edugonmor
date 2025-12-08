@@ -1,0 +1,13 @@
+{
+    "_project_name": "RabbitMQ Service",
+    "project_slug": "rabbitmq_service",
+    "_rabbitmq_user": "admin",
+    "_rabbitmq_host": "localhost",
+    "_rabbitmq_password": "admin123",
+    "_rabbitmq_port": "5672",
+    "_rabbitmq_management_port": "15672",
+    "_network_name": "shared_network",
+    "_backup_retention": "7",
+    "_cron_schedule": "0 0 * * *",
+    "_host_backup_path": "./backups"
+}

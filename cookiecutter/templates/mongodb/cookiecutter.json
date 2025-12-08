@@ -1,6 +1,9 @@
 {
   "_project_name": "MongoDB Project",
   "project_slug": "{{ cookiecutter._project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_nexus_user": "nexus_user",
+  "_nexus_password": "nexus_password",
+  "_nexus_registry": "nexus.edugonmor.com/repository/docker-hosted",
   "_mongo_version": "7.0",
   "_mongo_port": "27017",
   "_mongo_root_user": "root",

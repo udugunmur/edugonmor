@@ -1,6 +1,9 @@
 {
   "_project_name": "MySQL Project",
   "project_slug": "{{ cookiecutter._project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_nexus_user": "nexus_user",
+  "_nexus_password": "nexus_password",
+  "_nexus_registry": "nexus.edugonmor.com/repository/docker-hosted",
   "_db_root_password": "root_password_dev",
   "_mysql_version": "8.0",
   "_backup_retention": "10",

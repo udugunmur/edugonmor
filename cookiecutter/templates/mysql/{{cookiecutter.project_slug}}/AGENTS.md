@@ -42,7 +42,7 @@ Al final de tu respuesta, genera un bloque:
 > **🛡️ REPORTE DE CALIDAD Y PRUEBAS**
 > 1. **Pruebas Realizadas:** Qué lógica o sintaxis verificaste.
 > 2. **Casos Borde:** Qué escenarios extremos cubriste (nulos, vacíos, errores de red).
-> 3. **Comando de Verificación:** El comando exacto (ej: `make test`, `curl...`) para validar esto AHORA.
+> 3. **Comando de Verificación:** El comando exacto (ej: `npm test`, `curl...`) para validar esto AHORA.
 > 4. **Cierre de Ciclo:** FINALIZA SIEMPRE tu respuesta preguntando:
 
 ---

@@ -1,0 +1,25 @@
+
+
+services:
+  {{cookiecutter.project_slug}}:
+    image: rabbitmq:3-management
+    container_name: {{cookiecutter.project_slug}}
+    hostname: {{cookiecutter.project_slug}}
+    restart: always
+    environment:
+      RABBITMQ_NODENAME: rabbit@{{cookiecutter.project_slug}}
+      RABBITMQ_DEFAULT_USER: {{cookiecutter._rabbitmq_user}}
+      RABBITMQ_DEFAULT_PASS: {{cookiecutter._rabbitmq_password}}
+    ports:
+      - "{{cookiecutter._rabbitmq_port}}:5672"
+      - "{{cookiecutter._rabbitmq_management_port}}:15672"
+    volumes:
+      - ./docker/volumes/rabbitmq_data:/var/lib/rabbitmq
+      - ./docker/config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    networks:
+      - {{cookiecutter._network_name}}
+
+networks:
+  {{cookiecutter._network_name}}:
+    external: true
+    name: {{cookiecutter._network_name}}

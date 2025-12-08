@@ -1,6 +1,9 @@
 {
   "_project_name": "MariaDB Project",
   "project_slug": "{{ cookiecutter._project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_nexus_user": "nexus_user",
+  "_nexus_password": "nexus_password",
+  "_nexus_registry": "nexus.edugonmor.com/repository/docker-hosted",
   "_mariadb_version": "11.4",
   "_mariadb_port": "3306",
   "_db_root_password": "root_password_dev",

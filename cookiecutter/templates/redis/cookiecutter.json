@@ -1,6 +1,7 @@
 {
     "_project_name": "Redis Database",
     "project_slug": "redis_project",
+    "_nexus_registry": "nexus.edugonmor.com/repository/docker-hosted",
     "_redis_version": "latest",
     "_redis_port": "6379",
     "_redis_password": "redis_default_password",
