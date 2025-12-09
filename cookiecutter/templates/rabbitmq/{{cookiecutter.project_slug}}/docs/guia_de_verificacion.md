@@ -13,7 +13,7 @@ Esta guía detalla el **flujo maestro** para verificar el funcionamiento correct
 
 Sigue estos pasos en orden secuencial para simular un despliegue desde cero.
 
-### 1. Limpieza Total (Reset Factory)
+### 1. Limpieza de Entorno
 ⚠️ **CRÍTICO:** RabbitMQ persiste datos en los volúmenes. Para una prueba real, hay que borrarlos físicamente.
 
 ```bash

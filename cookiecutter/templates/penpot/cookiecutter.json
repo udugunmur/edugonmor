@@ -1,0 +1,23 @@
+{
+    "_project_name": "Penpot Design Tool",
+    "project_slug": "penpot_project",
+    "_penpot_version": "latest",
+    "_penpot_public_uri": "https://penpot.edugonmor.com",
+    "_penpot_port": "9001",
+    "_penpot_secret_key": "my-very-secret-key-change-it-in-production",
+    "_admin_email": "admin@example.com",
+    "_admin_password": "MySecretPass123",
+    "_admin_name": "Admin User",
+    "_postgres_host": "penpot-postgres",
+    "_postgres_port": "5432",
+    "_postgres_db": "penpot_db",
+    "_postgres_user": "penpot_user",
+    "_postgres_password": "penpot_password",
+    "_redis_host": "penpot-redis",
+    "_redis_port": "6379",
+    "_redis_db": "0",
+    "_network_name": "shared_network",
+    "_backup_retention": "10",
+    "_cron_schedule": "0 3 * * *",
+    "_host_backup_path": "./backups"
+}

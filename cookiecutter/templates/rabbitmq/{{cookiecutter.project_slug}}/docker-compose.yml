@@ -1,5 +1,4 @@
 
-
 services:
   {{cookiecutter.project_slug}}:
     image: rabbitmq:3-management

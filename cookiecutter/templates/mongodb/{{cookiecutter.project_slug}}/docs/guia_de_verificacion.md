@@ -2,7 +2,15 @@
 
 ## Pasos para Verificar la Plantilla MongoDB
 
-### 1. Crear directorio de salida para backups (requerido por el volumen)
+### 1. Limpieza de Entorno
+Antes de iniciar, asegurarse de que no haya restos de despliegues anteriores:
+```bash
+docker compose down -v
+rm -rf docker/volumes
+rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}
+```
+
+### 2. Crear directorio de salida para backups (requerido por el volumen)
 
 ```bash
 mkdir -p {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}

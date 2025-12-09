@@ -1,5 +1,6 @@
 **/volumes/
 **/data/
+!cookiecutter/templates/**/volumes/**/.gitkeep
 *.log
 __pycache__/
 .DS_Store

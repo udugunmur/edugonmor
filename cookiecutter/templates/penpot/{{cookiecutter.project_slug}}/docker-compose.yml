@@ -1,0 +1,111 @@
+services:
+  penpot_frontend:
+    image: penpotapp/frontend:{{cookiecutter._penpot_version}}
+    container_name: "{{cookiecutter.project_slug}}_frontend"
+    restart: always
+    ports:
+      - "{{cookiecutter._penpot_port}}:8080"
+    volumes:
+      - penpot_volumen:/opt/data
+    depends_on:
+      - penpot_backend
+      - penpot_exporter
+    networks:
+      - {{cookiecutter._network_name}}
+    env_file:
+      - .env
+
+  penpot_backend:
+    image: penpotapp/backend:{{cookiecutter._penpot_version}}
+    container_name: "{{cookiecutter.project_slug}}_backend"
+    restart: always
+    volumes:
+      - penpot_volumen:/opt/data
+    depends_on:
+      - penpot_postgres
+      - penpot_redis
+    networks:
+      {{cookiecutter._network_name}}:
+        aliases:
+          - penpot-backend
+    env_file:
+      - .env
+
+  penpot_exporter:
+    image: penpotapp/exporter:{{cookiecutter._penpot_version}}
+    container_name: "{{cookiecutter.project_slug}}_exporter"
+    restart: always
+    networks:
+      {{cookiecutter._network_name}}:
+        aliases:
+          - penpot-exporter
+    env_file:
+      - .env
+
+  penpot_backup:
+    image: alpine:3.19
+    container_name: "{{cookiecutter.project_slug}}_backup"
+    restart: unless-stopped
+    # Daily backup based on cron schedule
+    # Note: $$(date ...) escapes the $ for docker-compose to pass it to the shell
+    command: >
+      sh -c "echo '{{cookiecutter._cron_schedule}} tar -czf /backup/penpot-assets-backup-\$$(date +\%Y\%m\%d-\%H\%M\%S).tar.gz -C /source/data assets && find /backup -name \"penpot-assets-backup-*\" -mtime +{{cookiecutter._backup_retention}} -delete' | crontab - && crond -f"
+    volumes:
+      # Source data (Read-Only)
+      - penpot_volumen:/source/data:ro
+      # Target
+      - "{{cookiecutter._host_backup_path}}:/backup"
+    networks:
+      - {{cookiecutter._network_name}}
+    depends_on:
+      - penpot_backend
+
+  penpot_postgres:
+    image: postgres:15
+    container_name: "{{cookiecutter.project_slug}}_postgres"
+    restart: always
+    environment:
+      POSTGRES_DB: {{cookiecutter._postgres_db}}
+      POSTGRES_USER: {{cookiecutter._postgres_user}}
+      POSTGRES_PASSWORD: {{cookiecutter._postgres_password}}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - penpot_postgres_data:/var/lib/postgresql/data
+    networks:
+      {{cookiecutter._network_name}}:
+        aliases:
+          - penpot-postgres
+
+  penpot_redis:
+    image: redis:7
+    container_name: "{{cookiecutter.project_slug}}_redis"
+    restart: always
+    networks:
+      {{cookiecutter._network_name}}:
+        aliases:
+          - penpot-redis
+
+networks:
+  {{cookiecutter._network_name}}:
+    external: true
+    name: {{cookiecutter._network_name}}
+
+volumes:
+  penpot_volumen:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/penpot_volumen
+  penpot_postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/penpot_postgres_data
+  penpot_redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker/volumes/penpot_redis_data

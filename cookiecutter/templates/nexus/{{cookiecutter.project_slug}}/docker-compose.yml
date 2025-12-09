@@ -1,6 +1,6 @@
 services:
   {{cookiecutter.project_slug}}_services:
-    image: sonatype/nexus3:{{cookiecutter._nexus_version}}
+    image: sonatype/nexus3
     container_name: {{cookiecutter.project_slug}}_services
     restart: always
     environment:

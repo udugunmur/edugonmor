@@ -9,25 +9,33 @@ Esta guía detalla los pasos para realizar una prueba completa del ciclo de vida
 
 ---
 
-## 🛠️ Paso 1: Generación Silenciosa (Non-Interactive)
+## 1. Limpieza de Entorno
+Antes de generar nada, asegura un entorno limpio:
+```bash
+# Limpiar contenedores y volúmenes de la ejecución anterior (si existen)
+docker compose -f cookiecutter/output/mysql_project/docker-compose.yml down -v 2>/dev/null || true
+rm -rf cookiecutter/output/mysql_project
+```
+
+## 🛠️ Paso 2: Generación Silenciosa (Non-Interactive)
 Genera el proyecto usando los valores por defecto definidos en `cookiecutter.json`. Esto simula un entorno de CI/CD o automatización.
 
 ```bash
-# Ejecutar desde el directorio que contiene la carpeta 'cookiecutter'
-cookiecutter ./cookiecutter/templates/mysql --no-input -f -o verification_output
+# Ejecutar desde el directorio que contiene la carpeta 'cookiecutter' (Raíz del repositorio)
+cookiecutter ./cookiecutter/templates/mysql --no-input -f -o cookiecutter/output
 ```
 
 **Resultado esperado:**
-- Se crea el directorio `verification_output/mysql_project`.
+- Se crea el directorio `cookiecutter/output/mysql_project`.
 - No se solicita ninguna confirmación al usuario.
 
 ---
 
-## 🚀 Paso 2: Instalación y Prueba de Permisos
+## 🚀 Paso 3: Instalación y Prueba de Permisos
 Levanta el stack y verifica que el usuario actual tenga control sobre los archivos generados.
 
 ```bash
-cd verification_output/mysql_project
+cd cookiecutter/output/mysql_project
 
 # 1. Verificar permisos de archivos generados
 ls -l .env docker-compose.yml
@@ -42,7 +50,7 @@ docker compose up -d --build
 
 ---
 
-## 🏥 Paso 3: Pruebas de Salud (Healthcheck)
+## 🏥 Paso 4: Pruebas de Salud (Healthcheck)
 Verifica que la base de datos esté aceptando conexiones.
 
 ```bash
@@ -67,7 +75,7 @@ docker exec -it mysql_project_mysql_services mysqladmin ping -h localhost -u roo
 
 ---
 
-## 💾 Paso 4: Prueba Funcional y Backup
+## 💾 Paso 5: Prueba Funcional y Backup
 Ejecuta un backup manual para validar la integración con los scripts y el volumen de backups.
 
 ```bash
@@ -84,7 +92,7 @@ ls -R ../../backups/mysql_project/mysql/
 
 ---
 
-## 📝 Paso 5: Reporte de Resultados
+## 📝 Paso 6: Reporte de Resultados
 
 | Paso | Prueba | Estado | Notas |
 |------|--------|--------|-------|
@@ -96,7 +104,7 @@ ls -R ../../backups/mysql_project/mysql/
 
 ---
 
-## 🧹 Paso 6: Limpieza (Teardown)
+## 🧹 Paso 7: Limpieza (Teardown)
 Borra todo el entorno de prueba.
 
 ```bash
@@ -107,5 +115,5 @@ docker compose down -v
 cd ../..
 
 # Borrar directorio generado
-rm -rf verification_output/mysql_project
+rm -rf cookiecutter/output/mysql_project
 ```

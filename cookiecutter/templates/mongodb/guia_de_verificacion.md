@@ -13,12 +13,12 @@ Esta guía detalla los pasos para realizar una prueba completa del ciclo de vida
 Genera el proyecto usando los valores por defecto definidos en `cookiecutter.json`. Esto simula un entorno de CI/CD o automatización.
 
 ```bash
-# Ejecutar desde el directorio que contiene la carpeta 'cookiecutter'
-cookiecutter ./cookiecutter/templates/mongodb --no-input -f -o verification_output
+# Ejecutar desde el directorio que contiene la carpeta 'cookiecutter' (Raíz del repositorio)
+cookiecutter ./cookiecutter/templates/mongodb --no-input -f -o cookiecutter/output
 ```
 
 **Resultado esperado:**
-- Se crea el directorio `verification_output/mongodb_project`.
+- Se crea el directorio `cookiecutter/output/mongodb_project`.
 - No se solicita ninguna confirmación al usuario.
 
 ---
@@ -27,7 +27,7 @@ cookiecutter ./cookiecutter/templates/mongodb --no-input -f -o verification_outp
 Levanta el stack y verifica que el usuario actual tenga control sobre los archivos generados.
 
 ```bash
-cd verification_output/mongodb_project
+cd cookiecutter/output/mongodb_project
 
 # 1. Verificar permisos de archivos generados
 ls -l .env docker-compose.yml
@@ -105,5 +105,8 @@ docker compose down -v
 cd ../..
 
 # Borrar directorio generado
-rm -rf verification_output/mongodb_project
+# Limpiar contenedores y volúmenes de la ejecución anterior (si existen)
+docker compose -f cookiecutter/output/mongodb_project/docker-compose.yml down -v 2>/dev/null || true
+# Eliminar carpeta con permisos de superusuario (necesario por archivos creados por Docker)
+sudo rm -rf cookiecutter/output/mongodb_project
 ```
