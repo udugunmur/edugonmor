@@ -1,5 +1,11 @@
-# gitlab
-GitLab Server Docker deployment
+# Project Initialized
+
+This repository has been initialized following the Master Protocol.
+
+## Structure
+- `agent.md`: Master Protocol and Architecture Guidelines.
+- `docker/`: Infrastructure configuration.
+- `config/`: Application configuration.
 
 ## Estándar de Infraestructura
 

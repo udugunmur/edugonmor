@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  {{cookiecutter.project_slug}}_gitlab_services:
+    image: gitlab/gitlab-ce:{{cookiecutter.gitlab_version}}
+    container_name: {{cookiecutter.project_slug}}_gitlab_services
+    restart: always
+    hostname: {{cookiecutter.domain_name}}
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://{{cookiecutter.domain_name}}'
+        gitlab_rails['gitlab_shell_ssh_port'] = {{cookiecutter.gitlab_ssh_port}}
+        # Add other config here
+    ports:
+      - "{{cookiecutter.gitlab_http_port}}:80"
+      - "{{cookiecutter.gitlab_https_port}}:443"
+      - "{{cookiecutter.gitlab_ssh_port}}:22"
+    volumes:
+      - {{cookiecutter.project_slug}}_config_volumen:/etc/gitlab
+      - {{cookiecutter.project_slug}}_logs_volumen:/var/log/gitlab
+      - {{cookiecutter.project_slug}}_data_volumen:/var/opt/gitlab
+    networks:
+      - shared_network
+    shm_size: '256m'
+
+  {{cookiecutter.project_slug}}_backup:
+    image: alpine:latest
+    container_name: {{cookiecutter.project_slug}}_backup
+    restart: always
+    command: crond -f
+    environment:
+      - CRON_SCHEDULE={{cookiecutter.backup_cron_schedule}}
+    volumes:
+      - {{cookiecutter.project_slug}}_backups:/backups
+      # To perform backups, we might need access to the docker socket or the data volume
+      # For now, this service acts as the anchor for the backup volume mapping
+      # and a placeholder for cron-based backups if implemented via docker exec.
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true
+    name: shared_network
+
+volumes:
+  {{cookiecutter.project_slug}}_config_volumen:
+  {{cookiecutter.project_slug}}_logs_volumen:
+  {{cookiecutter.project_slug}}_data_volumen:
+  {{cookiecutter.project_slug}}_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/edugonmor/repos/rclone/docker/volumes/rclone_local_backup_volumen/{{cookiecutter.project_slug}}
