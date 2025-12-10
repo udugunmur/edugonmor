@@ -1,4 +1,4 @@
-# {{cookiecutter.project_name}}
+# {{cookiecutter._project_name}}
 
 Repositorio de infraestructura para GitLab Server.
 
@@ -14,7 +14,7 @@ Repositorio de infraestructura para GitLab Server.
     docker compose ps
     ```
 3.  **Acceder**:
-    *   Web: `http://{{cookiecutter.domain_name}}:{{cookiecutter.gitlab_http_port}}` (o vía proxy si está configurado para puerto 80/443).
+    *   Web: `http://{{cookiecutter._domain_name}}:{{cookiecutter._gitlab_http_port}}` (o vía proxy si está configurado para puerto 80/443).
     *   **Credenciales Iniciales**:
         *   Usuario: `root`
         *   Contraseña: Ver `GITLAB_ROOT_PASSWORD` en `.env`.
@@ -26,13 +26,13 @@ Repositorio de infraestructura para GitLab Server.
 
 ## 🛡️ Backup
 - Los backups se configuran mediante cron en el contenedor `backup`.
-- **Ruta Host**: `{{cookiecutter.host_backup_path}}`
-- **Retención**: {{cookiecutter.backup_retention}} días (configuración prevista).
+- **Ruta Host**: `{{cookiecutter._host_backup_path}}`
+- **Retención**: {{cookiecutter._backup_retention}} días (configuración prevista).
 
 ## 🔧 Detalles Técnicos
 - **Puertos Expuestos**: 
-    - HTTP: {{cookiecutter.gitlab_http_port}}
-    - HTTPS: {{cookiecutter.gitlab_https_port}}
-    - SSH: {{cookiecutter.gitlab_ssh_port}}
-- **Red**: `shared_network`
+    - HTTP: {{cookiecutter._gitlab_http_port}}
+    - HTTPS: {{cookiecutter._gitlab_https_port}}
+    - SSH: {{cookiecutter._gitlab_ssh_port}}
+- **Red**: `{{cookiecutter._network_name}}`
 
