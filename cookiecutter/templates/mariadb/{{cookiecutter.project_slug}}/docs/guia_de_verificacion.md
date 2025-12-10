@@ -6,8 +6,8 @@
 Antes de iniciar, asegurarse de que no haya restos de despliegues anteriores:
 ```bash
 docker compose down -v
-rm -rf docker/volumes
-rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mariadb
+sudo rm -rf docker/volumes
+sudo rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mariadb
 ```
 
 ### 2. Crear directorio de salida para backups (requerido por el volumen)
@@ -37,7 +37,7 @@ docker compose up -d --build
 ### 5. Verificar conexión a MariaDB
 
 ```bash
-docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb-admin ping -h localhost
+docker exec {{cookiecutter.project_slug}}_mariadb_services mariadb-admin -u root -p{{cookiecutter._db_root_password}} ping -h localhost
 ```
 
 ### 6. Verificar que el usuario root tiene permisos

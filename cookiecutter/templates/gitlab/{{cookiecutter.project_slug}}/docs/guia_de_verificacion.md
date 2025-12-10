@@ -33,8 +33,8 @@ docker compose down -v 2>/dev/null || true
 cd /home/edugonmor/repos/edugonmor/cookiecutter
 
 # 3. Borrar físicamente los archivos generados y datos persistidos
-# Usar un contenedor temporal para borrar los datos (evita problemas de permisos con root)
-docker run --rm -v "$(pwd):/work" -w /work alpine rm -rf output/$PROJECT_SLUG
+# Usamos sudo para evitar problemas de permisos con root
+sudo rm -rf output/$PROJECT_SLUG
 ```
 
 ### 3. Generación del Proyecto

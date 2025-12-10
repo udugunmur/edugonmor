@@ -6,8 +6,8 @@
 Antes de iniciar, asegurarse de que no haya restos de despliegues anteriores:
 ```bash
 docker compose down -v
-rm -rf docker/volumes
-rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}
+sudo rm -rf docker/volumes
+sudo rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mongodb
 ```
 
 ### 2. Crear directorio de salida para backups (requerido por el volumen)

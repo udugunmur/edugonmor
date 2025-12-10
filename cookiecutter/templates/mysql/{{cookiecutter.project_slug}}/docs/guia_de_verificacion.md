@@ -14,7 +14,8 @@ Antes de generar nada, asegura un entorno limpio:
 ```bash
 # Limpiar contenedores y volúmenes de la ejecución anterior (si existen)
 docker compose -f cookiecutter/output/mysql_project/docker-compose.yml down -v 2>/dev/null || true
-rm -rf cookiecutter/output/mysql_project
+sudo rm -rf cookiecutter/output/mysql_project
+sudo rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/mysql
 ```
 
 ## 🛠️ Paso 2: Generación Silenciosa (Non-Interactive)
@@ -115,5 +116,5 @@ docker compose down -v
 cd ../..
 
 # Borrar directorio generado
-rm -rf cookiecutter/output/mysql_project
+sudo rm -rf cookiecutter/output/mysql_project
 ```

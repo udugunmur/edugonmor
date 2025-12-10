@@ -19,6 +19,8 @@ Sigue estos pasos en orden secuencial para simular un despliegue desde cero.
 ```bash
 # 1. Parar contenedores y borrar volúmenes asociados
 cd output/{{cookiecutter.project_slug}} || (cd /home/edugonmor/repos/edugonmor/cookiecutter/output/{{cookiecutter.project_slug}} 2>/dev/null)
+sudo rm -rf docker/volumes
+sudo rm -rf {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}/redis
 docker compose down -v 2>/dev/null || true
 
 # 2. Volver a la raíz del repo de templates
