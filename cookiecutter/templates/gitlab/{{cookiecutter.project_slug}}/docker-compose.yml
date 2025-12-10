@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   {{cookiecutter.project_slug}}_gitlab_services:
@@ -13,6 +13,7 @@ services:
         external_url 'http://${GITLAB_HOSTNAME}'
         gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT}
         gitlab_rails['initial_root_password'] = '${GITLAB_ROOT_PASSWORD}'
+        gitlab_rails['backup_keep_time'] = ${BACKUP_RETENTION_SECONDS}
         # Add other config here
     ports:
       - "${GITLAB_HTTP_PORT}:80"
@@ -22,26 +23,25 @@ services:
       - {{cookiecutter.project_slug}}_config:/etc/gitlab
       - {{cookiecutter.project_slug}}_logs:/var/log/gitlab
       - {{cookiecutter.project_slug}}_data:/var/opt/gitlab
+      # Map backup directory directly to host path for persistence
+      - {{cookiecutter.project_slug}}_backups:/var/opt/gitlab/backups
     networks:
       - {{cookiecutter._network_name}}
     shm_size: '256m'
 
   {{cookiecutter.project_slug}}_backup:
+    # Install crond (busybox) if needed, but docker image might not have it.
+    # Alpine is better base, installing docker-cli.
+    # Using alpine with docker-cli installation
     image: alpine:latest
-    container_name: {{cookiecutter.project_slug}}_backup
-    restart: always
-    command: crond -f
-    env_file:
-      - .env
-    environment:
-      - CRON_SCHEDULE=${BACKUP_CRON_SCHEDULE}
+    command: >
+      sh -c "apk add --no-cache docker-cli && echo '{{cookiecutter._cron_schedule}} docker exec {{cookiecutter.project_slug}}_gitlab_services gitlab-backup create CRON=1' | crontab - && crond -f"
     volumes:
-      - {{cookiecutter.project_slug}}_backups:/backups
-      # Mount volumes to back up
-      - {{cookiecutter.project_slug}}_config:/etc/gitlab:ro
-      - {{cookiecutter.project_slug}}_data:/var/opt/gitlab:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - {{cookiecutter._network_name}}
+    depends_on:
+      - {{cookiecutter.project_slug}}_gitlab_services
 
 networks:
   {{cookiecutter._network_name}}:

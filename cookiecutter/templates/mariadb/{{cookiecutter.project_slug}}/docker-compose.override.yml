@@ -1,6 +1,0 @@
-services:
-  {{cookiecutter.project_slug}}_mariadb_services:
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./docker/volumes/db_data:/var/lib/mysql

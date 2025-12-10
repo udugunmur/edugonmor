@@ -79,9 +79,12 @@ docker compose logs penpot_frontend
 
 ## 8. Prueba de Backup y Recuperación
 ### Ejecución Manual
-Ejecutar el script de backup dentro del contenedor:
+Ejecutar el comando de backup manualmente para verificar que se generan tanto el dump de la base de datos como el archivo de assets.
+
 ```bash
-docker exec {{cookiecutter.project_slug}}_backup sh -c "tar -czf /backup/manual-test-$(date +%s).tar.gz -C /source/data assets"
+# Nota: El comando es complejo porque instala dependencias y ejecuta dos backups.
+# Copiamos la lógica del 'command' del docker-compose para probarla.
+docker exec {{cookiecutter.project_slug}}_backup sh -c "apk add --no-cache postgresql-client && PGPASSWORD={{cookiecutter._postgres_password}} pg_dump -h penpot-postgres -U {{cookiecutter._postgres_user}} -d {{cookiecutter._postgres_db}} -F c -f /backup/manual_test_db.dump && tar -czf /backup/manual_test_assets.tar.gz -C /source/data assets"
 ```
 
 ### Verificación en Host

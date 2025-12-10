@@ -1,3 +1,4 @@
+
 services:
   penpot_frontend:
     image: penpotapp/frontend:{{cookiecutter._penpot_version}}
@@ -46,19 +47,16 @@ services:
     image: alpine:3.19
     container_name: "{{cookiecutter.project_slug}}_backup"
     restart: unless-stopped
-    # Daily backup based on cron schedule
-    # Note: $$(date ...) escapes the $ for docker-compose to pass it to the shell
     command: >
-      sh -c "echo '{{cookiecutter._cron_schedule}} tar -czf /backup/penpot-assets-backup-\$$(date +\%Y\%m\%d-\%H\%M\%S).tar.gz -C /source/data assets && find /backup -name \"penpot-assets-backup-*\" -mtime +{{cookiecutter._backup_retention}} -delete' | crontab - && crond -f"
+      sh -c "apk add --no-cache postgresql-client && echo '{{cookiecutter._cron_schedule}} PGPASSWORD={{cookiecutter._postgres_password}} pg_dump -h penpot-postgres -U {{cookiecutter._postgres_user}} -d {{cookiecutter._postgres_db}} -F c -f /backup/penpot_db_\$$(date +\%Y\%m\%d-\%H\%M\%S).dump && tar -czf /backup/penpot_assets_\$$(date +\%Y\%m\%d-\%H\%M\%S).tar.gz -C /source/data assets && find /backup -name \"penpot_*\" -mtime +{{cookiecutter._backup_retention}} -delete' | crontab - && crond -f"
     volumes:
-      # Source data (Read-Only)
       - penpot_volumen:/source/data:ro
-      # Target
       - "{{cookiecutter._host_backup_path}}:/backup"
     networks:
       - {{cookiecutter._network_name}}
     depends_on:
       - penpot_backend
+      - penpot_postgres
 
   penpot_postgres:
     image: postgres:15

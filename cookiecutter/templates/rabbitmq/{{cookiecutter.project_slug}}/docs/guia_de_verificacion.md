@@ -78,6 +78,20 @@ Password: `{{cookiecutter._rabbitmq_password}}`
 
 ---
 
+### 7. Verificar Backup
+Se ha incluido un servicio de backup que exporta las definiciones de RabbitMQ periódicamente.
+
+```bash
+# Forzar un backup manual de prueba (Nota: apk add es necesario si no se ha ejecutado el cron aún, o usa el comando completo)
+# El contenedor instala curl al inicio, pero si ejecutamos sh -c directo, verificamos que esté.
+docker exec {{cookiecutter.project_slug}}_backup sh -c "curl -f -u {{cookiecutter._rabbitmq_user}}:{{cookiecutter._rabbitmq_password}} http://{{cookiecutter.project_slug}}:15672/api/definitions -o /backups/manual_test.json"
+
+# Verificar que el archivo se creó en el host
+ls -la backups/{{cookiecutter.project_slug}}/manual_test.json
+```
+
+---
+
 ## 🐛 Troubleshooting Común
 
 ### Error `Connection refused`

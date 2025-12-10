@@ -1,4 +1,0 @@
-services:
-  mariadb_services:
-    restart: always
-    ports: [] # No ports exposed in production

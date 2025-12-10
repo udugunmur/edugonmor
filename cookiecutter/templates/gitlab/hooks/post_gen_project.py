@@ -10,7 +10,8 @@ def main():
         "docker/volumes/config",
         "docker/volumes/logs",
         "docker/volumes/data",
-        "scripts"
+        "scripts",
+        "{{ cookiecutter._host_backup_path }}"
     ]
     
     print("\n[Hook] Creating local directories...")

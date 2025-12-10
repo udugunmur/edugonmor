@@ -18,7 +18,28 @@ services:
     networks:
       - {{cookiecutter._network_name}}
 
+  {{cookiecutter.project_slug}}_backup:
+    image: alpine:latest
+    container_name: {{cookiecutter.project_slug}}_backup
+    restart: always
+    command: >
+      sh -c "apk add --no-cache curl && echo '{{cookiecutter._cron_schedule}} curl -f -u {{cookiecutter._rabbitmq_user}}:{{cookiecutter._rabbitmq_password}} http://{{cookiecutter.project_slug}}:15672/api/definitions -o /backups/definitions-\$$(date +\%Y\%m\%d-\%H\%M\%S).json && find /backups -name \"definitions-*\" -mtime +{{cookiecutter._backup_retention}} -delete' | crontab - && crond -f"
+    volumes:
+      - {{cookiecutter.project_slug}}_backups:/backups
+    networks:
+      - {{cookiecutter._network_name}}
+    depends_on:
+      - {{cookiecutter.project_slug}}
+
 networks:
   {{cookiecutter._network_name}}:
     external: true
     name: {{cookiecutter._network_name}}
+
+volumes:
+  {{cookiecutter.project_slug}}_backups:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: {{cookiecutter._host_backup_path}}/{{cookiecutter.project_slug}}
