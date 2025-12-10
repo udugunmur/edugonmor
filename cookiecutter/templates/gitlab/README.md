@@ -14,3 +14,8 @@ Variables:
 - `gitlab_https_port`: Puerto host para HTTPS.
 - `gitlab_ssh_port`: Puerto host para SSH.
 - `gitlab_version`: Versión de la imagen Docker de GitLab CE.
+- `gitlab_root_password`: Contraseña inicial para el usuario root.
+- `nexus_registry`: Registry de Docker predeterminado.
+- `backup_cron_schedule`: Horario Cron para backups.
+- `backup_retention`: Retención de backups en días.
+

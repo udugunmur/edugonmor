@@ -1,31 +1,38 @@
 # {{cookiecutter.project_name}}
 
-GitLab Server Docker deployment generated via Cookiecutter.
+Repositorio de infraestructura para GitLab Server.
 
-## Estándar de Infraestructura
+## 🚀 Inicio Rápido
 
-Este proyecto sigue estrictamente el patrón de infraestructura definido.
-
-1.  **Nomenclatura de Servicios:**
-    *   Servicio Principal: `{{cookiecutter.project_slug}}_gitlab_services`
-    *   Servicio de Backup: `{{cookiecutter.project_slug}}_backup`
-2.  **Volúmenes:**
-    *   Config: `{{cookiecutter.project_slug}}_config_volumen`
-    *   Logs: `{{cookiecutter.project_slug}}_logs_volumen`
-    *   Data: `{{cookiecutter.project_slug}}_data_volumen`
-    *   Backups: `{{cookiecutter.project_slug}}_backups` (Mapeado a ruta host de rclone)
-3.  **Redes:**
-    *   `shared_network`
-
-## Getting Started
-
-1.  Configurar `.env` (si es necesario).
-2.  Levantar servicios:
+1.  **Arrancar servicios**:
     ```bash
-    make up
+    docker compose up -d
     ```
-3.  Acceder a GitLab en `http://{{cookiecutter.domain_name}}:{{cookiecutter.gitlab_http_port}}`.
+2.  **Verificar**:
+    ```bash
+    # Ver estado de los contenedores
+    docker compose ps
+    ```
+3.  **Acceder**:
+    *   Web: `http://{{cookiecutter.domain_name}}:{{cookiecutter.gitlab_http_port}}` (o vía proxy si está configurado para puerto 80/443).
+    *   **Credenciales Iniciales**:
+        *   Usuario: `root`
+        *   Contraseña: Ver `GITLAB_ROOT_PASSWORD` en `.env`.
 
-## Backups
+## 📂 Estructura
+- `docker/volumes/`: Persistencia de datos local (config, data, logs).
+- `docs/`: Documentación detallada (`guia_de_verificacion.md`).
+- `.env`: Variables de entorno para configuración.
 
-Los backups se almacenan en el volumen `{{cookiecutter.project_slug}}_backups` que está mapeado al host.
+## 🛡️ Backup
+- Los backups se configuran mediante cron en el contenedor `backup`.
+- **Ruta Host**: `{{cookiecutter.host_backup_path}}`
+- **Retención**: {{cookiecutter.backup_retention}} días (configuración prevista).
+
+## 🔧 Detalles Técnicos
+- **Puertos Expuestos**: 
+    - HTTP: {{cookiecutter.gitlab_http_port}}
+    - HTTPS: {{cookiecutter.gitlab_https_port}}
+    - SSH: {{cookiecutter.gitlab_ssh_port}}
+- **Red**: `shared_network`
+

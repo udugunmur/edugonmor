@@ -1,12 +1,17 @@
 {
   "full_name": "Edu Gon Mor",
   "email": "info@edugonmor.com",
-  "project_name": "GitLab Server",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "domain_name": "gitlab.example.com",
-  "gitlab_http_port": "80",
-  "gitlab_https_port": "443",
-  "gitlab_ssh_port": "2222",
-  "gitlab_version": "latest",
-  "backup_cron_schedule": "0 2 * * *"
+  "_project_name": "GitLab Server",
+  "project_slug": "{{ cookiecutter._project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_domain_name": "gitlab.example.com",
+  "_gitlab_http_port": "8080",
+  "_gitlab_https_port": "8443",
+  "_gitlab_ssh_port": "2222",
+  "_gitlab_version": "latest",
+  "_gitlab_root_password": "change_me_123",
+  "_nexus_registry": "nexus.edugonmor.com/repository/docker-hosted",
+  "_cron_schedule": "0 2 * * *",
+  "_backup_retention": "7",
+  "_network_name": "shared_network",
+  "_host_backup_path": "./backups"
 }
