@@ -9,7 +9,10 @@
 			"enableNonRootDocker": "true",
 			"moby": "false"
 		},
-		"ghcr.io/devcontainers/features/git:1": {}
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "lts"
+		}
 	},
 	"customizations": {
 		"vscode": {
@@ -24,5 +27,6 @@
 			}
 		}
 	},
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"postCreateCommand": "npm install -g npm@11.7.0 && npm install -g @google/gemini-cli"
 }

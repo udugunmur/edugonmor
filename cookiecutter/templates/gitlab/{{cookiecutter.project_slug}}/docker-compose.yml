@@ -24,12 +24,13 @@ services:
       - {{cookiecutter.project_slug}}_logs:/var/log/gitlab
       - {{cookiecutter.project_slug}}_data:/var/opt/gitlab
       # Map backup directory directly to host path for persistence
-      - {{cookiecutter.project_slug}}_backups:/var/opt/gitlab/backups
+      - {{cookiecutter._host_backup_path}}:/var/opt/gitlab/backups
     networks:
       - {{cookiecutter._network_name}}
     shm_size: '256m'
 
   {{cookiecutter.project_slug}}_backup:
+    container_name: {{cookiecutter.project_slug}}_backup
     # Install crond (busybox) if needed, but docker image might not have it.
     # Alpine is better base, installing docker-cli.
     # Using alpine with docker-cli installation
@@ -67,9 +68,4 @@ volumes:
       type: none
       o: bind
       device: ./docker/volumes/data
-  {{cookiecutter.project_slug}}_backups:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: {{cookiecutter._host_backup_path}}
+

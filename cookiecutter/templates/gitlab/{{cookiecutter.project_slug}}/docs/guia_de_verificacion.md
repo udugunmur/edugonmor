@@ -33,8 +33,8 @@ docker compose down -v 2>/dev/null || true
 cd /home/edugonmor/repos/edugonmor/cookiecutter
 
 # 3. Borrar físicamente los archivos generados y datos persistidos
-echo "Limpiando datos antiguos..."
-sudo rm -rf output/$PROJECT_SLUG
+# Usar un contenedor temporal para borrar los datos (evita problemas de permisos con root)
+docker run --rm -v "$(pwd):/work" -w /work alpine rm -rf output/$PROJECT_SLUG
 ```
 
 ### 3. Generación del Proyecto
@@ -79,7 +79,7 @@ done
 Verifica que los endpoints de salud internos estén OK.
 
 ```bash
-docker exec ${PROJECT_SLUG}_gitlab_services curl -s http://localhost:80/ -/readiness  | grep '"status":"ok"'
+docker exec ${PROJECT_SLUG}_gitlab_services curl -s http://localhost:80/-/readiness  | grep '"status":"ok"'
 ```
 > **Resultado esperado:** JSON con status ok.
 
@@ -87,9 +87,9 @@ docker exec ${PROJECT_SLUG}_gitlab_services curl -s http://localhost:80/ -/readi
 Asegúrate de que el puerto SSH mapeado está accesible.
 
 ```bash
-nc -zv localhost ${GITLAB_SSH_PORT}
+python3 -c "import socket; s=socket.socket(); s.settimeout(3); result=s.connect_ex(('localhost', int('${GITLAB_SSH_PORT}'))); exit(result)" && echo "✅ Port ${GITLAB_SSH_PORT} is open"
 ```
-> **Resultado esperado:** Connection to localhost port ... [tcp/*] succeeded!
+> **Resultado esperado:** ✅ Port ... is open
 
 ### 8. Verificación de Backups
 Prueba la ejecución manual de un backup completo utilizando el servicio de backup configurado.
@@ -103,8 +103,8 @@ docker ps | grep ${PROJECT_SLUG}_backup
 docker exec ${PROJECT_SLUG}_backup sh -c "apk add --no-cache docker-cli && docker exec ${PROJECT_SLUG}_gitlab_services gitlab-backup create SKIP=artifacts,registry"
 
 # 3. Verificar que el archivo de backup (.tar) se ha generado en el host
-# GitLab genera los backups con formato TIMESTAMP_gitlab_backup.tar
-ls -lh ${HOST_BACKUP_PATH}/*.tar
+# Usamos docker para listar el archivo ya que puede tener permisos restrictivos (usuario git)
+docker run --rm -v "$(pwd)/${HOST_BACKUP_PATH}:/backups" alpine ls -lh /backups/*.tar
 ```
 
 ### 9. Persistencia de Datos
