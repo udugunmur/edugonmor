@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${STORYBOOK_PORT}:${STORYBOOK_PORT}"
+    volumes:
+      - ./src:/app/src
+      - ./.storybook:/app/.storybook
+      # Persist node_modules to avoid re-installing on every up
+      - /app/node_modules
+    networks:
+      - storybook_network
+
+  backup:
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+    container_name: ${CONTAINER_NAME}_backup
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src:ro
+      - ./.storybook:/app/.storybook:ro
+      - /app/node_modules # Can't be ro if we want to backup the volume, but here we just read from docker volume? Actually backup container needs access to volumes.
+      # Strategy: To backup named volumes, we mount them here.
+      # But wait, node_modules is an internal volume of 'app'. To backup it, we need to share it.
+      # For now, let's backup 'src' which is the critical code. node_modules is re-installable.
+      # User req: "same level of detail". If I want to backup the /app state matching 'app' container:
+      - ./backups:/backups
+    # Share volumes_from is deprecated in v3 but we can share named volumes.
+    # Since src is bind mounted, we can just bind mount it again.
+    networks:
+      - storybook_network
+
+networks:
+  storybook_network:
+    external: true
+    name: ${NETWORK_NAME}

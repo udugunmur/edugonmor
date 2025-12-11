@@ -1,0 +1,8 @@
+{
+    "project_name": "Storybook Project",
+    "project_slug": "storybook_project",
+    "_network_name": "shared_network",
+    "_backup_retention": "7",
+    "_cron_schedule": "0 0 * * *",
+    "_host_backup_path": "./backups"
+}

@@ -1,0 +1,19 @@
+{
+    "name": "{{cookiecutter.project_slug}}",
+    "version": "1.0.0",
+    "description": "Storybook project using HTML/Vanilla JS",
+    "scripts": {
+        "storybook": "storybook dev -p 6006 --ci",
+        "build-storybook": "storybook build"
+    },
+    "devDependencies": {
+        "storybook": "^8.0.0",
+        "@storybook/html": "^8.0.0",
+        "@storybook/html-vite": "^8.0.0",
+        "vite": "^5.0.0",
+        "@storybook/addon-essentials": "^8.0.0",
+        "@storybook/addon-interactions": "^8.0.0",
+        "@storybook/blocks": "^8.0.0",
+        "@storybook/test": "^8.0.0"
+    }
+}

@@ -1,0 +1,10 @@
+FROM ubuntu:jammy
+
+RUN apt-get update && apt-get install -y cron tar gzip && rm -rf /var/lib/apt/lists/*
+
+COPY docker/scripts/backup.sh /backup.sh
+COPY docker/scripts/entrypoint_backup.sh /entrypoint.sh
+
+RUN chmod +x /backup.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

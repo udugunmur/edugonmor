@@ -1,4 +1,4 @@
-# Project Initialized
+# Storybook Project
 
 This repository has been initialized following the Master Protocol.
 
@@ -12,15 +12,15 @@ This repository has been initialized following the Master Protocol.
 Este proyecto sigue estrictamente el patrón de infraestructura "Standard Pattern". Cualquier modificación en `docker-compose.yml` debe respetar las siguientes reglas:
 
 1.  **Nomenclatura de Servicios:**
-    *   Servicio Principal: `proyecto_services`
-    *   Servicio de Backup: `proyecto_backup`
-    *   Contenedores: `container_name: proyecto_<rol>`
+    *   Servicio Principal: Definido en `.env`
+    *   Servicio de Backup: `${CONTAINER_NAME}_backup`
+    *   Contenedores: `container_name: ${CONTAINER_NAME}`
 2.  **Nomenclatura de Volúmenes:**
-    *   Datos: `proyecto_volumen`
-    *   Backups: `proyecto_backups`
+    *   Datos: `${CONTAINER_NAME}_volumen`
+    *   Backups: `${CONTAINER_NAME}_backups`
 3.  **Configuración:**
     *   Uso obligatorio de archivo `.env`.
     *   Prohibido el uso de Docker Secrets (`secrets:`).
     *   Credenciales inyectadas vía variables de entorno.
 4.  **Redes:**
-    *   Red dedicada: `proyecto_network`
+    *   Red dedicada: Definida en `.env` (`NETWORK_NAME`)
