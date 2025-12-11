@@ -72,13 +72,13 @@ configure_samba() {
     # Crear configuración base
     cat > "$SMB_CONF" << 'EOF'
 # =============================================================================
-# Samba Configuration - Ubuntu Server
+# Samba Configuration - Linux Server
 # Generado por: install-samba.sh
 # =============================================================================
 
 [global]
    workgroup = WORKGROUP
-   server string = Ubuntu Server
+   server string = Linux Server
    server role = standalone server
    
    # Seguridad

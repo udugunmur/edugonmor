@@ -1,6 +1,6 @@
-# Guía de Configuración de Ubuntu
+# Guía de Configuración de Linux
 
-Este documento describe las configuraciones aplicadas por el proyecto ubuntu.
+Este documento describe las configuraciones aplicadas por el proyecto linux.
 
 ## Índice
 
@@ -167,7 +167,7 @@ Si el governor no cambia a performance:
 
 1. Verificar que estás ejecutando como usuario normal
 2. Verificar que estás en sesión GNOME (no Wayland issues)
-3. Algunos schemas pueden variar según versión de Ubuntu
+3. Algunos schemas pueden variar según versión de Linux
 
 ### Servicio no inicia
 
@@ -183,6 +183,6 @@ sudo systemctl daemon-reload
 
 ## Referencias
 
-- [Ubuntu Server Guide - Performance Tuning](https://ubuntu.com/server/docs/performance-tuning)
+- [Linux/Ubuntu Server Guide - Performance Tuning](https://ubuntu.com/server/docs/performance-tuning)
 - [GNOME Settings](https://help.gnome.org/users/gnome-help/stable/)
 - [Linux Kernel Documentation](https://www.kernel.org/doc/html/latest/)

@@ -1,8 +1,8 @@
-# 🐧 ubuntu
+# 🐧 linux
 
-> **Configuración y Optimización del Sistema Ubuntu**
+> **Configuración y Optimización del Sistema Linux**
 >
-> Repositorio de scripts y configuraciones para optimizar Ubuntu como servidor de desarrollo.
+> Repositorio de scripts y configuraciones para optimizar Linux como servidor de desarrollo.
 
 ## 📚 Sobre esta Documentación
 - **`README.md` (Este archivo):** Manual técnico para **Humanos**. Explica uso y configuraciones.
@@ -16,8 +16,8 @@
 
 ```bash
 # 1. Clonar repositorio
-git clone https://github.com/edugonmor/ubuntu.git
-cd ubuntu
+git clone https://github.com/edugonmor/linux.git
+cd linux
 
 # 2. Ejecutar configuración inicial (requiere sudo)
 sudo ./scripts/setup.sh
@@ -48,7 +48,7 @@ sudo ./scripts/setup.sh
 
 ## 📐 Propósito
 
-Este repositorio centraliza la configuración del sistema Ubuntu para:
+Este repositorio centraliza la configuración del sistema Linux para:
 - Deshabilitar suspensión e hibernación
 - Optimizar rendimiento de CPU
 - Configurar servicios systemd
@@ -57,7 +57,7 @@ Este repositorio centraliza la configuración del sistema Ubuntu para:
 ## 🗺️ Estructura del Proyecto
 
 ```text
-ubuntu/
+linux/
 ├── scripts/                      # 🔧 Scripts de configuración
 │   ├── setup.sh                  # Orquestador: configuración inicial
 │   ├── verify.sh                 # Verificación completa del sistema
@@ -173,7 +173,7 @@ Script para subir archivos locales a Google Drive (subida única, sin sincroniza
 
 ### 10. Compartición de Archivos (Samba/SMB)
 
-Servidor Samba para acceder a los discos de Ubuntu desde macOS vía Finder.
+Servidor Samba para acceder a los discos de Linux desde macOS vía Finder.
 
 | Aspecto | Valor |
 |---------|-------|
@@ -248,7 +248,7 @@ sudo apt update && sudo apt upgrade google-chrome-stable
 
 ## 📚 Documentación de Referencia
 
-- **Ubuntu Server**: https://ubuntu.com/server/docs
+- **Linux/Ubuntu Server**: https://ubuntu.com/server/docs
 - **systemd**: https://www.freedesktop.org/software/systemd/man/
 - **GNOME gsettings**: https://help.gnome.org/admin/system-admin-guide/stable/gsettings.html
 - **rclone**: https://rclone.org/docs/
@@ -256,5 +256,5 @@ sudo apt update && sudo apt upgrade google-chrome-stable
 
 ---
 
-**Repositorio:** `/home/edugonmor/repos/edugonmor/ubuntu`  
+**Repositorio:** `/home/edugonmor/repos/edugonmor/linux`  
 **Última actualización:** 1 de diciembre de 2025
